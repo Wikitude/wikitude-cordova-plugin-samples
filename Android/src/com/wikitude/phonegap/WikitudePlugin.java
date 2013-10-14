@@ -16,11 +16,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.text.format.DateUtils;
@@ -202,8 +204,14 @@ public class WikitudePlugin extends CordovaPlugin implements ArchitectUrlListene
 					@Override
 					public void onScreenCaptured(Bitmap screenCapture) {
 						try {
-						final File imageDirectory = cordova.getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-						final File screenCaptureFile = new File (imageDirectory, args.get(0) == null ? System.currentTimeMillis() + ".jpg" : args.getString(0));
+						// final File imageDirectory = cordova.getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+						final File imageDirectory = Environment.getExternalStorageDirectory();
+						if (imageDirectory == null) {
+							callContext.error("External storage not available");
+						}
+							
+						final File screenCaptureFile = new File (imageDirectory, System.currentTimeMillis() + ".jpg");
+						
 						if (screenCaptureFile.exists()) {
 							screenCaptureFile.delete();
 						}
