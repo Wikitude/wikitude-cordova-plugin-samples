@@ -226,6 +226,13 @@ public class WikitudePlugin extends CordovaPlugin implements ArchitectUrlListene
 							public void run() {
 								final String absoluteCaptureImagePath = screenCaptureFile.getAbsolutePath();
 								callContext.success(absoluteCaptureImagePath);
+								
+// 								in case you want to sent the pic to other applications, uncomment these lines (for future use)
+//								final Intent share = new Intent(Intent.ACTION_SEND);
+//								share.setType("image/jpg");
+//								share.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(screenCaptureFile));
+//								final String chooserTitle = "Share Snaphot";
+//								cordova.getActivity().startActivity(Intent.createChooser(share, chooserTitle));
 							}
 						});
 						} catch (Exception e) {
