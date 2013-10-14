@@ -203,7 +203,7 @@ public class WikitudePlugin extends CordovaPlugin implements ArchitectUrlListene
 					public void onScreenCaptured(Bitmap screenCapture) {
 						try {
 						final File imageDirectory = cordova.getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-						final File screenCaptureFile = new File (imageDirectory, args.getString(0));
+						final File screenCaptureFile = new File (imageDirectory, args.get(0) == null ? System.currentTimeMillis() + ".jpg" : args.getString(0));
 						if (screenCaptureFile.exists()) {
 							screenCaptureFile.delete();
 						}

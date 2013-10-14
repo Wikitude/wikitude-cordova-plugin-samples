@@ -89,7 +89,7 @@ var app = {
     
     onUrlInvoke: function (url) {
     	if (url.indexOf('captureScreen') > -1) {
-    		WikitudePlugin.captureScreen(app.onScreenCaptured, app.onScreenCapturedError, "testFile.png");
+    		WikitudePlugin.captureScreen(app.onScreenCaptured, app.onScreenCapturedError, "screenCapture.jpg");
     	} else {
     		alert(url + "not supported");
     	}
