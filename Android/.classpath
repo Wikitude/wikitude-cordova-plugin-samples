@@ -6,6 +6,6 @@
 	<classpathentry exported="true" kind="lib" path="libs/cordova-3.0.0.jar"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>
-	<classpathentry kind="lib" path="libs/wikitudesdk.jar"/>
+	<classpathentry kind="lib" path="libs/wikitudesdk_3_2.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
