@@ -3,6 +3,7 @@ package com.wikitude.phonegap;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Date;
 import java.util.Scanner;
@@ -15,11 +16,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Rect;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Environment;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -27,13 +30,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.view.ViewManager;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.wikitude.architect.ArchitectView;
 import com.wikitude.architect.ArchitectView.ArchitectConfig;
 import com.wikitude.architect.ArchitectView.ArchitectUrlListener;
+import com.wikitude.architect.ArchitectView.CaptureScreenCallback;
 import com.wikitude.phonegap.WikitudePlugin.ArchitectViewPhoneGap.OnKeyDownListener;
 
 
@@ -81,6 +84,11 @@ public class WikitudePlugin extends CordovaPlugin implements ArchitectUrlListene
 	 * inject location information
 	 */
 	private static final String	ACTION_SET_LOCATION			= "setLocation";
+	
+	/**
+	 * inject location information
+	 */
+	private static final String	ACTION_CAPTURE_SCREEN			= "captureScreen";
 
 	/**
 	 * callback for uri-invocations
@@ -185,6 +193,41 @@ public class WikitudePlugin extends CordovaPlugin implements ArchitectUrlListene
 				callContext.error( action + action + ":Sorry, this device is NOT ARchitect-ready" );
 			}
 			return true;
+		}
+		
+		if (WikitudePlugin.ACTION_CAPTURE_SCREEN.equals(action) ) {
+			if (architectView!=null) {
+				architectView.captureScreen(ArchitectView.CaptureScreenCallback.CAPTURE_MODE_CAM_AND_WEBVIEW, new CaptureScreenCallback() {
+					
+					@Override
+					public void onScreenCaptured(Bitmap screenCapture) {
+						try {
+						final File imageDirectory = cordova.getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+						final File screenCaptureFile = new File (imageDirectory, args.getString(0));
+						if (screenCaptureFile.exists()) {
+							screenCaptureFile.delete();
+						}
+						final FileOutputStream out = new FileOutputStream(screenCaptureFile);
+						screenCapture.compress(Bitmap.CompressFormat.JPEG, 90, out);
+						out.flush();
+						out.close();
+						
+						cordova.getActivity().runOnUiThread(new Runnable() {
+							
+							@Override
+							public void run() {
+								final String absoluteCaptureImagePath = screenCaptureFile.getAbsolutePath();
+								callContext.success(absoluteCaptureImagePath);
+							}
+						});
+						} catch (Exception e) {
+							callContext.error(e.getMessage());
+						}
+						
+					}
+				});
+				return true;
+			}
 		}
 
 

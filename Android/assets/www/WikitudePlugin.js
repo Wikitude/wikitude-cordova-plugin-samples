@@ -172,21 +172,21 @@ var WikitudePlugin = {
     callJavaScript: function(js) {
         cordova.exec(WikitudePlugin.onWikitudeOK, WikitudePlugin.onWikitudeError, "WikitudePlugin", "callJavascript", [js]);
     },
+    
+    captureScreen: function(onSuccess, onError, filename ) {
+    	cordova.exec(onSuccess, onError, "WikitudePlugin", "captureScreen", [filename]);
+    },
 
     /**
-     * deprecated, no longer supported
-     *
      *  Use this function to set a callback which will be invoked when the ARchitect World calls for example
      *  document.location = "architectsdk://opendetailpage?id=9";
      *
      *
      *  @param onUrlInvokeCallback A function which gets called when the ARchitect World invokes a call to "document.location = architectsdk://"
-     
+    */ 
     setOnUrlInvokeCallback: function(onUrlInvokeCallback) {
         cordova.exec(onUrlInvokeCallback, WikitudePlugin.onWikitudeError, "WikitudePlugin", "onUrlInvoke", [""]);
     },
-    */
-
 
     /*
      *  =============================================================================================================================

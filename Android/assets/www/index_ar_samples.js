@@ -78,8 +78,27 @@ var app = {
     onDeviceNotSupportedCallback: function() {
         app.receivedEvent('Unable to launch ARchitect Worlds on this device');
     },
+    
+    onScreenCaptured: function (absoluteFilePath) {
+    	alert("snapshot stored at:\n" + absoluteFilePath);
+    },
+    
+    onScreenCapturedError: function (errorMessage) {
+    	alert(errorMessage);
+    },
+    
+    onUrlInvoke: function (url) {
+    	if (url.indexOf('captureScreen') > -1) {
+    		WikitudePlugin.captureScreen(app.onScreenCaptured, app.onScreenCapturedError, "testFile.png");
+    	} else {
+    		alert(url + "not supported");
+    	}
+    },
 
     loadARchitectWorld: function(samplePath) {
+    	
+    	WikitudePlugin.setOnUrlInvokeCallback(app.onUrlInvoke);
+    	
         if (app.isDeviceSupported) {
         	WikitudePlugin.loadARchitectWorld(samplePath);
         } else {
@@ -143,7 +162,8 @@ var samples = [];
 	samples[4] = ["assets/www/world/5_BrowsingPois_1_PresentingDetails/index.html",
 	             "assets/www/world/5_BrowsingPois_2_AddingRadar/index.html",
 	             "assets/www/world/5_BrowsingPois_3_LimitingRange/index.html",
-	             "assets/www/world/5_BrowsingPois_4_ReloadingContent/index.html"
+	             "assets/www/world/5_BrowsingPois_4_ReloadingContent/index.html",
+	             "assets/www/world/5_BrowsingPois_6_CaptureScreenBonus/index.html"
              ];
 	
 	samples[5] = ["assets/www/world/6_Video_1_SimpleVideo/index.html",
