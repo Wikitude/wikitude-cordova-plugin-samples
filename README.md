@@ -3,6 +3,7 @@
 by Wikitude GmbH - [www.wikitude.com](http://www.wikitude.com)
 
 The first PhoneGap Plugin providing Image Recognition and Geo based Augmented Reality.
+The provided sample projects for Android and iOS demo the most common usecases. 
 
 # Documentation & Samples
 - Please find details about plugin installation and samples at [Wikitude Developer Section](http://developer.wikitude.com/documentation/phonegap).
