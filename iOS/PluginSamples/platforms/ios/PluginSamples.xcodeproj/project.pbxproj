@@ -50,7 +50,6 @@
 		6319FFF59E414440AE529408 /* WTARViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 99B09B23522E4B098C65C119 /* WTARViewController.m */; };
 		93A146B6AA2947C4AE08271B /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FADA1C50D9304E4799026B23 /* Security.framework */; };
 		A8F5125542CB4A9A996B9C5A /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C3CB249BDE04FD8A68ECA78 /* CoreMotion.framework */; };
-		A977ADA4180C43B2002E6A44 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = A977ADA3180C43B2002E6A44 /* assets */; };
 		B62101F2C66248F684A4556F /* libWikitudeSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 22715CED765C4314B06963E7 /* libWikitudeSDK.a */; };
 		B8246D5392B34B208E3F2BC7 /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3477D1F6E5CF4A3590DA488C /* libc++.dylib */; };
 		C61F3B69CA77497799481463 /* WTWikitudePlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = 557A06BC9C124531B0A0D631 /* WTWikitudePlugin.m */; };
@@ -127,7 +126,6 @@
 		99B09B23522E4B098C65C119 /* WTARViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WTARViewController.m; path = com.wikitude.phonegap.WikitudePlugin/WTARViewController.m; sourceTree = "<group>"; };
 		9C3CB249BDE04FD8A68ECA78 /* CoreMotion.framework */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 		9F8B963E0EE945A8A8625218 /* libz.dylib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
-		A977ADA3180C43B2002E6A44 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = assets; sourceTree = "<group>"; };
 		B0C4381FBF814426955C11DC /* CoreVideo.framework */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		B3EB535ACB5C4244A77E0B75 /* WTArchitectView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WTArchitectView.h; path = com.wikitude.phonegap.WikitudePlugin/WTArchitectView.h; sourceTree = "<group>"; };
 		BD640203CCED44F9992EC4F4 /* WTWikitudePlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WTWikitudePlugin.h; path = com.wikitude.phonegap.WikitudePlugin/WTWikitudePlugin.h; sourceTree = "<group>"; };
@@ -215,7 +213,6 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
-				A977ADA3180C43B2002E6A44 /* assets */,
 				F840E1F0165FE0F500CFE078 /* config.xml */,
 				301BF56E109A69640062928A /* www */,
 				301BF52D109A57CC0062928A /* CordovaLib.xcodeproj */,
@@ -426,7 +423,6 @@
 				F840E1F1165FE0F500CFE078 /* config.xml in Resources */,
 				308D05371370CCF300D202BF /* icon-72.png in Resources */,
 				308D05381370CCF300D202BF /* icon.png in Resources */,
-				A977ADA4180C43B2002E6A44 /* assets in Resources */,
 				308D05391370CCF300D202BF /* icon@2x.png in Resources */,
 				1F766FE113BBADB100FB74C0 /* Localizable.strings in Resources */,
 				1F766FE213BBADB100FB74C0 /* Localizable.strings in Resources */,

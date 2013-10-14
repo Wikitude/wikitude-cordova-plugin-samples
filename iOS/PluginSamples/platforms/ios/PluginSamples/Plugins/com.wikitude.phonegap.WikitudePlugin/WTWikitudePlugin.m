@@ -388,7 +388,7 @@
 
 #pragma mark - WTArchitectView Delegate
 
-- (void)urlWasInvoked:(NSString *)url
+- (void)architectView:(WTArchitectView *)architectView invokedURL:(NSURL *)url
 {
     
     CDVPluginResult *pluginResult = nil;
@@ -396,7 +396,7 @@
     
     if (url && self.currentARchitectViewCallbackID) {
         
-        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:url];
+        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:[url absoluteString]];
         [pluginResult setKeepCallbackAsBool:YES];
         
         [self.commandDelegate sendPluginResult:pluginResult callbackId:self.currentARchitectViewCallbackID];
@@ -407,7 +407,16 @@
         
         [self.commandDelegate sendPluginResult:pluginResult callbackId:self.currentPlugInErrorCallback];
     }
-    
+}
+
+- (void)architectView:(WTArchitectView *)architectView didCaptureScreenWithContext:(NSDictionary *)context
+{
+
+}
+
+- (void)architectView:(WTArchitectView *)architectView didFailCaptureScreenWithError:(NSError *)error
+{
+
 }
 
 #pragma mark - WTARViewControllerDelegate

@@ -16,7 +16,7 @@
             <param name="ios-package" value="WTWikitudePlugin" />
         </feature>
     </plugins>
-    <access origin="http://127.0.0.1*" />
+    <access origin="*" />
     <preference name="KeyboardDisplayRequiresUserAction" value="true" />
     <preference name="SuppressesIncrementalRendering" value="false" />
     <preference name="UIWebViewBounce" value="true" />
