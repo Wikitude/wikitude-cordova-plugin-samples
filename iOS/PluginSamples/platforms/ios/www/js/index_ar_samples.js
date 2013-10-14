@@ -89,7 +89,7 @@ var app = {
     
     onUrlInvoke: function (url) {
     	if (url.indexOf('captureScreen') > -1) {
-    		WikitudePlugin.captureScreen(app.onScreenCaptured, app.onScreenCapturedError, "screenCapture.jpg");
+    		WikitudePlugin.captureScreen(true, null, app.onScreenCaptured, app.onScreenCapturedError);
     	} else {
     		alert(url + "not supported");
     	}
@@ -181,13 +181,13 @@ function loadARfromUrl(url) {
 }	
 	
 function loadAR(categoryNr, sampleNr){
-        
+
     var worldPath = samples[categoryNr][sampleNr];
 
-    if ( false ) { // "Android" == window.device.platform
+    if ( false ) { // android
         worldPath = "assets/" + worldPath;
     }
-                                                  
+
     app.loadARchitectWorld(worldPath);
     // inject poi data using phonegap's GeoLocation API and inject data using World.loadPoisFromJsonData
 	if (categoryNr == 3 && sampleNr == 2) {

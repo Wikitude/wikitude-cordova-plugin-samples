@@ -89,7 +89,7 @@ var app = {
     
     onUrlInvoke: function (url) {
     	if (url.indexOf('captureScreen') > -1) {
-    		WikitudePlugin.captureScreen(app.onScreenCaptured, app.onScreenCapturedError, "screenCapture.jpg");
+    		WikitudePlugin.captureScreen(true, null, app.onScreenCaptured, app.onScreenCapturedError);
     	} else {
     		alert(url + "not supported");
     	}
@@ -137,43 +137,43 @@ var app = {
 
 var samples = [];
 
-	samples[0] = ["assets/www/world/1_ImageRecognition_1_ImageOnTarget/index.html",
-	              "assets/www/world/1_ImageRecognition_2_MultipleTargets/index.html",
-	              "assets/www/world/1_ImageRecognition_3_Interactivity/index.html",
-	              "assets/www/world/1_ImageRecognition_4_HtmlDrawable/index.html",
-	              "assets/www/world/1_ImageRecognition_5_Bonus-Sparkles/index.html"
+	samples[0] = ["www/world/1_ImageRecognition_1_ImageOnTarget/index.html",
+	              "www/world/1_ImageRecognition_2_MultipleTargets/index.html",
+	              "www/world/1_ImageRecognition_3_Interactivity/index.html",
+	              "www/world/1_ImageRecognition_4_HtmlDrawable/index.html",
+	              "www/world/1_ImageRecognition_5_Bonus-Sparkles/index.html"
 	              ];
-	samples[1] = ["assets/www/world/2_3dAndImageRecognition_1_3dModelOnTarget/index.html",
-	             "assets/www/world/2_3dAndImageRecognition_2_AppearingAnimation/index.html",
-	             "assets/www/world/2_3dAndImageRecognition_3_Interactivity/index.html"
+	samples[1] = ["www/world/2_3dAndImageRecognition_1_3dModelOnTarget/index.html",
+	             "www/world/2_3dAndImageRecognition_2_AppearingAnimation/index.html",
+	             "www/world/2_3dAndImageRecognition_3_Interactivity/index.html"
              ];
 	
-	samples[2] = ["assets/www/world/3_PointOfInterest_1_PoiAtLocation/index.html",
-	             "assets/www/world/3_PointOfInterest_2_PoiWithLabel/index.html",
-	             "assets/www/world/3_PointOfInterest_3_MultiplePois/index.html",
-	             "assets/www/world/3_PointOfInterest_4_SelectingPois/index.html"
+	samples[2] = ["www/world/3_PointOfInterest_1_PoiAtLocation/index.html",
+	             "www/world/3_PointOfInterest_2_PoiWithLabel/index.html",
+	             "www/world/3_PointOfInterest_3_MultiplePois/index.html",
+	             "www/world/3_PointOfInterest_4_SelectingPois/index.html"
              ];
 	
-	samples[3] = ["assets/www/world/4_ObtainPoiData_1_FromApplicationModel/index.html",
-	             "assets/www/world/4_ObtainPoiData_2_FromLocalResource/index.html",
-	             "assets/www/world/4_ObtainPoiData_3_FromWebservice/index.html"
+	samples[3] = ["www/world/4_ObtainPoiData_1_FromApplicationModel/index.html",
+	             "www/world/4_ObtainPoiData_2_FromLocalResource/index.html",
+	             "www/world/4_ObtainPoiData_3_FromWebservice/index.html"
              ];
 	
-	samples[4] = ["assets/www/world/5_BrowsingPois_1_PresentingDetails/index.html",
-	             "assets/www/world/5_BrowsingPois_2_AddingRadar/index.html",
-	             "assets/www/world/5_BrowsingPois_3_LimitingRange/index.html",
-	             "assets/www/world/5_BrowsingPois_4_ReloadingContent/index.html",
-	             "assets/www/world/5_BrowsingPois_6_CaptureScreenBonus/index.html"
+	samples[4] = ["www/world/5_BrowsingPois_1_PresentingDetails/index.html",
+	             "www/world/5_BrowsingPois_2_AddingRadar/index.html",
+	             "www/world/5_BrowsingPois_3_LimitingRange/index.html",
+	             "www/world/5_BrowsingPois_4_ReloadingContent/index.html",
+	             "www/world/5_BrowsingPois_6_CaptureScreenBonus/index.html"
              ];
 	
-	samples[5] = ["assets/www/world/6_Video_1_SimpleVideo/index.html",
-		             "assets/www/world/6_Video_2_PlaybackStates/index.html",
-		             "assets/www/world/6_Video_4_Bonus-TransparentVideo/index.html"
+	samples[5] = ["www/world/6_Video_1_SimpleVideo/index.html",
+		             "www/world/6_Video_2_PlaybackStates/index.html",
+		             "www/world/6_Video_4_Bonus-TransparentVideo/index.html"
 	             ];
 	
-	samples[6] = ["assets/www/world/99_Demo_1_ImageRecognitionAndGeo/index.html",
-	             "assets/www/world/99_Demo_2_SolarSystem(Geo)/index.html",
-	             "assets/www/world/99_Demo_3_SolarSystem(ImageRecognition)/index.html"
+	samples[6] = ["www/world/99_Demo_1_ImageRecognitionAndGeo/index.html",
+	             "www/world/99_Demo_2_SolarSystem(Geo)/index.html",
+	             "www/world/99_Demo_3_SolarSystem(ImageRecognition)/index.html"
              ];
 
 function loadARfromUrl(url) {
@@ -181,7 +181,14 @@ function loadARfromUrl(url) {
 }	
 	
 function loadAR(categoryNr, sampleNr){
-    app.loadARchitectWorld(samples[categoryNr][sampleNr]);
+
+    var worldPath = samples[categoryNr][sampleNr];
+
+    if ( false ) { // android
+        worldPath = "assets/" + worldPath;
+    }
+
+    app.loadARchitectWorld(worldPath);
     // inject poi data using phonegap's GeoLocation API and inject data using World.loadPoisFromJsonData
 	if (categoryNr == 3 && sampleNr == 2) {
 		navigator.geolocation.getCurrentPosition(onLocationUpdated,
