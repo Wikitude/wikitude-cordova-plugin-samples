@@ -94,6 +94,13 @@
     return self;
 }
 
+- (id)initWithCoder:(NSCoder*)aDecoder
+{
+    self = [super initWithCoder:aDecoder];
+    [self __init];
+    return self;
+}
+
 - (id)init
 {
     self = [super init];
@@ -104,43 +111,11 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-
-    NSNotificationCenter* nc = [NSNotificationCenter defaultCenter];
-    [nc addObserver:self
-           selector:@selector(keyboardWillShowOrHide:)
-               name:UIKeyboardWillShowNotification
-             object:nil];
-    [nc addObserver:self
-           selector:@selector(keyboardWillShowOrHide:)
-               name:UIKeyboardWillHideNotification
-             object:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-
-    NSNotificationCenter* nc = [NSNotificationCenter defaultCenter];
-    [nc removeObserver:self name:UIKeyboardWillShowNotification object:nil];
-    [nc removeObserver:self name:UIKeyboardWillHideNotification object:nil];
-}
-
-- (void)keyboardWillShowOrHide:(NSNotification*)notif
-{
-    if (![@"true" isEqualToString :[self settingForKey:@"KeyboardShrinksView"]]) {
-        return;
-    }
-    BOOL showEvent = [notif.name isEqualToString:UIKeyboardWillShowNotification];
-
-    CGRect keyboardFrame = [notif.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
-    keyboardFrame = [self.view convertRect:keyboardFrame fromView:nil];
-
-    CGRect newFrame = self.view.bounds;
-    if (showEvent) {
-        newFrame.size.height -= keyboardFrame.size.height;
-    }
-    self.webView.frame = newFrame;
-    self.webView.scrollView.contentInset = UIEdgeInsetsMake(0, 0, -keyboardFrame.size.height, 0);
 }
 
 - (void)printDeprecationNotice
@@ -230,14 +205,20 @@
     } else if ([self.wwwFolderName rangeOfString:@"://"].location != NSNotFound) {
         appURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@/%@", self.wwwFolderName, self.startPage]];
     } else {
-        NSString* startFilePath = [self.commandDelegate pathForResource:self.startPage];
+        // CB-3005 strip parameters from start page to check if page exists in resources
+        NSURL* startURL = [NSURL URLWithString:self.startPage];
+        NSString* startFilePath = [self.commandDelegate pathForResource:[startURL path]];
+
         if (startFilePath == nil) {
             loadErr = [NSString stringWithFormat:@"ERROR: Start Page at '%@/%@' was not found.", self.wwwFolderName, self.startPage];
             NSLog(@"%@", loadErr);
             self.loadFromString = YES;
             appURL = nil;
         } else {
-            appURL = [NSURL fileURLWithPath:startFilePath];
+            // CB-3005 we know that the page exists : reconstruct full path from bundle
+            NSURL* relativeURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] bundlePath]];
+            NSString* localURL = [NSString stringWithFormat:@"%@/%@", self.wwwFolderName, self.startPage];
+            appURL = [NSURL URLWithString:localURL relativeToURL:relativeURL];
         }
     }
 
@@ -267,27 +248,8 @@
     if ([self settingForKey:@"MediaPlaybackRequiresUserAction"]) {
         mediaPlaybackRequiresUserAction = [(NSNumber*)[self settingForKey:@"MediaPlaybackRequiresUserAction"] boolValue];
     }
-    BOOL hideKeyboardFormAccessoryBar = NO;  // default value
-    if ([self settingForKey:@"HideKeyboardFormAccessoryBar"]) {
-        hideKeyboardFormAccessoryBar = [(NSNumber*)[self settingForKey:@"HideKeyboardFormAccessoryBar"] boolValue];
-    }
 
     self.webView.scalesPageToFit = [enableViewportScale boolValue];
-
-    /*
-     * Fire up the GPS Service right away as it takes a moment for data to come back.
-     */
-
-    if (hideKeyboardFormAccessoryBar) {
-        __weak CDVViewController* weakSelf = self;
-        [[NSNotificationCenter defaultCenter] addObserverForName:UIKeyboardWillShowNotification
-                                                          object:nil
-                                                           queue:[NSOperationQueue mainQueue]
-                                                      usingBlock:^(NSNotification* notification) {
-            // we can't hide it here because the accessory bar hasn't been created yet, so we delay on the queue
-            [weakSelf performSelector:@selector(hideKeyboardFormAccessoryBar) withObject:nil afterDelay:0];
-        }];
-    }
 
     /*
      * Fire up CDVLocalStorage to work-around WebKit storage limitations: on all iOS 5.1+ versions for local-only backups, but only needed on iOS 5.1 for cloud backup.
@@ -361,6 +323,82 @@
         }
     }
 
+    /*
+     * iOS 7.0 UIWebView properties
+     */
+    if (IsAtLeastiOSVersion(@"7.0")) {
+        SEL ios7sel = nil;
+        id prefObj = nil;
+
+        CGFloat gapBetweenPages = 0.0; // default
+        prefObj = [self settingForKey:@"GapBetweenPages"];
+        if (prefObj != nil) {
+            gapBetweenPages = [prefObj floatValue];
+        }
+
+        // property check for compiling under iOS < 7
+        ios7sel = NSSelectorFromString(@"setGapBetweenPages:");
+        if ([self.webView respondsToSelector:ios7sel]) {
+            [self.webView setValue:[NSNumber numberWithFloat:gapBetweenPages] forKey:@"gapBetweenPages"];
+        }
+
+        CGFloat pageLength = 0.0; // default
+        prefObj = [self settingForKey:@"PageLength"];
+        if (prefObj != nil) {
+            pageLength = [[self settingForKey:@"PageLength"] floatValue];
+        }
+
+        // property check for compiling under iOS < 7
+        ios7sel = NSSelectorFromString(@"setPageLength:");
+        if ([self.webView respondsToSelector:ios7sel]) {
+            [self.webView setValue:[NSNumber numberWithBool:pageLength] forKey:@"pageLength"];
+        }
+
+        NSInteger paginationBreakingMode = 0; // default - UIWebPaginationBreakingModePage
+        prefObj = [self settingForKey:@"PaginationBreakingMode"];
+        if (prefObj != nil) {
+            NSArray* validValues = @[@"page", @"column"];
+            NSString* prefValue = [validValues objectAtIndex:0];
+
+            if ([prefObj isKindOfClass:[NSString class]]) {
+                prefValue = prefObj;
+            }
+
+            paginationBreakingMode = [validValues indexOfObject:[prefValue lowercaseString]];
+            if (paginationBreakingMode == NSNotFound) {
+                paginationBreakingMode = 0;
+            }
+        }
+
+        // property check for compiling under iOS < 7
+        ios7sel = NSSelectorFromString(@"setPaginationBreakingMode:");
+        if ([self.webView respondsToSelector:ios7sel]) {
+            [self.webView setValue:[NSNumber numberWithInteger:paginationBreakingMode] forKey:@"paginationBreakingMode"];
+        }
+
+        NSInteger paginationMode = 0; // default - UIWebPaginationModeUnpaginated
+        prefObj = [self settingForKey:@"PaginationMode"];
+        if (prefObj != nil) {
+            NSArray* validValues = @[@"unpaginated", @"lefttoright", @"toptobottom", @"bottomtotop", @"righttoleft"];
+            NSString* prefValue = [validValues objectAtIndex:0];
+
+            if ([prefObj isKindOfClass:[NSString class]]) {
+                prefValue = prefObj;
+            }
+
+            paginationMode = [validValues indexOfObject:[prefValue lowercaseString]];
+            if (paginationMode == NSNotFound) {
+                paginationMode = 0;
+            }
+        }
+
+        // property check for compiling under iOS < 7
+        ios7sel = NSSelectorFromString(@"setPaginationMode:");
+        if ([self.webView respondsToSelector:ios7sel]) {
+            [self.webView setValue:[NSNumber numberWithInteger:paginationMode] forKey:@"paginationMode"];
+        }
+    }
+
     if ([self.startupPluginNames count] > 0) {
         [CDVTimer start:@"TotalPluginStartup"];
 
@@ -395,34 +433,6 @@
 - (void)setSetting:(id)setting forKey:(NSString*)key
 {
     [[self settings] setObject:setting forKey:[key lowercaseString]];
-}
-
-- (void)hideKeyboardFormAccessoryBar
-{
-    NSArray* windows = [[UIApplication sharedApplication] windows];
-
-    for (UIWindow* window in windows) {
-        for (UIView* view in window.subviews) {
-            if ([[view description] hasPrefix:@"<UIPeripheralHostView"]) {
-                for (UIView* peripheralView in view.subviews) {
-                    // hides the accessory bar
-                    if ([[peripheralView description] hasPrefix:@"<UIWebFormAccessory"]) {
-                        // remove the extra scroll space for the form accessory bar
-                        CGRect newFrame = self.webView.scrollView.frame;
-                        newFrame.size.height += peripheralView.frame.size.height;
-                        self.webView.scrollView.frame = newFrame;
-
-                        // remove the form accessory bar
-                        [peripheralView removeFromSuperview];
-                    }
-                    // hides the thin grey line used to adorn the bar (iOS 6)
-                    if ([[peripheralView description] hasPrefix:@"<UIImageView"]) {
-                        [[peripheralView layer] setOpacity:0.0];
-                    }
-                }
-            }
-        }
-    }
 }
 
 - (NSArray*)parseInterfaceOrientations:(NSArray*)orientations
@@ -644,9 +654,22 @@
     }
 
     /*
+     * Give plugins the chance to handle the url
+     */
+    for (NSString* pluginName in pluginObjects) {
+        CDVPlugin* plugin = [pluginObjects objectForKey:pluginName];
+        SEL selector = NSSelectorFromString(@"shouldOverrideLoadWithRequest:navigationType:");
+        if ([plugin respondsToSelector:selector]) {
+            if ((BOOL)objc_msgSend(plugin, selector, request, navigationType) == YES) {
+                return NO;
+            }
+        }
+    }
+
+    /*
      * If a URL is being loaded that's a file/http/https URL, just load it internally
      */
-    else if ([url isFileURL]) {
+    if ([url isFileURL]) {
         return YES;
     }
 

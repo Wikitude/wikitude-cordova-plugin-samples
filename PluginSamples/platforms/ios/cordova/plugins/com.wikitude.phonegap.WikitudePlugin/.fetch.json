@@ -1,1 +1,1 @@
-{"source":{"type":"local","path":"/Users/Andi/Development/Wikitude/PhoneGap/Plugman"}}
+{"source":{"type":"git","url":"https://github.com/Wikitude/wikitude-phonegap.git","subdir":"."}}
