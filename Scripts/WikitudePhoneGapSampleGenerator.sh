@@ -41,8 +41,6 @@ cd $PROJECT_DIRECTORY
 echo "*** PREPARING SAMPLE CONTENT ***"
 
 # copy css
-echo "$SOURCE_DIRECTORY/css/*"
-echo "$DESTINATION_DIRECTORY/css"
 cp -R $SOURCE_DIRECTORY/css/* $DESTINATION_DIRECTORY/css
 
 # copy jquery
