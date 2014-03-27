@@ -6,6 +6,11 @@ The first PhoneGap Plugin providing Image Recognition and Geo based Augmented Re
 The provided sample projects for Android and iOS demo the most common usecases. 
 
 # Documentation & Samples
+
+- To create the sample application, simply run the following command with the location where the sample app should be created. Additionally you can also specify for which platform the application should be compiled after creation.
+	
+	`sh CreateSampleApp.sh -d ~/Path/Where/The/App/Should/Be/Created -ios true -android true`
+
 - Please find details about plugin installation and samples at [Wikitude Developer Section](http://developer.wikitude.com/documentation/phonegap).
 - There is a [separate git with the plugin only and plugman support](https://github.com/Wikitude/wikitude), please use this for installation.
 
