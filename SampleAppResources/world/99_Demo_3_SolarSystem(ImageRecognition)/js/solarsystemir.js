@@ -248,6 +248,7 @@ var World = {
     screenClick: function onScreenClickFn() {
         if (World.selectedPlanet !== null) {
             World.selectedPlanet.select(false);
+            World.selectedPlanet = null;
         }
 
         document.getElementById("info").setAttribute("class", "info");
@@ -280,6 +281,9 @@ var World = {
         document.getElementById('loadingMessage').innerHTML =
             "<div" + cssDivLeft + ">Scan Solar System Image:</div>" +
             "<div" + cssDivRight + "><img src='assets/solarsystem.png'></img></div>";
+        
+        // Remove Scan target message after 10 sec.
+        setTimeout(function() {var e =document.getElementById('loadingMessage'); e.parentElement.removeChild(e);}, 10000);
     },
 
     trackerError: function trackerErrorFn() {
@@ -287,17 +291,13 @@ var World = {
     },
 
     trackerEnterFov: function trackerEnterFovFn() {
-        document.getElementById('loadingMessage').innerHTML = "Tracker Image Recognized";
         document.getElementById('toggleAnimationBtn').style.display = "block";
-        document.getElementById("info").setAttribute("class", "infoVisible");
+        if (World.selectedPlanet !== null) {
+            document.getElementById("info").setAttribute("class", "infoVisible");
+        }
     },
 
     trackerExitFov: function trackerExitFovFn() {
-        var cssDivLeft = " style='display: table-cell;vertical-align: middle; text-align: right; width: 50%; padding-right: 15px;'";
-        var cssDivRight = " style='display: table-cell;vertical-align: middle; text-align: left;'";
-        document.getElementById('loadingMessage').innerHTML =
-            "<div" + cssDivLeft + ">Scan Solar System Image:</div>" +
-            "<div" + cssDivRight + "><img src='assets/solarsystem.png'></img></div>";
         document.getElementById('toggleAnimationBtn').style.display = "none";
         document.getElementById("info").setAttribute("class", "info");
     }

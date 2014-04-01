@@ -34,6 +34,7 @@ var World = {
 
 	// called to inject new POI data
 	loadPoisFromJsonData: function loadPoisFromJsonDataFn(poiData) {
+		alert(AR.context.scene.cullingDistance);
 
 		// destroys all existing AR-Objects (markers & radar)
 		AR.context.destroyAll();
@@ -73,6 +74,8 @@ var World = {
 		// set distance slider to 100%
 		$("#panel-distance-range").val(100);
 		$("#panel-distance-range").slider("refresh");
+
+		World.updateRangeValues();
 	},
 
 	// sets/updates distances of all makers so they are available way faster than calling (time-consuming) distanceToUser() method all the time
@@ -182,10 +185,10 @@ var World = {
 		$("#panel-distance-places").html((placesInRange != 1) ? (placesInRange + " Places") : (placesInRange + " Place"));
 
 		// update culling distance, so only palces within given range are rendered
-		AR.context.scene.cullingDistance = Math.max(maxRangeMeters, 1);
+		AR.context.scene.cullingDistance = Math.max(maxRangeMeters, 10);
 
 		// update radar's maxDistance so radius of radar is updated too
-		PoiRadar.setMaxDistance(Math.max(maxRangeMeters, 1));
+		PoiRadar.setMaxDistance(Math.max(maxRangeMeters, 10));
 	},
 
 	// returns number of places with same or lower distance than given range

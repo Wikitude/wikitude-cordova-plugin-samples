@@ -18,6 +18,9 @@ var World = {
 	// true once data was fetched
 	initiallyLoadedData: false,
 
+	// true when world initialization is done
+	initialized: false,
+	
 	// different POI-Marker assets
 	markerDrawable_idle: null,
 	markerDrawable_selected: null,
@@ -73,6 +76,8 @@ var World = {
 		// set distance slider to 100%
 		$("#panel-distance-range").val(100);
 		$("#panel-distance-range").slider("refresh");
+
+		World.initialized = true;
 	},
 
 	// sets/updates distances of all makers so they are available way faster than calling (time-consuming) distanceToUser() method all the time
@@ -251,7 +256,9 @@ var World = {
 
 	// reload places from content source
 	captureScreen: function captureScreenFn() {
-		document.location = "architectsdk://button?action=captureScreen";
+		if (World.initialized) {
+			document.location = "architectsdk://button?action=captureScreen";
+		}
 	},
 
 	// request POI data

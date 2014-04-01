@@ -9,6 +9,8 @@ var World = {
 
 	createOverlays: function createOverlaysFn() {
 		// Initialize Tracker
+		// Important: If you replace the tracker file with your own, make sure to change the target name accordingly.
+		// e.g. replace "pageOne" used for creating the AR.Trackeable2DOBject below, with the name of one of your new target images.
 		this.tracker = new AR.Tracker("assets/magazine.wtc", {
 			onLoaded: this.worldLoaded
 		});
@@ -82,6 +84,9 @@ var World = {
 			"<div" + cssDivLeft + ">Scan Target &#35;1 (surfer) or &#35;2 (biker):</div>" +
 			"<div" + cssDivRight1 + "><img src='assets/surfer.png'></img></div>" +
 			"<div" + cssDivRight2 + "><img src='assets/bike.png'></img></div>";
+		
+		// Remove Scan target message after 10 sec.
+		setTimeout(function() {var e =document.getElementById('loadingMessage'); e.parentElement.removeChild(e);}, 10000);
 	}
 };
 
