@@ -91,6 +91,9 @@ IrAndGeo.loadingStepDone = function() {
         document.getElementById('messageElement').innerHTML =
             "<div" + cssDivLeft + ">Scan Shop Image Target:</div>" +
             "<div" + cssDivRight + "><img src='assets/ShopAdSmall.png'></img></div>";
+        
+        // Remove Scan target message after 10 sec.
+        setTimeout(function() {document.getElementById("messageElement").style.display = "none";}, 10000);
     }
 };
 
@@ -134,24 +137,10 @@ IrAndGeo.initIr = function() {
     var trackable2DObject = new AR.Trackable2DObject(IrAndGeo.tracker, "ShopAd", {
         drawables: {
             cam: [buttonDeal, buttonWeb, buttonStores, IrAndGeo.dealDrawable]
-        },
-        onEnterFieldOfVision: IrAndGeo.trackerEnterFov,
-        onExitFieldOfVision: IrAndGeo.trackerExitFov
+        }
     });
 
 };
-
-IrAndGeo.trackerEnterFov = function() {
-    document.getElementById('messageElement').innerHTML = "Tracker Image Recognized";
-}
-
-IrAndGeo.trackerExitFov = function() {
-    var cssDivLeft = " style='display: table-cell;vertical-align: middle; text-align: right; width: 50%; padding-right: 15px;'";
-    var cssDivRight = " style='display: table-cell;vertical-align: middle; text-align: left;'";
-    document.getElementById('messageElement').innerHTML =
-        "<div" + cssDivLeft + ">Scan Shop Image Target:</div>" +
-        "<div" + cssDivRight + "><img src='assets/ShopAdSmall.png'></img></div>";
-}
 
 AR.context.onLocationChanged = function(latitude, longitude, altitude, accuracy) {
     AR.context.onLocationChanged = null;

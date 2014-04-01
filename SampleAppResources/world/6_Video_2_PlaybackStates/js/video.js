@@ -17,9 +17,11 @@ var World = {
 		var playButtonImg = new AR.ImageResource("assets/playButton.png");
 		var playButton = new AR.ImageDrawable(playButtonImg, 0.3, {
 			enabled: false,
+			clicked: false,
 			onClick: function playButtonClicked() {
 				video.play(1);
 				video.playing = true;
+				playButton.clicked = true;
 			},
 			offsetY: -0.3
 		});
@@ -40,7 +42,9 @@ var World = {
 				video.enabled = false;
 			},
 			onClick: function videoClicked() {
-				if (video.playing) {
+				if (playButton.clicked) {
+					playButton.clicked = false;					
+				} else if (video.playing) {
 					video.pause();
 					video.playing = false;
 				} else {
@@ -73,6 +77,9 @@ var World = {
 		document.getElementById('loadingMessage').innerHTML =
 			"<div" + cssDivLeft + ">Scan Red Bulletin Target:</div>" +
 			"<div" + cssDivRight + "><img src='assets/surfer.png'></img></div>";
+		
+		// Remove Scan target message after 10 sec.
+		setTimeout(function() {var e =document.getElementById('loadingMessage'); e.parentElement.removeChild(e);}, 10000);
 	}
 };
 
