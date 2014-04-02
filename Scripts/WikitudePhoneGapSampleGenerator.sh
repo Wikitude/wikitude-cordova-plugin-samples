@@ -71,7 +71,7 @@ fi
 
 ## Add Wikitude plugin
 echo "*** ADDING WIKITUDE PLUGIN ***"
-phonegap plugin add https://github.com/Wikitude/wikitude-phonegap.git#Integration_3-3
+phonegap plugin add https://github.com/Wikitude/wikitude-phonegap.git
 
 
 echo "*** DONE - SUCCESS ***"
