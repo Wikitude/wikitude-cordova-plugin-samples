@@ -56,7 +56,7 @@ var app = {
         app.receivedEvent('deviceready');
 
         // check if the current device is able to launch ARchitect Worlds
-        app.wikitudePlugin = cordova.require("com.wikitude.phonegap.WikitudePlugin.WikitudePlugin")                     
+        app.wikitudePlugin = cordova.require("com.wikitude.phonegap.WikitudePlugin.WikitudePlugin");
         app.wikitudePlugin.isDeviceSupported(app.onDeviceSupportedCallback, app.onDeviceNotSupportedCallback);
     },
     // --- Wikitude Plugin ---
@@ -68,13 +68,13 @@ var app = {
     onDeviceSupportedCallback: function() {
         app.isDeviceSupported = true;
     },
-    
+
     // A callback which gets called if the device is not able to start ARchitect Worlds
     onDeviceNotSupportedCallback: function() {
         app.receivedEvent('Unable to launch ARchitect Worlds on this device');
-    }, 
+    },
     loadARchitectWorld: function(samplePath) {
-    
+
         app.wikitudePlugin.setOnUrlInvokeCallback(app.onUrlInvoke);
 
         if (app.isDeviceSupported) {
@@ -97,15 +97,15 @@ var app = {
         } else if (app.getUrlParameterForKey(url, 'status')) {
             app.wikitudePlugin.hide();
         }
-    },    
+    },
     onScreenCaptured: function (absoluteFilePath) {
         alert("snapshot stored at:\n" + absoluteFilePath);
     },
-    
+
     onScreenCapturedError: function (errorMessage) {
         alert(errorMessage);
     },
-    
+
     onUrlInvoke: function (url) {
         if (url.indexOf('captureScreen') > -1) {
             app.wikitudePlugin.captureScreen(true, null, app.onScreenCaptured, app.onScreenCapturedError);
@@ -145,30 +145,30 @@ var samples = [];
                  "www/world/2_3dAndImageRecognition_2_AppearingAnimation/index.html",
                  "www/world/2_3dAndImageRecognition_3_Interactivity/index.html"
              ];
-    
+
     samples[2] = ["www/world/3_PointOfInterest_1_PoiAtLocation/index.html",
                  "www/world/3_PointOfInterest_2_PoiWithLabel/index.html",
                  "www/world/3_PointOfInterest_3_MultiplePois/index.html",
                  "www/world/3_PointOfInterest_4_SelectingPois/index.html"
              ];
-    
+
     samples[3] = ["www/world/4_ObtainPoiData_1_FromApplicationModel/index.html",
                  "www/world/4_ObtainPoiData_2_FromLocalResource/index.html",
                  "www/world/4_ObtainPoiData_3_FromWebservice/index.html"
              ];
-    
+
     samples[4] = ["www/world/5_BrowsingPois_1_PresentingDetails/index.html",
                  "www/world/5_BrowsingPois_2_AddingRadar/index.html",
                  "www/world/5_BrowsingPois_3_LimitingRange/index.html",
                  "www/world/5_BrowsingPois_4_ReloadingContent/index.html",
                  "www/world/5_BrowsingPois_6_CaptureScreenBonus/index.html"
              ];
-    
+
     samples[5] = ["www/world/6_Video_1_SimpleVideo/index.html",
                      "www/world/6_Video_2_PlaybackStates/index.html",
                      "www/world/6_Video_4_Bonus-TransparentVideo/index.html"
                  ];
-    
+
     samples[6] = ["www/world/99_Demo_1_ImageRecognitionAndGeo/index.html",
                  "www/world/99_Demo_2_SolarSystem(Geo)/index.html",
                  "www/world/99_Demo_3_SolarSystem(ImageRecognition)/index.html"
@@ -176,8 +176,8 @@ var samples = [];
 
 function loadARfromUrl(url) {
     app.loadARchitectWorld(url);
-}   
-    
+}
+
 function loadAR(categoryNr, sampleNr){
 
     var worldPath = samples[categoryNr][sampleNr];
@@ -186,7 +186,7 @@ function loadAR(categoryNr, sampleNr){
     // inject poi data using phonegap's GeoLocation API and inject data using World.loadPoisFromJsonData
     if (categoryNr == 3 && sampleNr == 2) {
         navigator.geolocation.getCurrentPosition(onLocationUpdated,
-                onLocationError);   
+                onLocationError);
     }
 }
 
@@ -201,12 +201,12 @@ function onLocationUpdated(position) {
     var altitude = position.coords.altitude;
     var placesAmount = 10;
     var poiData = [];
-    
+
     // creates dummy poi-data around given lat/lon
     for (var i=0; i< placesAmount; i++) {
         poiData.push({ 'id': (i+1), 'longitude': longitude + 0.001 * ( 5 - getRandomInt(1,10) ), 'latitude' : latitude + 0.001 * (5 - getRandomInt(1,10)), 'description': 'This is the description of POI#'+(i+1), 'altitude' : 100.0, 'name': 'POI#'+(i+1)})
     }
-    
+
     // inject POI data in JSON-format to JS
     app.wikitudePlugin.callJavaScript( "World.loadPoisFromJsonData(" + JSON.stringify( poiData ) +");");
 }
