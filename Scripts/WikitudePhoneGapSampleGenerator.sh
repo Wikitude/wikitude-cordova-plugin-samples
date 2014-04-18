@@ -18,6 +18,12 @@ BUILD_ANDROID=$5
 SOURCE_DIRECTORY=$6
 DESTINATION_DIRECTORY="$PROJECT_DIRECTORY/www"
 
+USE_PLUGIN_SOURCE=false
+
+if [ "$#" -eq 7 ]; then
+	USE_PLUGIN_SOURCE=true
+	PLUGIN_SOURCE=$7
+fi
 
 
 ## Run some checks if we can proceed...
@@ -41,19 +47,19 @@ cd $PROJECT_DIRECTORY
 echo "*** PREPARING SAMPLE CONTENT ***"
 
 # copy css
-cp -R $SOURCE_DIRECTORY/css/* $DESTINATION_DIRECTORY/css
+cp -R "${SOURCE_DIRECTORY}"/css/* "${DESTINATION_DIRECTORY}"/css
 
 # copy jquery
-cp -R $SOURCE_DIRECTORY/jquery $DESTINATION_DIRECTORY
+cp -R "${SOURCE_DIRECTORY}"/jquery "${DESTINATION_DIRECTORY}"
 
 # copy js
-cp -R $SOURCE_DIRECTORY/js/* $DESTINATION_DIRECTORY/js/*
+cp -R "${SOURCE_DIRECTORY}"/js/* "${DESTINATION_DIRECTORY}"/js/*
 
 # add samples
-cp -R $SOURCE_DIRECTORY/world $DESTINATION_DIRECTORY/
+cp -R "${SOURCE_DIRECTORY}"/world "${DESTINATION_DIRECTORY}"/
 
 # copy index.html
-cp -R $SOURCE_DIRECTORY/index.html $DESTINATION_DIRECTORY/index.html
+cp -R "${SOURCE_DIRECTORY}"/index.html "${DESTINATION_DIRECTORY}"/index.html
 
 
 ## Build sample app
@@ -71,7 +77,12 @@ fi
 
 ## Add Wikitude plugin
 echo "*** ADDING WIKITUDE PLUGIN ***"
-phonegap plugin add https://github.com/Wikitude/wikitude-phonegap.git
+
+if [ "true" == "$USE_PLUGIN_SOURCE" ]; then
+	phonegap local plugin add $PLUGIN_SOURCE
+else
+	phonegap plugin add https://github.com/Wikitude/wikitude-phonegap.git
+fi
 
 
 echo "*** DONE - SUCCESS ***"
