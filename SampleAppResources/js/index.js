@@ -184,7 +184,7 @@ function loadAR(categoryNr, sampleNr){
 
     app.loadARchitectWorld(worldPath);
     // inject poi data using phonegap's GeoLocation API and inject data using World.loadPoisFromJsonData
-    if (categoryNr == 3 && sampleNr == 2) {
+    if (categoryNr == 3 && sampleNr == 0) {
         navigator.geolocation.getCurrentPosition(onLocationUpdated,
                 onLocationError);
     }
