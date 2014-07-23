@@ -37,7 +37,7 @@ fi
 echo "*** GENERATING PROJECT ***"
 
 # Create the project directory
-phonegap create $PROJECT_DIRECTORY $PROJECT_ID $PROJECT_NAME
+cordova create $PROJECT_DIRECTORY $PROJECT_ID $PROJECT_NAME
 
 # Step into the created project directory
 cd $PROJECT_DIRECTORY
@@ -67,11 +67,13 @@ echo "*** BUILDING SAMPLE APP ***"
 
 if [ "true" == "$BUILD_IOS" ]; then
 	echo "iOS"
-	phonegap build ios
+	cordova platform add ios
+	cordova build ios
 fi
 if [ "true" == "$BUILD_ANDROID" ]; then
 	echo "Android"
-	phonegap build android
+	cordova platform add android
+	cordova build android
 fi
 
 
@@ -79,9 +81,10 @@ fi
 echo "*** ADDING WIKITUDE PLUGIN ***"
 
 if [ "true" == "$USE_PLUGIN_SOURCE" ]; then
-	phonegap local plugin add $PLUGIN_SOURCE
+	cordova plugin add $PLUGIN_SOURCE
 else
-	phonegap plugin add https://github.com/Wikitude/wikitude-phonegap.git
+	echo "Fetching plugin from default GitHub master"
+	cordova plugin add https://github.com/Wikitude/wikitude-phonegap.git
 fi
 
 
