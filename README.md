@@ -2,8 +2,7 @@
 # Augmented Reality - Wikitude SDK Plugin
 by Wikitude GmbH - [www.wikitude.com](http://www.wikitude.com)
 
-The first PhoneGap Plugin providing Image Recognition and Geo based Augmented Reality.
-The provided sample projects for Android and iOS demo the most common usecases. 
+The first PhoneGap Plugin for image recognition and geo-based augmented reality. The provided sample projects for Android and iOS demo the most common use-cases. 
 
 # Documentation & Samples
 
@@ -11,16 +10,16 @@ The provided sample projects for Android and iOS demo the most common usecases.
 	
 	`sh CreateSampleApp.sh -d ~/Path/Where/The/App/Should/Be/Created -ios true -android true`
 
-- Please find details about plugin installation and samples at [Wikitude Developer Section](http://developer.wikitude.com/documentation/phonegap).
-- There is a [separate git with the plugin only and plugman support](https://github.com/Wikitude/wikitude), please use this for installation.
+- Please find details about plugin installation and samples at [Wikitude Developer Section](http://www.wikitude.com/documentation/phonegap).
+- There is a [separate git repository containing only the plugin ](https://github.com/Wikitude/wikitude-phonegap), please use this for installation.
 
 
-**Note: This plugin has hard and software requirements for Android and iOS devices and does not run on a desktop browser.**
+**Note: This plugin has hardware and software requirements for Android and iOS devices and does not run on a desktop browser.**
 
 # LICENSE
 
 ``` 
-   Copyright 2012-2013 Wikitude GmbH, http://www.wikitude.com
+   Copyright 2012-2014 Wikitude GmbH, http://www.wikitude.com
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
