@@ -11,6 +11,11 @@ var World = {
 	// The last selected marker
 	currentMarker: null,
 
+	/*
+		Have a look at the native code to get a better understanding of how data can be injected to JavaScript.
+		Besides loading data from assets it is also possible to load data from a database, or to create it in native code. Use the platform common way to create JSON Objects of your data and use native 'architectView.callJavaScript()' to pass them to the ARchitect World's JavaScript.
+		'World.loadPoisFromJsonData' is called directly in native code to pass over the poiData JSON, which then creates the AR experience.
+	*/
 	// called to inject new POI data
 	loadPoisFromJsonData: function loadPoisFromJsonDataFn(poiData) {
 
@@ -56,7 +61,10 @@ var World = {
 
 	// location updates, fired every time you call architectView.setLocation() in native environment
 	locationChanged: function locationChangedFn(lat, lon, alt, acc) {
-
+		/* 
+			No action required in JS, in this sample places are injected via native code. 
+			Although it is recommended to inject any geo-content >after< first location update was fired.
+		*/
 	},
 
 	// fired when user pressed maker in cam

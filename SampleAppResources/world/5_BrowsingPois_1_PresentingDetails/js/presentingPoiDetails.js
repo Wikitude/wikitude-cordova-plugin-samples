@@ -97,23 +97,34 @@ var World = {
 		World.locationUpdateCounter = (++World.locationUpdateCounter % World.updatePlacemarkDistancesEveryXLocationUpdates);
 	},
 
+	/*
+		POIs usually have a name and sometimes a quite long description. 
+		Depending on your content type you may e.g. display a marker with its name and cropped description but allow the user to get more information after selecting it.
+	*/
+
 	// fired when user pressed maker in cam
 	onMarkerSelected: function onMarkerSelectedFn(marker) {
 		World.currentMarker = marker;
 
+		/*
+			In this sample a POI detail panel appears when pressing a cam-marker (the blue box with title & description), 
+			compare index.html in the sample's directory.
+		*/
 		// update panel values
 		$("#poi-detail-title").html(marker.poiData.title);
 		$("#poi-detail-description").html(marker.poiData.description);
 
+		// distance and altitude are measured in meters by the SDK. You may convert them to miles / feet if required.
 		var distanceToUserValue = (marker.distanceToUser > 999) ? ((marker.distanceToUser / 1000).toFixed(2) + " km") : (Math.round(marker.distanceToUser) + " m");
 
 		$("#poi-detail-distance").html(distanceToUserValue);
 
 		// show panel
 		$("#panel-poidetail").panel("open", 123);
-		
-		$( ".ui-panel-dismiss" ).unbind("mousedown");
 
+		$(".ui-panel-dismiss").unbind("mousedown");
+
+		// deselect AR-marker when user exits detail screen div.
 		$("#panel-poidetail").on("panelbeforeclose", function(event, ui) {
 			World.currentMarker.setDeselected(World.currentMarker);
 		});
@@ -133,9 +144,19 @@ var World = {
 		// use distanceToUser to get max-distance
 		var maxDistanceMeters = World.markerList[0].distanceToUser;
 
-		// return maximum distance times some factor >1.0 so ther is some room left and small movements of user don't cause places far away to disappear
+		// return maximum distance times some factor >1.0 so ther is some room left and small movements of user don't cause places far away to disappear.
 		return maxDistanceMeters * 1.1;
 	},
+
+	/*
+		JQuery provides a number of tools to load data from a remote origin. 	
+		It is highly recommended to use the JSON format for POI information. Requesting and parsing is done in a few lines of code.
+		Use e.g. 'AR.context.onLocationChanged = World.locationChanged;' to define the method invoked on location updates. 
+		In this sample POI information is requested after the very first location update. 
+
+		This sample uses a test-service of Wikitude which randomly delivers geo-location data around the passed latitude/longitude user location.
+		You have to update 'ServerInformation' data to use your own own server. Also ensure the JSON format is same as in previous sample's 'myJsonData.js'-file.
+	*/
 
 	// request POI data
 	requestDataFromServer: function requestDataFromServerFn(lat, lon) {
@@ -148,8 +169,8 @@ var World = {
 		var serverUrl = ServerInformation.POIDATA_SERVER + "?" + ServerInformation.POIDATA_SERVER_ARG_LAT + "=" + lat + "&" + ServerInformation.POIDATA_SERVER_ARG_LON + "=" + lon + "&" + ServerInformation.POIDATA_SERVER_ARG_NR_POIS + "=20";
 
 		var jqxhr = $.getJSON(serverUrl, function(data) {
-			World.loadPoisFromJsonData(data);
-		})
+				World.loadPoisFromJsonData(data);
+			})
 			.error(function(err) {
 				World.updateStatusMessage("Invalid web-service response.", true);
 				World.isRequestingData = false;

@@ -20,7 +20,7 @@ var World = {
 
 	// true when world initialization is done
 	initialized: false,
-	
+
 	// different POI-Marker assets
 	markerDrawable_idle: null,
 	markerDrawable_selected: null,
@@ -102,10 +102,22 @@ var World = {
 		});
 	},
 
+	/*
+		It may make sense to display POI details in your native style. 
+		In this sample a very simple native screen opens when user presses the 'More' button in HTML. 
+		This demoes the interaction between JavaScript and native code.
+	*/
 	// user clicked "More" button in POI-detail panel -> fire event to open native screen
 	onPoiDetailMoreButtonClicked: function onPoiDetailMoreButtonClickedFn() {
 		var currentMarker = World.currentMarker;
 		var architectSdkUrl = "architectsdk://markerselected?id=" + encodeURIComponent(currentMarker.poiData.id) + "&title=" + encodeURIComponent(currentMarker.poiData.title) + "&description=" + encodeURIComponent(currentMarker.poiData.description);
+		/*
+			The urlListener of the native project intercepts this call and parses the arguments. 
+			This is the only way to pass information from JavaSCript to your native code. 
+			Ensure to properly encode and decode arguments.
+			Note: you must use 'document.location = "architectsdk://...' to pass information from JavaScript to native. 
+			! This will cause an HTTP error if you didn't register a urlListener in native architectView !
+		*/
 		document.location = architectSdkUrl;
 	},
 
@@ -149,7 +161,7 @@ var World = {
 		// show panel
 		$("#panel-poidetail").panel("open", 123);
 
-		$( ".ui-panel-dismiss" ).unbind("mousedown");
+		$(".ui-panel-dismiss").unbind("mousedown");
 
 		$("#panel-poidetail").on("panelbeforeclose", function(event, ui) {
 			World.currentMarker.setDeselected(World.currentMarker);
@@ -254,6 +266,12 @@ var World = {
 		}
 	},
 
+	/*
+		This sample shows you how to use the function captureScreen to share a snapshot with your friends. C
+		oncept of interaction between JavaScript and native code is same as in the POI Detail page sample but the urlListener now handles picture sharing instead. 
+		The "Snapshot"-button is on top right in the title bar. 
+		Once clicked the current screen is captured and user is prompted to share it (Handling of picture sharing is done in native code and cannot be done in JavaScript)
+	*/
 	// reload places from content source
 	captureScreen: function captureScreenFn() {
 		if (World.initialized) {
@@ -272,9 +290,14 @@ var World = {
 		var serverUrl = ServerInformation.POIDATA_SERVER + "?" + ServerInformation.POIDATA_SERVER_ARG_LAT + "=" + lat + "&" + ServerInformation.POIDATA_SERVER_ARG_LON + "=" + lon + "&" + ServerInformation.POIDATA_SERVER_ARG_NR_POIS + "=20";
 
 		var jqxhr = $.getJSON(serverUrl, function(data) {
-			World.loadPoisFromJsonData(data);
-		})
+				World.loadPoisFromJsonData(data);
+			})
 			.error(function(err) {
+				/*
+					Under certain circumstances your web service may not be available or other connection issues can occur. 
+					To notify the user about connection problems a status message is updated.
+					In your own implementation you may e.g. use an info popup or similar.
+				*/
 				World.updateStatusMessage("Invalid web-service response.", true);
 				World.isRequestingData = false;
 			})
