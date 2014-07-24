@@ -37,7 +37,7 @@ fi
 echo "*** GENERATING PROJECT ***"
 
 # Create the project directory
-cordova create $PROJECT_DIRECTORY $PROJECT_ID $PROJECT_NAME
+cordova create $PROJECT_DIRECTORY $PROJECT_ID "$PROJECT_NAME"
 
 # Step into the created project directory
 cd $PROJECT_DIRECTORY
@@ -53,7 +53,7 @@ cp -R "${SOURCE_DIRECTORY}"/css/* "${DESTINATION_DIRECTORY}"/css
 cp -R "${SOURCE_DIRECTORY}"/jquery "${DESTINATION_DIRECTORY}"
 
 # copy js
-cp -R "${SOURCE_DIRECTORY}"/js/* "${DESTINATION_DIRECTORY}"/js/*
+cp -R "${SOURCE_DIRECTORY}"/js/* "${DESTINATION_DIRECTORY}"/js
 
 # add samples
 cp -R "${SOURCE_DIRECTORY}"/world "${DESTINATION_DIRECTORY}"/
