@@ -281,9 +281,12 @@ var World = {
         document.getElementById('loadingMessage').innerHTML =
             "<div" + cssDivLeft + ">Scan Solar System Image:</div>" +
             "<div" + cssDivRight + "><img src='assets/solarsystem.png'></img></div>";
-        
+
         // Remove Scan target message after 10 sec.
-        setTimeout(function() {var e =document.getElementById('loadingMessage'); e.parentElement.removeChild(e);}, 10000);
+        setTimeout(function() {
+            var e = document.getElementById('loadingMessage');
+            e.parentElement.removeChild(e);
+        }, 10000);
     },
 
     trackerError: function trackerErrorFn() {

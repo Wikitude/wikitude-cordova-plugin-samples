@@ -19,13 +19,15 @@ var World = {
 
 	// called to inject new POI data
 	loadPoisFromJsonData: function loadPoisFromJsonDataFn(poiData) {
-
 		// empty list of visible markers
 		World.markerList = [];
 
-		// start loading marker assets
+		// Start loading marker assets:
+		// Create an AR.ImageResource for the marker idle-image
 		World.markerDrawable_idle = new AR.ImageResource("assets/marker_idle.png");
+		// Create an AR.ImageResource for the marker selected-image
 		World.markerDrawable_selected = new AR.ImageResource("assets/marker_selected.png");
+		// Create an AR.ImageResource referencing the image that should be displayed for a direction indicator. 
 		World.markerDrawable_directionIndicator = new AR.ImageResource("assets/indi.png");
 
 		// loop through POI-information and create an AR.GeoObject (=Marker) per POI
@@ -39,6 +41,10 @@ var World = {
 				"description": poiData[currentPlaceNr].description
 			};
 
+			/*
+				To be able to deselect a marker while the user taps on the empty screen, 
+				the World object holds an array that contains each marker.
+			*/
 			World.markerList.push(new Marker(singlePoi));
 		}
 
@@ -63,8 +69,13 @@ var World = {
 	// location updates, fired every time you call architectView.setLocation() in native environment
 	locationChanged: function locationChangedFn(lat, lon, alt, acc) {
 
-		// request data if not already present
+		/*
+			The custom function World.onLocationChanged checks with the flag World.initiallyLoadedData if the function was already called. With the first call of World.onLocationChanged an object that contains geo information will be created which will be later used to create a marker using the World.loadPoisFromJsonData function.
+		*/
 		if (!World.initiallyLoadedData) {
+			/* 
+				requestDataFromLocal with the geo information as parameters (latitude, longitude) creates different poi data to a random location in the user's vicinity.
+			*/
 			World.requestDataFromLocal(lat, lon);
 			World.initiallyLoadedData = true;
 		}
@@ -114,8 +125,12 @@ var World = {
 
 };
 
-/* forward locationChanges to custom function */
+/* 
+	Set a custom function where location changes are forwarded to. There is also a possibility to set AR.context.onLocationChanged to null. In this case the function will not be called anymore and no further location updates will be received. 
+*/
 AR.context.onLocationChanged = World.locationChanged;
 
-/* forward clicks in empty area to World */
+/*
+	To detect clicks where no drawable was hit set a custom function on AR.context.onScreenClick where the currently selected marker is deselected.
+*/
 AR.context.onScreenClick = World.onScreenClick;

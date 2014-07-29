@@ -34,7 +34,6 @@ var World = {
 
 	// called to inject new POI data
 	loadPoisFromJsonData: function loadPoisFromJsonDataFn(poiData) {
-		alert(AR.context.scene.cullingDistance);
 
 		// destroys all existing AR-Objects (markers & radar)
 		AR.context.destroyAll();
@@ -74,8 +73,6 @@ var World = {
 		// set distance slider to 100%
 		$("#panel-distance-range").val(100);
 		$("#panel-distance-range").slider("refresh");
-
-		World.updateRangeValues();
 	},
 
 	// sets/updates distances of all makers so they are available way faster than calling (time-consuming) distanceToUser() method all the time
@@ -140,7 +137,7 @@ var World = {
 		// show panel
 		$("#panel-poidetail").panel("open", 123);
 
-		$( ".ui-panel-dismiss" ).unbind("mousedown");
+		$(".ui-panel-dismiss").unbind("mousedown");
 
 		$("#panel-poidetail").on("panelbeforeclose", function(event, ui) {
 			World.currentMarker.setDeselected(World.currentMarker);
@@ -185,10 +182,10 @@ var World = {
 		$("#panel-distance-places").html((placesInRange != 1) ? (placesInRange + " Places") : (placesInRange + " Place"));
 
 		// update culling distance, so only palces within given range are rendered
-		AR.context.scene.cullingDistance = Math.max(maxRangeMeters, 10);
+		AR.context.scene.cullingDistance = Math.max(maxRangeMeters, 1);
 
 		// update radar's maxDistance so radius of radar is updated too
-		PoiRadar.setMaxDistance(Math.max(maxRangeMeters, 10));
+		PoiRadar.setMaxDistance(Math.max(maxRangeMeters, 1));
 	},
 
 	// returns number of places with same or lower distance than given range
@@ -245,6 +242,12 @@ var World = {
 		}
 	},
 
+	/*
+		You may need to reload POI information because of user movements or manually for various reasons. 
+		In this example POIs are reloaded when user presses the refresh button. 
+		The button is defined in index.html and calls World.reloadPlaces() on click.
+	*/
+
 	// reload places from content source
 	reloadPlaces: function reloadPlacesFn() {
 		if (!World.isRequestingData) {
@@ -269,9 +272,14 @@ var World = {
 		var serverUrl = ServerInformation.POIDATA_SERVER + "?" + ServerInformation.POIDATA_SERVER_ARG_LAT + "=" + lat + "&" + ServerInformation.POIDATA_SERVER_ARG_LON + "=" + lon + "&" + ServerInformation.POIDATA_SERVER_ARG_NR_POIS + "=20";
 
 		var jqxhr = $.getJSON(serverUrl, function(data) {
-			World.loadPoisFromJsonData(data);
-		})
+				World.loadPoisFromJsonData(data);
+			})
 			.error(function(err) {
+			/*
+					Under certain circumstances your web service may not be available or other connection issues can occur. 
+					To notify the user about connection problems a status message is updated.
+					In your own implementation you may e.g. use an info popup or similar.
+				*/
 				World.updateStatusMessage("Invalid web-service response.", true);
 				World.isRequestingData = false;
 			})

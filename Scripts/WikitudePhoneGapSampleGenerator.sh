@@ -37,7 +37,7 @@ fi
 echo "*** GENERATING PROJECT ***"
 
 # Create the project directory
-phonegap create $PROJECT_DIRECTORY $PROJECT_ID $PROJECT_NAME
+cordova create $PROJECT_DIRECTORY $PROJECT_ID "$PROJECT_NAME"
 
 # Step into the created project directory
 cd $PROJECT_DIRECTORY
@@ -53,7 +53,7 @@ cp -R "${SOURCE_DIRECTORY}"/css/* "${DESTINATION_DIRECTORY}"/css
 cp -R "${SOURCE_DIRECTORY}"/jquery "${DESTINATION_DIRECTORY}"
 
 # copy js
-cp -R "${SOURCE_DIRECTORY}"/js/* "${DESTINATION_DIRECTORY}"/js/*
+cp -R "${SOURCE_DIRECTORY}"/js/* "${DESTINATION_DIRECTORY}"/js
 
 # add samples
 cp -R "${SOURCE_DIRECTORY}"/world "${DESTINATION_DIRECTORY}"/
@@ -67,11 +67,13 @@ echo "*** BUILDING SAMPLE APP ***"
 
 if [ "true" == "$BUILD_IOS" ]; then
 	echo "iOS"
-	phonegap build ios
+	cordova platform add ios
+	cordova build ios
 fi
 if [ "true" == "$BUILD_ANDROID" ]; then
 	echo "Android"
-	phonegap build android
+	cordova platform add android
+	cordova build android
 fi
 
 
@@ -79,9 +81,32 @@ fi
 echo "*** ADDING WIKITUDE PLUGIN ***"
 
 if [ "true" == "$USE_PLUGIN_SOURCE" ]; then
-	phonegap local plugin add $PLUGIN_SOURCE
+	cordova plugin add $PLUGIN_SOURCE
 else
-	phonegap plugin add https://github.com/Wikitude/wikitude-phonegap.git
+	echo "Fetching plugin from default GitHub master"
+	cordova plugin add https://github.com/Wikitude/wikitude-phonegap.git
+fi
+
+
+# Install Wikitude SDK license
+echo "** ADDING WIKITUDE SDK LICENSE ***"
+
+# Read in the license key
+LICENSE_FILE="${SOURCE_DIRECTORY}"/../com.wikitude.phonegapsamples.lic.signed
+LICENSE_KEY=`cat "${LICENSE_FILE}"`
+
+if [ "true" == "$BUILD_IOS" ]; then
+	# Replace license key for iOS
+	INPUT_FILE=$PROJECT_DIRECTORY/platforms/ios/www/plugins/com.wikitude.phonegap.WikitudePlugin/www/WikitudePlugin.js
+
+	sed -i.bak -e "s/ENTER-YOUR-KEY-HERE/${LICENSE_KEY//\//\/}/g" $INPUT_FILE && rm $INPUT_FILE.bak
+fi
+
+if [ "true" == "$BUILD_ANDROID" ]; then
+	# ... and Android
+	INPUT_FILE=$PROJECT_DIRECTORY/platforms/android/assets/www/plugins/com.wikitude.phonegap.WikitudePlugin/www/WikitudePlugin.js
+
+	sed -i.bak -e "s/ENTER-YOUR-KEY-HERE/${LICENSE_KEY//\//\/}/g" $INPUT_FILE && rm $INPUT_FILE.bak
 fi
 
 

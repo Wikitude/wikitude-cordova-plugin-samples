@@ -69,6 +69,7 @@ var World = {
 	},
 
 	// location updates, fired every time you call architectView.setLocation() in native environment
+	// Note: You may set 'AR.context.onLocationChanged = null' to no longer receive location updates in World.locationChanged.
 	locationChanged: function locationChangedFn(lat, lon, alt, acc) {
 
 		// request data if not already present
@@ -102,6 +103,15 @@ var World = {
 		World.currentMarker = null;
 	},
 
+	/*
+		JQuery provides a number of tools to load data from a remote origin. 
+		It is highly recommended to use the JSON format for POI information. Requesting and parsing is done in a few lines of code.
+		Use e.g. 'AR.context.onLocationChanged = World.locationChanged;' to define the method invoked on location updates. 
+		In this sample POI information is requested after the very first location update. 
+
+		This sample uses a test-service of Wikitude which randomly delivers geo-location data around the passed latitude/longitude user location.
+		You have to update 'ServerInformation' data to use your own own server. Also ensure the JSON format is same as in previous sample's 'myJsonData.js'-file.
+	*/
 	// request POI data
 	requestDataFromServer: function requestDataFromServerFn(lat, lon) {
 
@@ -113,8 +123,8 @@ var World = {
 		var serverUrl = ServerInformation.POIDATA_SERVER + "?" + ServerInformation.POIDATA_SERVER_ARG_LAT + "=" + lat + "&" + ServerInformation.POIDATA_SERVER_ARG_LON + "=" + lon + "&" + ServerInformation.POIDATA_SERVER_ARG_NR_POIS + "=20";
 
 		var jqxhr = $.getJSON(serverUrl, function(data) {
-			World.loadPoisFromJsonData(data);
-		})
+				World.loadPoisFromJsonData(data);
+			})
 			.error(function(err) {
 				World.updateStatusMessage("Invalid web-service response.", true);
 				World.isRequestingData = false;
