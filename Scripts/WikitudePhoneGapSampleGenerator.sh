@@ -88,4 +88,26 @@ else
 fi
 
 
+# Install Wikitude SDK license
+echo "** ADDING WIKITUDE SDK LICENSE ***"
+
+# Read in the license key
+LICENSE_FILE="${SOURCE_DIRECTORY}"/../com.wikitude.phonegapsamples.lic.signed
+LICENSE_KEY=`cat "${LICENSE_FILE}"`
+
+if [ "true" == "$BUILD_IOS" ]; then
+	# Replace license key for iOS
+	INPUT_FILE=$PROJECT_DIRECTORY/platforms/ios/www/plugins/com.wikitude.phonegap.WikitudePlugin/www/WikitudePlugin.js
+
+	sed -i.bak -e "s/ENTER-YOUR-KEY-HERE/${LICENSE_KEY//\//\/}/g" $INPUT_FILE && rm $INPUT_FILE.bak
+fi
+
+if [ "true" == "$BUILD_ANDROID" ]; then
+	# ... and Android
+	INPUT_FILE=$PROJECT_DIRECTORY/platforms/android/assets/www/plugins/com.wikitude.phonegap.WikitudePlugin/www/WikitudePlugin.js
+
+	sed -i.bak -e "s/ENTER-YOUR-KEY-HERE/${LICENSE_KEY//\//\/}/g" $INPUT_FILE && rm $INPUT_FILE.bak
+fi
+
+
 echo "*** DONE - SUCCESS ***"
