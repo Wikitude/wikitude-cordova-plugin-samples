@@ -13,11 +13,13 @@
 }
 
 #snapContainer {
-	position: absolute;
-	width: 90%;
-	height: 90%;
-	top: 5%;
-	left: 5%;
+	width: 50vmax;
+    height: 50vmax;
+    position: absolute;
+	top: 50%;
+	left: 50%;
+	margin-top: -25vmax;
+	margin-left: -25vmax;
 	background: #FFFFFF;
-	opacity: 0.0;
+	opacity: .0;
 }
