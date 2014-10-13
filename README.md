@@ -7,8 +7,12 @@ The first PhoneGap Plugin for image recognition and geo-based augmented reality.
 # Documentation & Samples
 
 - To create the sample application, simply run the following command with the location where the sample app should be created. Additionally you can also specify for which platform the application should be compiled after creation.
-	
+
+	On Unix (Mac OS X or Linux):
 	`sh CreateSampleApp.sh -d ~/Path/Where/The/App/Should/Be/Created -ios true -android true`
+
+	On Microsoft Windows:
+	`CreateSampleApp.cmd -d %CD%/Path/Where/The/App/Should/Be/Created -android true`
 
 - Please find details about plugin installation and samples at [Wikitude Developer Section](http://www.wikitude.com/documentation/phonegap).
 - There is a [separate git repository containing only the plugin ](https://github.com/Wikitude/wikitude-phonegap), please use this for installation.
