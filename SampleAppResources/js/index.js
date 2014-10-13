@@ -63,7 +63,7 @@ var app = {
 
     // A callback which gets called if the device is not able to start ARchitect Worlds
     onDeviceNotSupportedCallback: function() {
-        app.receivedEvent('Unable to launch ARchitect Worlds on this device');
+        alert('Unable to launch ARchitect Worlds on this device');
     },
     // Use this method to load a specific ARchitect World from either the local file system or a remote server
     loadARchitectWorld: function(samplePath) {
