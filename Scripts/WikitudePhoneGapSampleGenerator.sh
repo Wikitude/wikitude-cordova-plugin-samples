@@ -81,6 +81,10 @@ if [ "true" == "$BUILD_ANDROID" ]; then
 	echo "Android"
 	cordova platform add android
 	cordova build android
+
+	# copy app icons
+	ICON_DESTINATION_PATH="${DESTINATION_DIRECTORY}"/../platforms/android/res
+	cp -a "${SOURCE_DIRECTORY}"/icons/android/* "$ICON_DESTINATION_PATH"
 fi
 
 
