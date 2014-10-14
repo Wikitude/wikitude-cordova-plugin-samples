@@ -69,11 +69,22 @@ if [ "true" == "$BUILD_IOS" ]; then
 	echo "iOS"
 	cordova platform add ios
 	cordova build ios
+	
+	# Add location access description key/value to info.plist
+	/usr/libexec/PlistBuddy -c "Add :NSLocationWhenInUseUsageDescription string 'Accessing GPS information is needed to display POIs around your current location'" "${DESTINATION_DIRECTORY}"/../platforms/ios/"${PROJECT_NAME}"/"${PROJECT_NAME}"-Info.plist
+	
+	# copy app icons
+	ICON_DESTINATION_PATH="${DESTINATION_DIRECTORY}"/../platforms/ios/"${PROJECT_NAME}"/Resources/icons
+	cp -R "${SOURCE_DIRECTORY}"/icons/ios/* "$ICON_DESTINATION_PATH"
 fi
 if [ "true" == "$BUILD_ANDROID" ]; then
 	echo "Android"
 	cordova platform add android
 	cordova build android
+
+	# copy app icons
+	ICON_DESTINATION_PATH="${DESTINATION_DIRECTORY}"/../platforms/android/res
+	cp -a "${SOURCE_DIRECTORY}"/icons/android/* "$ICON_DESTINATION_PATH"
 fi
 
 
