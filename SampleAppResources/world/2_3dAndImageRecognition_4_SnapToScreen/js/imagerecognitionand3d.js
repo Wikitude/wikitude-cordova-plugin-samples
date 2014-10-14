@@ -1,6 +1,7 @@
 var World = {
 	loaded: false,
 	rotating: false,
+	trackableVisible: false,
 	snapped: false,
 	lastTouch: {
 		x: 0,
@@ -114,7 +115,8 @@ var World = {
 			snapToScreen: {
 				snapContainer: document.getElementById('snapContainer')
 			},
-			onEnterFieldOfVision: this.appear
+			onEnterFieldOfVision: this.appear,
+			onExitFieldOfVision: this.disappear
 		});
 
 
@@ -205,6 +207,12 @@ var World = {
 	loadingStep: function loadingStepFn() {
 		if (!World.loaded && World.tracker.isLoaded() && World.modelCar.isLoaded()) {
 			World.loaded = true;
+			
+			if ( World.trackableVisible && !World.appearingAnimation.isRunning() ) {
+				World.appearingAnimation.start();
+			}
+			
+			
 			var cssDivLeft = " style='display: table-cell;vertical-align: middle; text-align: right; width: 50%; padding-right: 15px;'";
 			var cssDivRight = " style='display: table-cell;vertical-align: middle; text-align: left;'";
 			document.getElementById('loadingMessage').innerHTML =
@@ -239,11 +247,15 @@ var World = {
 	},
 
 	appear: function appearFn() {
-		// Resets the properties to the initial values.
-		if (!World.snapped) {
+		World.trackableVisible = true;
+		if ( World.loaded && !World.snapped ) {
+			// Resets the properties to the initial values.
 			World.resetModel();
-			World.appearingAnimation.start();
+			World.appearingAnimation.start();		
 		}
+	},
+	disappear: function disappearFn() {
+		World.trackableVisible = false;
 	},
 
 	resetModel: function resetModelFn() {

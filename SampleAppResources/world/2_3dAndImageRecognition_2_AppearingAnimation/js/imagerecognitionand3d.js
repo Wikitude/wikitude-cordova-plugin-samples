@@ -1,6 +1,7 @@
 var World = {
 	loaded: false,
 	rotating: false,
+	trackableVisible: false,
 
 	init: function initFn() {
 		/*
@@ -57,13 +58,20 @@ var World = {
 			drawables: {
 				cam: [this.modelCar]
 			},
-			onEnterFieldOfVision: this.appear
+			onEnterFieldOfVision: this.appear,
+			onExitFieldOfVision: this.disappear
 		});
 	},
 
 	loadingStep: function loadingStepFn() {
 		if (!World.loaded && World.tracker.isLoaded() && World.modelCar.isLoaded()) {
 			World.loaded = true;
+			
+			if ( World.trackableVisible && !World.appearingAnimation.isRunning() ) {
+				World.appearingAnimation.start();
+			}
+			
+						
 			var cssDivLeft = " style='display: table-cell;vertical-align: middle; text-align: right; width: 50%; padding-right: 15px;'";
 			var cssDivRight = " style='display: table-cell;vertical-align: middle; text-align: left;'";
 			document.getElementById('loadingMessage').innerHTML =
@@ -98,7 +106,13 @@ var World = {
 	},
 
 	appear: function appearFn() {
-		World.appearingAnimation.start();
+		World.trackableVisible = true;
+		if (World.loaded) {
+			World.appearingAnimation.start();
+		}
+	},
+	disappear: function disappearFn() {
+		World.trackableVisible = false;
 	}
 };
 
