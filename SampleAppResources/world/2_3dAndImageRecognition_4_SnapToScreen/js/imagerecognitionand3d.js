@@ -32,7 +32,6 @@ var World = {
 		/*
 			Disable all sensors in "IR-only" Worlds to save performance. If the property is set to true, any geo-related components (such as GeoObjects and ActionRanges) are active. If the property is set to false, any geo-related components will not be visible on the screen, and triggers will not fire. Additionally register a function that is executed everytime the device orientation changes.
 		*/
-		AR.context.services.sensors = false;
 		this.createOverlays();
 	},
 

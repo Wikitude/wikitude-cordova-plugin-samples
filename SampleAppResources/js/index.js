@@ -39,28 +39,14 @@ var app = {
 
         // check if the current device is able to launch ARchitect Worlds
         app.wikitudePlugin = cordova.require("com.wikitude.phonegap.WikitudePlugin.WikitudePlugin");
-        app.wikitudePlugin.isDeviceSupported(app.onDeviceSupportedCallback, app.onDeviceNotSupportedCallback);
-    },
-    // This function extracts an url parameter
-    getUrlParameterForKey: function(url, requestedParam) {
-        requestedParam = requestedParam.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
-        var regexS = "[\\?&]" + requestedParam + "=([^&#]*)";
-        var regex = new RegExp(regexS);
-        var results = regex.exec(url);
-
-        if (results == null)
-            return "";
-        else {
-            var result = decodeURIComponent(results[1]);
-            return result;
-        }
+        app.wikitudePlugin.isDeviceSupported(app.onDeviceSupportedCallback, app.onDeviceNotSupportedCallback,
+                                             app.wikitudePlugin.ARModeGeo|app.wikitudePlugin.ARModeIR);
     },
     // --- Wikitude Plugin ---
     // A callback which gets called if the device is able to launch ARchitect Worlds
     onDeviceSupportedCallback: function() {
         app.isDeviceSupported = true;
     },
-
     // A callback which gets called if the device is not able to start ARchitect Worlds
     onDeviceNotSupportedCallback: function() {
         alert('Unable to launch ARchitect Worlds on this device');
@@ -71,7 +57,16 @@ var app = {
         app.wikitudePlugin.setOnUrlInvokeCallback(app.onUrlInvoke);
 
         if (app.isDeviceSupported) {
-            app.wikitudePlugin.loadARchitectWorld(samplePath);
+            app.wikitudePlugin.loadARchitectWorld(function(url){
+                                                  },
+                                                  function(err){
+                                                    if(err != null)
+                                                        alert('Loading AR web view failed: '+err);
+                                                    else
+                                                        alert('Loading AR web view failed!');
+                                                  },
+                                                  samplePath,
+                                                  app.wikitudePlugin.ARModeGeo|app.wikitudePlugin.ARModeIR);
 
             // inject poi data using phonegap's GeoLocation API and inject data using World.loadPoisFromJsonData
             if ( "www/world/4_ObtainPoiData_1_FromApplicationModel/index.html" === samplePath ) {
