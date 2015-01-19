@@ -57,16 +57,26 @@ var app = {
         app.wikitudePlugin.setOnUrlInvokeCallback(app.onUrlInvoke);
 
         if (app.isDeviceSupported) {
-            app.wikitudePlugin.loadARchitectWorld(function(url){
-                                                  },
-                                                  function(err){
-                                                    if(err != null)
-                                                        alert('Loading AR web view failed: '+err);
-                                                    else
-                                                        alert('Loading AR web view failed!');
-                                                  },
-                                                  samplePath,
-                                                  app.wikitudePlugin.ARModeGeo|app.wikitudePlugin.ARModeIR);
+            app.wikitudePlugin.loadARchitectWorld(
+                function(url){
+                },
+                function(err){
+                if(err != null)
+                    alert('Loading AR web view failed: '+err);
+                else
+                    alert('Loading AR web view failed!');
+                },
+                samplePath,
+                app.wikitudePlugin.ARModeGeo|app.wikitudePlugin.ARModeIR,    
+                {
+                    "cameraPosition": app.wikitudePlugin.CameraPositionBack,
+                    "cameraFocusMode": app.wikitudePlugin.CameraFocusModeAutoFocus,
+                    "iOS": {
+                        "CaptureSessionPreset" : app.wikitudePlugin.CaptureSessionPreset1280x720,
+                        "cameraFocusRangeRestriction" : app.wikitudePlugin.CameraFocusRangeNear,
+                        "videoMirrored" : true
+                    }
+                });
 
             // inject poi data using phonegap's GeoLocation API and inject data using World.loadPoisFromJsonData
             if ( "www/world/4_ObtainPoiData_1_FromApplicationModel/index.html" === samplePath ) {
