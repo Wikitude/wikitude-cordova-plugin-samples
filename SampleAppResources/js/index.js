@@ -18,6 +18,7 @@
  */
 var app = {
 
+    // represents the device capability of launching ARchitect Worlds with specific features
     isDeviceSupported: false,
 
     // Application Constructor
@@ -32,51 +33,34 @@ var app = {
         document.addEventListener('deviceready', this.onDeviceReady, false);
     },
     // deviceready Event Handler
-    //
-    // The scope of 'this' is the event. In order to call the 'receivedEvent'
-    // function, we must explicity call 'app.receivedEvent(...);'
     onDeviceReady: function() {
 
         // check if the current device is able to launch ARchitect Worlds
         app.wikitudePlugin = cordova.require("com.wikitude.phonegap.WikitudePlugin.WikitudePlugin");
-        app.wikitudePlugin.isDeviceSupported(app.onDeviceSupportedCallback, app.onDeviceNotSupportedCallback,
-                                             app.wikitudePlugin.ARModeGeo|app.wikitudePlugin.ARModeIR);
+        app.wikitudePlugin.isDeviceSupported(function() {
+                app.isDeviceSupported = true;
+            }, function(errorMessage) {
+                app.isDeviceSupported = false;    
+                alert('Unable to launch ARchitect Worlds on this device: \n' + errorMessage);            
+            },
+            app.wikitudePlugin.FeatureGeo | app.wikitudePlugin.Feature2DTracking
+        );
     },
     // --- Wikitude Plugin ---
-    // A callback which gets called if the device is able to launch ARchitect Worlds
-    onDeviceSupportedCallback: function() {
-        app.isDeviceSupported = true;
-    },
-    // A callback which gets called if the device is not able to start ARchitect Worlds
-    onDeviceNotSupportedCallback: function() {
-        alert('Unable to launch ARchitect Worlds on this device');
-    },
     // Use this method to load a specific ARchitect World from either the local file system or a remote server
     loadARchitectWorld: function(samplePath) {
 
         app.wikitudePlugin.setOnUrlInvokeCallback(app.onUrlInvoke);
 
         if (app.isDeviceSupported) {
-            app.wikitudePlugin.loadARchitectWorld(
-                function(url){
-                },
-                function(err){
-                if(err != null)
-                    alert('Loading AR web view failed: '+err);
-                else
-                    alert('Loading AR web view failed!');
+            app.wikitudePlugin.loadARchitectWorld(function(url) {
+                /* Respond to successful world loading if you need to */ 
+                }, function(err) {
+                    alert('Loading AR web view failed: ' + err);
                 },
                 samplePath,
-                app.wikitudePlugin.ARModeGeo|app.wikitudePlugin.ARModeIR,    
-                {
-                    "cameraPosition": app.wikitudePlugin.CameraPositionBack,
-                    "cameraFocusMode": app.wikitudePlugin.CameraFocusModeAutoFocus,
-                    "iOS": {
-                        "CaptureSessionPreset" : app.wikitudePlugin.CaptureSessionPreset1280x720,
-                        "cameraFocusRangeRestriction" : app.wikitudePlugin.CameraFocusRangeNear,
-                        "videoMirrored" : true
-                    }
-                });
+                app.wikitudePlugin.FeatureGeo | app.wikitudePlugin.Feature2DTracking
+            );
 
             // inject poi data using phonegap's GeoLocation API and inject data using World.loadPoisFromJsonData
             if ( "www/world/4_ObtainPoiData_1_FromApplicationModel/index.html" === samplePath ) {
@@ -86,20 +70,17 @@ var app = {
             alert("Device is not supported");
         }
     },
-    // called when the screen was captured successfully
-    onScreenCaptured: function (absoluteFilePath) {
-        alert("snapshot stored at:\n" + absoluteFilePath);
-    },
-    // called when a screen capture error occurs
-    onScreenCapturedError: function (errorMessage) {
-        alert(errorMessage);
-    },
     // This function gets called if you call "document.location = architectsdk://" in your ARchitect World
     onUrlInvoke: function (url) {
         if (url.indexOf('captureScreen') > -1) {
-            app.wikitudePlugin.captureScreen(true, null, app.onScreenCaptured, app.onScreenCapturedError);
+            app.wikitudePlugin.captureScreen(true, null, function(absoluteFilePath) {
+                    alert("snapshot stored at:\n" + absoluteFilePath);
+                }, function (errorMessage) {
+                    alert(errorMessage);                
+                }
+            );
         } else {
-            alert(url + "not supported");
+            alert(url + "not handled");
         }
     }
     // --- End Wikitude Plugin ---
