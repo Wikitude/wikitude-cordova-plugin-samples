@@ -127,8 +127,7 @@ var World = {
 		var cssDivBiker = " style='display: table-cell;vertical-align: middle; text-align: left; padding-right: 15px;'";
 		document.getElementById('loadingMessage').innerHTML =
 			"<div" + cssDivInstructions + ">Scan Target &#35;1 (surfer) or &#35;2 (biker):</div>" +
-			"<div" + cssDivSurfer + "><img src='assets/surfer.png'></img></div>" +
-			"<div" + cssDivBiker + "><img src='assets/bike.png'></img></div>";
+			"<div" + cssDivSurfer + "><img src='assets/surfer.png'></img></div>";
 
 		// Remove Scan target message after 10 sec.
 		setTimeout(function() {

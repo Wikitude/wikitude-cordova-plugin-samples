@@ -34,7 +34,7 @@ var app = {
     },
     // deviceready Event Handler
     onDeviceReady: function() {
-
+        
         // check if the current device is able to launch ARchitect Worlds
         app.wikitudePlugin = cordova.require("com.wikitude.phonegap.WikitudePlugin.WikitudePlugin");
         app.wikitudePlugin.isDeviceSupported(function() {
@@ -43,28 +43,30 @@ var app = {
                 app.isDeviceSupported = false;    
                 alert('Unable to launch ARchitect Worlds on this device: \n' + errorMessage);            
             },
-            app.wikitudePlugin.FeatureGeo | app.wikitudePlugin.Feature2DTracking
+            [app.wikitudePlugin.FeatureGeo, app.wikitudePlugin.Feature2DTracking]
         );
     },
     // --- Wikitude Plugin ---
     // Use this method to load a specific ARchitect World from either the local file system or a remote server
-    loadARchitectWorld: function(samplePath) {
+    loadARchitectWorld: function(example) {
 
         app.wikitudePlugin.setOnUrlInvokeCallback(app.onUrlInvoke);
 
         if (app.isDeviceSupported) {
-            app.wikitudePlugin.loadARchitectWorld(function(url) {
-                /* Respond to successful world loading if you need to */ 
-                }, function(err) {
-                    alert('Loading AR web view failed: ' + err);
+            app.wikitudePlugin.loadARchitectWorld(function successFn(loadedURL) {
+                    /* Respond to successful world loading if you need to */ 
+                }, function errorFn(error) {
+                    alert('Loading AR web view failed: ' + error);
                 },
-                samplePath,
-                app.wikitudePlugin.FeatureGeo | app.wikitudePlugin.Feature2DTracking
+                example.path, example.requiredFeatures, example.startupConfiguration
             );
 
             // inject poi data using phonegap's GeoLocation API and inject data using World.loadPoisFromJsonData
-            if ( "www/world/4_ObtainPoiData_1_FromApplicationModel/index.html" === samplePath ) {
-                navigator.geolocation.getCurrentPosition(onLocationUpdated, onLocationError);
+            if ( example.platforms.PhoneGap )
+            {
+                if ( "ObtainPoiDataFromApplicationModel" === example.platforms.PhoneGap.required_extension ) {
+                    navigator.geolocation.getCurrentPosition(onLocationUpdated, onLocationError);
+                }            
             }
         } else {
             alert("Device is not supported");

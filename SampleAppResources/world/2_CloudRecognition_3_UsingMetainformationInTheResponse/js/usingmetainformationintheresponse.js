@@ -4,7 +4,6 @@ var World = {
 	init: function initFn() {
 		this.createTracker();
 		this.createOverlays();
-		this.startContinuousRecognition(750);
 	},
 
 	/*
@@ -16,8 +15,8 @@ var World = {
 	*/
 	createTracker: function createTrackerFn() {
 		World.tracker = new AR.CloudTracker("b277eeadc6183ab57a83b07682b3ceba", "54e4b9fe6134bb74351b2aa3", {
-			onLoaded: this.worldLoaded,
-			onError: this.trackerError
+			onLoaded: World.trackerLoaded,
+			onError: World.trackerError
 		});
 	},
 
@@ -70,12 +69,12 @@ var World = {
 			/*
 				Clean Resources from previous recognitions.
 			*/
-			if (this.wineLabelOverlay !== undefined) {
-				this.wineLabel.destroy();
+			if (World.wineLabelOverlay !== undefined) {
+				World.wineLabel.destroy();
 			}
 
-			if (this.wineLabelOverlay !== undefined) {
-				this.wineLabelOverlay.destroy();
+			if (World.wineLabelOverlay !== undefined) {
+				World.wineLabelOverlay.destroy();
 			}
 
 			/*
@@ -83,8 +82,8 @@ var World = {
 				object returned from the server the 'targetInfo.name' property is read to load the equally named image file.
 				The zOrder property (defaults to 0) is set to 1 to make sure it will be positioned on top of the banner.
 			*/
-			this.wineLabel = new AR.ImageResource("assets/" + response.targetInfo.name + ".jpg");
-			this.wineLabelOverlay = new AR.ImageDrawable(this.wineLabel, 0.2, {
+			World.wineLabel = new AR.ImageResource("assets/" + response.targetInfo.name + ".jpg");
+			World.wineLabelOverlay = new AR.ImageDrawable(World.wineLabel, 0.2, {
 				offsetX: -0.37,
 				offsetY: 0.55,
 				zOrder: 1
@@ -98,21 +97,22 @@ var World = {
 				the second it's height in SDUs, the third parameter set's some optional options. To set the first parameter of the AR.Label we read the
 				before mentioned real name from the custom metadata object.
 			*/
-			this.wineName = new AR.Label(response.metadata.name, 0.06, {
+			World.wineName = new AR.Label(response.metadata.name, 0.06, {
 				offsetY: 0.72,
-					zOrder: 2
-				});
+				zOrder: 2
+			});
 
-			if (this.wineLabelAugmentation !== undefined) {
-				this.wineLabelAugmentation.destroy();
+			if (World.wineLabelAugmentation !== undefined) {
+				World.wineLabelAugmentation.destroy();
 			}
+
 			/*
 				The following combines everything by creating an AR.Trackable2DObject using the Cloudtracker, the name of the image target and 
 				the drawables that should augment the recognized image.
 			*/	
-			this.wineLabelAugmentation = new AR.Trackable2DObject(World.tracker, response.targetInfo.name , {
+			World.wineLabelAugmentation = new AR.Trackable2DObject(World.tracker, response.targetInfo.name , {
 				drawables: {
-					cam: [World.bannerImgOverlay, this.wineLabelOverlay, this.wineName]
+					cam: [World.bannerImgOverlay, World.wineLabelOverlay, World.wineName]
 				}
 			});
 
@@ -127,8 +127,8 @@ var World = {
 			/*
 				Destroy the augmentation if there already was one from a previous target recognition.
 			*/
-			if (this.orderNowAugmentation !== undefined) {
-				this.orderNowAugmentation.destroy();
+			if (World.orderNowAugmentation !== undefined) {
+				World.orderNowAugmentation.destroy();
 			}
 
 			/*
@@ -152,11 +152,16 @@ var World = {
 		a new suggested interval. To set the new interval the recognition mode first will be restarted.
 	*/
 	onInterruption: function onInterruptionFn(suggestedInterval) {
-		this.tracker.stopContinuousRecognition();
-		this.tracker.startContinuousRecognition(suggestedInterval);
+		World.tracker.stopContinuousRecognition();
+		World.tracker.startContinuousRecognition(suggestedInterval);
 	},
 
-	worldLoaded: function worldLoadedFn() {
+	trackerLoaded: function trackerLoadedFn() {
+		World.startContinuousRecognition(750);
+		World.showUserInstructions();
+	},
+
+	showUserInstructions: function showUserInstructionsFn() {
 		var cssDivLeft = " style='display: table-cell;vertical-align: middle; text-align: right; width: 20%; padding-right: 15px;'";
 		var cssDivRight = " style='display: table-cell;vertical-align: middle; text-align: center;'";
 		var img = "style='margin-right:5px'";
@@ -164,17 +169,17 @@ var World = {
 		document.getElementById('messageBox').innerHTML =
 			"<div" + cssDivLeft + ">Scan: </div>" +
 			"<div" + cssDivRight + ">" +
-				"<img " + img + " src='assets/CZk6zpzRKrMq3ye8xXkq5AfptJ2Uk3YL.jpg'></img>" +
-				"<img " + img + " src='assets/dfZa2JrUHdRl2gkgddi7CL4ptLTT00Ow.jpg'></img>" +
-				"<img " + img + " src='assets/emOoZIZkkzFwvTP4Q9TQWdYSX5b3JCxV.jpg'></img>" +
-				"<img " + img + " src='assets/lb2Jy065vnJEzevgtWAtvG7DKOPWQmJx.jpg'></img>" +
-				"<img " + img + " src='assets/NaWqAalE8mYFBauJCuholPc0xp6hQodI.jpg'></img>" +
+				"<img " + img + " src='assets/austria.jpg'></img>" +
+				"<img " + img + " src='assets/brazil.jpg'></img>" +
+				"<img " + img + " src='assets/france.jpg'></img>" +
+				"<img " + img + " src='assets/germany.jpg'></img>" +
+				"<img " + img + " src='assets/italy.jpg'></img>" +
 			"</div>";
 
 		setTimeout(function() {
 			var e = document.getElementById('messageBox');
 			e.parentElement.removeChild(e);
-		}, 10000);
+		}, 10000);			
 	}
 };
 
