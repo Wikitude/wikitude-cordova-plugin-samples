@@ -72,6 +72,19 @@ var app = {
             alert("Device is not supported");
         }
     },
+    urlLauncher: function(url) {
+        var world = {
+            "path": url, 
+            "requiredFeatures": [
+                "2d_tracking",
+                "geo"
+            ],
+            "startupConfiguration": {
+                "camera_position": "back"
+            }
+        };
+        app.loadARchitectWorld(world);
+    },
     // This function gets called if you call "document.location = architectsdk://" in your ARchitect World
     onUrlInvoke: function (url) {
         if (url.indexOf('captureScreen') > -1) {
