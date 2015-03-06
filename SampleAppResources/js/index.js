@@ -62,11 +62,8 @@ var app = {
             );
 
             // inject poi data using phonegap's GeoLocation API and inject data using World.loadPoisFromJsonData
-            if ( example.platforms.PhoneGap )
-            {
-                if ( "ObtainPoiDataFromApplicationModel" === example.platforms.PhoneGap.required_extension ) {
-                    navigator.geolocation.getCurrentPosition(onLocationUpdated, onLocationError);
-                }            
+            if ( example.requiredExtension === "ObtainPoiDataFromApplicationModel" ) {
+                navigator.geolocation.getCurrentPosition(onLocationUpdated, onLocationError);
             }
         } else {
             alert("Device is not supported");
