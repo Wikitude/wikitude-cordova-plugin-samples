@@ -187,7 +187,8 @@ var samples = [
             ], 
             "startupConfiguration": {
                 "camera_position": "back"
-            }
+            }, 
+            "requiredExtension": "ObtainPoiDataFromApplicationModel"
         }, 
         {
             "path": "www/world/5_ObtainPoiData_2_FromLocalResource/index.html", 
