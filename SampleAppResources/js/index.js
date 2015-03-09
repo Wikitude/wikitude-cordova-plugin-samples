@@ -85,11 +85,14 @@ var app = {
     // This function gets called if you call "document.location = architectsdk://" in your ARchitect World
     onUrlInvoke: function (url) {
         if (url.indexOf('captureScreen') > -1) {
-            app.wikitudePlugin.captureScreen(true, null, function(absoluteFilePath) {
+            app.wikitudePlugin.captureScreen(
+                function(absoluteFilePath) {
                     alert("snapshot stored at:\n" + absoluteFilePath);
-                }, function (errorMessage) {
+                }, 
+                function (errorMessage) {
                     alert(errorMessage);                
-                }
+                },
+                true, null
             );
         } else {
             alert(url + "not handled");
