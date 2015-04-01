@@ -39,9 +39,9 @@ var app = {
     // --- Wikitude Plugin ---
     // Use this method to load a specific ARchitect World from either the local file system or a remote server
     loadARchitectWorld: function(example) {
-        app.wikitudePlugin.setOnUrlInvokeCallback(app.onUrlInvoke);
         // check if the current device is able to launch ARchitect Worlds
         app.wikitudePlugin.isDeviceSupported(function() {
+            app.wikitudePlugin.setOnUrlInvokeCallback(app.onUrlInvoke);
             // inject poi data using phonegap's GeoLocation API and inject data using World.loadPoisFromJsonData
             if ( example.requiredExtension === "ObtainPoiDataFromApplicationModel" ) {
                 navigator.geolocation.getCurrentPosition(onLocationUpdated, onLocationError);
