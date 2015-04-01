@@ -55,7 +55,7 @@ var app = {
             example.path, example.requiredFeatures, example.startupConfiguration
             );
         }, function(errorMessage) {
-            alert("Device is not supported: " + errorMessage);
+            alert(errorMessage);
         },
         example.requiredFeatures
         );
