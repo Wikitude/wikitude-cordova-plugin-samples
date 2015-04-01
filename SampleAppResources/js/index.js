@@ -34,14 +34,13 @@ var app = {
     },
     // deviceready Event Handler
     onDeviceReady: function() {
-        // check if the current device is able to launch ARchitect Worlds
         app.wikitudePlugin = cordova.require("com.wikitude.phonegap.WikitudePlugin.WikitudePlugin");
-       
     },
     // --- Wikitude Plugin ---
     // Use this method to load a specific ARchitect World from either the local file system or a remote server
     loadARchitectWorld: function(example) {
         app.wikitudePlugin.setOnUrlInvokeCallback(app.onUrlInvoke);
+        // check if the current device is able to launch ARchitect Worlds
         app.wikitudePlugin.isDeviceSupported(function() {
             // inject poi data using phonegap's GeoLocation API and inject data using World.loadPoisFromJsonData
             if ( example.requiredExtension === "ObtainPoiDataFromApplicationModel" ) {
@@ -56,7 +55,7 @@ var app = {
             example.path, example.requiredFeatures, example.startupConfiguration
             );
         }, function(errorMessage) {
-            alert("Device is not supported");
+            alert("Device is not supported: " + errorMessage);
         },
         example.requiredFeatures
         );
