@@ -95,7 +95,7 @@ if [ "true" == "$USE_PLUGIN_SOURCE" ]; then
 	cordova plugin add $PLUGIN_SOURCE
 else
 	echo "Fetching plugin from default GitHub master"
-	cordova plugin add https://github.com/Wikitude/wikitude-phonegap.git
+	cordova plugin add https://github.com/Wikitude/wikitude-cordova-plugin.git
 fi
 
 
