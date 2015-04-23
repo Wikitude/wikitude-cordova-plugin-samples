@@ -1,8 +1,8 @@
 
-# Augmented Reality - Wikitude SDK Plugin
+# Augmented Reality Cordova Sample App by Wikitude
 by Wikitude GmbH - [www.wikitude.com](http://www.wikitude.com)
 
-The first PhoneGap Plugin for image recognition and geo-based augmented reality. The provided sample projects for Android and iOS demo the most common use-cases. 
+Sample projects for Android and iOS demoing the most common use-cases. 
 
 # Documentation & Samples
 
@@ -18,12 +18,12 @@ The first PhoneGap Plugin for image recognition and geo-based augmented reality.
 - There is a [separate git repository containing only the plugin ](https://github.com/Wikitude/wikitude-phonegap), please use this for installation.
 
 
-**Note: This plugin has hardware and software requirements for Android and iOS devices and does not run on a desktop browser.**
 
 # LICENSE
+The Wikitude Plugin and the sample app are under Apache 2.0 license (see below), where the Wikitude SDK library (pre-bundled) itself follows a proprietary license scheme (see [LICENSE.MD](https://github.com/Wikitude/wikitude-cordova-plugin/blob/master/LICENSE.MD) for details).
 
 ``` 
-   Copyright 2012-2014 Wikitude GmbH, http://www.wikitude.com
+   Copyright 2012-2015 Wikitude GmbH, http://www.wikitude.com
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
