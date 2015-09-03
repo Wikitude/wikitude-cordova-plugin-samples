@@ -21,7 +21,6 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		<meta name="format-detection" content="telephone=no" />
-        <meta http-equiv="Content-Security-Policy" content="default-src *; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval'">
 		<meta content="width=device-width,initial-scale=1,maximum-scale=5,user-scalable=yes" name="viewport">
 		<link rel="stylesheet" type="text/css" href="css/index.css" />
 
@@ -58,10 +57,11 @@
 				<ul data-role="listview">
 					<li><a href="javascript:app.loadARchitectWorld(getSamplePath(0, 0));">1.1 Image on Target</a></li>
 					<li><a href="javascript:app.loadARchitectWorld(getSamplePath(0, 1));">1.2 Multiple Targets</a></li>
-					<li><a href="javascript:app.loadARchitectWorld(getSamplePath(0, 2));">1.3 Interactivity</a></li>
-					<li><a href="javascript:app.loadARchitectWorld(getSamplePath(0, 3));">1.4 Html Drawable</a></li>
-					<li><a href="javascript:app.loadARchitectWorld(getSamplePath(0, 4));">1.5 Bonus: Sparkles</a></li>
-					<li><a href="javascript:app.loadARchitectWorld(getSamplePath(0, 5));">1.6 Bonus: Distance To Target</a></li>
+					<li><a href="javascript:app.loadARchitectWorld(getSamplePath(0, 2));">1.3 Extended Tracking</a></li>
+					<li><a href="javascript:app.loadARchitectWorld(getSamplePath(0, 3));">1.4 Interactivity</a></li>
+					<li><a href="javascript:app.loadARchitectWorld(getSamplePath(0, 4));">1.5 Html Drawable</a></li>
+					<li><a href="javascript:app.loadARchitectWorld(getSamplePath(0, 5));">1.6 Bonus: Sparkles</a></li>
+					<li><a href="javascript:app.loadARchitectWorld(getSamplePath(0, 6));">1.7 Bonus: Distance To Target</a></li>
 				</ul>
 			</div>
 
@@ -136,11 +136,19 @@
 			</div>
 
 			<div data-role="collapsible" data-collapsed="false" data-theme="e" data-content-theme="d">
+				<h4>Plugins API</h4>
+				<ul data-role="listview">
+					<li><a href="javascript:app.loadARchitectWorld(getSamplePath(8, 0));">9.1 QR & Barcode</a></li>
+					<li><a href="javascript:app.loadARchitectWorld(getSamplePath(8, 1));">9.2 Face Detection</a></li>
+				</ul>
+			</div>
+
+			<div data-role="collapsible" data-collapsed="false" data-theme="e" data-content-theme="d">
 				<h4>Demos</h4>
 				<ul data-role="listview">
-					<li><a href="javascript:app.loadARchitectWorld(getSamplePath(8, 0));">9.1 2D Tracking And Geo</a></li>
-					<li><a href="javascript:app.loadARchitectWorld(getSamplePath(8, 1));">9.2 Solar System (Geo)</a></li>
-					<li><a href="javascript:app.loadARchitectWorld(getSamplePath(8, 2));">9.3 Solar System (2D Tracking)</a></li>
+					<li><a href="javascript:app.loadARchitectWorld(getSamplePath(9, 0));">10.1 2D Tracking And Geo</a></li>
+					<li><a href="javascript:app.loadARchitectWorld(getSamplePath(9, 1));">10.2 Solar System (Geo)</a></li>
+					<li><a href="javascript:app.loadARchitectWorld(getSamplePath(9, 2));">10.3 Solar System (2D Tracking)</a></li>
 				</ul>
 			</div>
 
@@ -149,7 +157,7 @@
 		<script type="text/javascript">
 
 		$( "#url-button" ).bind( "click", function(event, ui) {
-			app.urlLauncher($("#url").val());
+			app.loadARchitectWorld($("#url").val());
 		});
 		</script>
 	</body>
