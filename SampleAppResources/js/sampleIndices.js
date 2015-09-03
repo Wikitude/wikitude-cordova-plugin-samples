@@ -20,7 +20,7 @@ var samples = [
             }
         }, 
         {
-            "path": "www/world/1_ClientRecognition_3_Interactivity/index.html", 
+            "path": "www/world/1_ClientRecognition_3_ExtendedTracking/index.html", 
             "requiredFeatures": [
                 "2d_tracking"
             ], 
@@ -29,7 +29,7 @@ var samples = [
             }
         }, 
         {
-            "path": "www/world/1_ClientRecognition_4_HtmlDrawable/index.html", 
+            "path": "www/world/1_ClientRecognition_4_Interactivity/index.html", 
             "requiredFeatures": [
                 "2d_tracking"
             ], 
@@ -38,7 +38,7 @@ var samples = [
             }
         }, 
         {
-            "path": "www/world/1_ClientRecognition_5_Bonus-Sparkles/index.html", 
+            "path": "www/world/1_ClientRecognition_5_HtmlDrawable/index.html", 
             "requiredFeatures": [
                 "2d_tracking"
             ], 
@@ -47,7 +47,16 @@ var samples = [
             }
         }, 
         {
-            "path": "www/world/1_ClientRecognition_6_Bonus-DistanceToTarget/index.html", 
+            "path": "www/world/1_ClientRecognition_6_Bonus-Sparkles/index.html", 
+            "requiredFeatures": [
+                "2d_tracking"
+            ], 
+            "startupConfiguration": {
+                "camera_position": "back"
+            }
+        }, 
+        {
+            "path": "www/world/1_ClientRecognition_7_Bonus-DistanceToTarget/index.html", 
             "requiredFeatures": [
                 "2d_tracking"
             ], 
@@ -325,7 +334,27 @@ var samples = [
     ], 
     [
         {
-            "path": "www/world/99_Demo_1_2dTrackingAndGeo/index.html", 
+            "path": "www/world/9_PluginsAPI_1_QR&Barcode/index.html", 
+            "requiredFeatures": [
+                "2d_tracking"
+            ], 
+            "startupConfiguration": {
+                "camera_position": "back"
+            }
+        }, 
+        {
+            "path": "www/world/9_PluginsAPI_2_FaceDetection/index.html", 
+            "requiredFeatures": [
+                "2d_tracking"
+            ], 
+            "startupConfiguration": {
+                "camera_position": "back"
+            }
+        }
+    ], 
+    [
+        {
+            "path": "www/world/x_Demo_1_2dTrackingAndGeo/index.html", 
             "requiredFeatures": [
                 "2d_tracking", 
                 "geo"
@@ -335,7 +364,7 @@ var samples = [
             }
         }, 
         {
-            "path": "www/world/99_Demo_2_SolarSystem(Geo)/index.html", 
+            "path": "www/world/x_Demo_2_SolarSystem(Geo)/index.html", 
             "requiredFeatures": [
                 "geo"
             ], 
@@ -344,7 +373,7 @@ var samples = [
             }
         }, 
         {
-            "path": "www/world/99_Demo_3_SolarSystem(2dTracking)/index.html", 
+            "path": "www/world/x_Demo_3_SolarSystem(2dTracking)/index.html", 
             "requiredFeatures": [
                 "2d_tracking"
             ], 
