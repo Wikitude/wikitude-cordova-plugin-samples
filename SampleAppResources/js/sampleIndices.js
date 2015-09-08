@@ -334,26 +334,6 @@ var samples = [
     ], 
     [
         {
-            "path": "www/world/9_PluginsAPI_1_QR&Barcode/index.html", 
-            "requiredFeatures": [
-                "2d_tracking"
-            ], 
-            "startupConfiguration": {
-                "camera_position": "back"
-            }
-        }, 
-        {
-            "path": "www/world/9_PluginsAPI_2_FaceDetection/index.html", 
-            "requiredFeatures": [
-                "2d_tracking"
-            ], 
-            "startupConfiguration": {
-                "camera_position": "back"
-            }
-        }
-    ], 
-    [
-        {
             "path": "www/world/x_Demo_1_2dTrackingAndGeo/index.html", 
             "requiredFeatures": [
                 "2d_tracking", 
