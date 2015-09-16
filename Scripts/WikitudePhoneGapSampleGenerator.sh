@@ -38,6 +38,7 @@ echo "*** GENERATING PROJECT ***"
 
 # Create the project directory
 cordova create $PROJECT_DIRECTORY $PROJECT_ID "$PROJECT_NAME"
+sed -i '.original' 's/\<platform name="android"\>/\<\platform name="android"\>\<preference name="android-minSdkVersion" value="16"\/\>/g' "${PROJECT_DIRECTORY}"/config.xml
 
 # Step into the created project directory
 cd $PROJECT_DIRECTORY
