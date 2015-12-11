@@ -13,7 +13,7 @@ var World = {
 		this.tracker = new AR.ClientTracker("assets/magazine.wtc", {
 			onLoaded: this.worldLoaded,
 			physicalTargetImageHeights: {
-				pageOne:	268
+				pageOne:	286
 			}
 		});
 
