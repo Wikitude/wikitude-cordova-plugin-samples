@@ -1,6 +1,6 @@
 // information about server communication. This sample webservice is provided by Wikitude and returns random dummy places near given location
 var ServerInformation = {
-	POIDATA_SERVER: "http://example.wikitude.com/GetSamplePois/",
+	POIDATA_SERVER: "https://example.wikitude.com/GetSamplePois/",
 	POIDATA_SERVER_ARG_LAT: "lat",
 	POIDATA_SERVER_ARG_LON: "lon",
 	POIDATA_SERVER_ARG_NR_POIS: "nrPois"
@@ -276,7 +276,7 @@ var World = {
 			})
 			.error(function(err) {
 			/*
-					Under certain circumstances your web service may not be available or other connection issues can occur. 
+					Under certain circumstances your web service may not be available or other connection issues can occur.
 					To notify the user about connection problems a status message is updated.
 					In your own implementation you may e.g. use an info popup or similar.
 				*/
