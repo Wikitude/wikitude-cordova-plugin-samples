@@ -83,6 +83,7 @@ fi
 if [ "true" == "$BUILD_ANDROID" ]; then
 	echo "Android"
 	cordova platform add android
+	cordova platform update android@5.0.0
 	cordova build android
 
 	# copy app icons
