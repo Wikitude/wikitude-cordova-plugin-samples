@@ -71,7 +71,7 @@ var app = {
                 "camera_position": "back"
             }
         };
-        app.urlLauncher($("#url").val());
+        app.loadARchitectWorld(world);
     },
     // This function gets called if you call "document.location = architectsdk://" in your ARchitect World
     onUrlInvoke: function (url) {
