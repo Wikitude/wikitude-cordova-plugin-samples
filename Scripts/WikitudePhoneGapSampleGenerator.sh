@@ -73,8 +73,6 @@ if [ "true" == "$BUILD_IOS" ]; then
 	
 	# Add location access description key/value to info.plist
 	/usr/libexec/PlistBuddy -c "Add :NSLocationWhenInUseUsageDescription string 'Accessing GPS information is needed to display POIs around your current location'" "${DESTINATION_DIRECTORY}"/../platforms/ios/"${PROJECT_NAME}"/"${PROJECT_NAME}"-Info.plist
-	/usr/libexec/PlistBuddy -c "Add :NSAppTransportSecurity dict " "${DESTINATION_DIRECTORY}"/../platforms/ios/"${PROJECT_NAME}"/"${PROJECT_NAME}"-Info.plist
-	/usr/libexec/PlistBuddy -c "Add :NSAppTransportSecurity:NSAllowsArbitraryLoads bool 'YES'" "${DESTINATION_DIRECTORY}"/../platforms/ios/"${PROJECT_NAME}"/"${PROJECT_NAME}"-Info.plist
 	
 	# copy app icons
 	ICON_DESTINATION_PATH="${DESTINATION_DIRECTORY}"/../platforms/ios/"${PROJECT_NAME}"/Resources/icons
@@ -82,7 +80,7 @@ if [ "true" == "$BUILD_IOS" ]; then
 fi
 if [ "true" == "$BUILD_ANDROID" ]; then
 	echo "Android"
-	cordova platform add android
+	cordova platform add android@5.0.0
 	cordova build android
 
 	# copy app icons
