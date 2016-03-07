@@ -23,7 +23,7 @@ Sample projects for Android and iOS demoing the most common use-cases.
 The Wikitude Plugin and the sample app are under Apache 2.0 license (see below), where the Wikitude SDK library (pre-bundled) itself follows a proprietary license scheme (see [LICENSE.MD](https://github.com/Wikitude/wikitude-cordova-plugin/blob/master/LICENSE.MD) for details).
 
 ``` 
-   Copyright 2012-2015 Wikitude GmbH, http://www.wikitude.com
+   Copyright 2012-2016 Wikitude GmbH, http://www.wikitude.com
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
