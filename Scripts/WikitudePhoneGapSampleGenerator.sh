@@ -109,6 +109,10 @@ else
 fi
 
 
+## Add Cordova File plugin
+cordova plugin add cordova-plugin-file
+
+
 # Install Wikitude SDK license
 echo "** ADDING WIKITUDE SDK LICENSE ***"
 
