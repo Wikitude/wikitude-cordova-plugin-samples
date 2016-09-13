@@ -90,7 +90,7 @@ IrAndGeo.hideDeal = function() {
 IrAndGeo.showWeb = function() {
     IrAndGeo.hideStores();
 
-    AR.context.openInBrowser("http://www.wikitude.com");
+    AR.context.openInBrowser("https://www.wikitude.com/products/wikitude-sdk/");
 };
 
 IrAndGeo.loadingStepDone = function() {

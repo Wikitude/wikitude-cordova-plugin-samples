@@ -35,7 +35,7 @@ var World = {
 		/*
 			For each target an AR.ImageDrawable for the button is created by utilizing the helper function createWwwButton(url, options). The returned drawable is then added to the drawables.cam array on creation of the AR.Trackable2DObject.
 		*/
-		var pageOneButton = this.createWwwButton("http://n1sco.com/specifications/", 0.1, {
+		var pageOneButton = this.createWwwButton("https://www.blue-tomato.com/en-US/products/?q=sup", 0.1, {
 			offsetX: -0.25,
 			offsetY: -0.25,
 			zOrder: 1
@@ -95,7 +95,7 @@ var World = {
 			offsetX: 0.12,
 			offsetY: -0.01
 		});
-		var pageTwoButton = this.createWwwButton("http://goo.gl/qxck1", 0.15, {
+		var pageTwoButton = this.createWwwButton("https://www.maciag-offroad.de/kini-red-bull-downhill-helm-mtb-silber-blau-sid50616.html", 0.15, {
 			offsetX: 0,
 			offsetY: -0.25,
 			zOrder: 1

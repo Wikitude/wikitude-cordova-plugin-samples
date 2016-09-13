@@ -71,9 +71,6 @@ if [ "true" == "$BUILD_IOS" ]; then
 	cordova platform add ios
 	cordova build ios
 
-	# Add location access description key/value to info.plist
-	/usr/libexec/PlistBuddy -c "Add :NSLocationWhenInUseUsageDescription string 'Accessing GPS information is needed to display POIs around your current location'" "${DESTINATION_DIRECTORY}"/../platforms/ios/"${PROJECT_NAME}"/"${PROJECT_NAME}"-Info.plist
-
 	# copy app icons
 	ICON_DESTINATION_PATH="${DESTINATION_DIRECTORY}"/../platforms/ios/"${PROJECT_NAME}"/Resources/icons
 	if ! [ -d "${ICON_DESTINATION_PATH}" ]; then
@@ -122,16 +119,38 @@ LICENSE_KEY=`cat "${LICENSE_FILE}"`
 
 if [ "true" == "$BUILD_IOS" ]; then
 	# Replace license key for iOS
-	INPUT_FILE=$PROJECT_DIRECTORY/platforms/ios/www/plugins/com.wikitude.phonegap.WikitudePlugin/www/WikitudePlugin.js
 
-	sed -i.bak -e "s/ENTER-YOUR-KEY-HERE/${LICENSE_KEY//\//\/}/g" $INPUT_FILE && rm $INPUT_FILE.bak
+	INPUT_FILES[0]=$PROJECT_DIRECTORY/platforms/ios/platform_www/plugins/com.wikitude.phonegap.WikitudePlugin/www/WikitudePlugin.js
+	INPUT_FILES[1]=$PROJECT_DIRECTORY/platforms/ios/www/plugins/com.wikitude.phonegap.WikitudePlugin/www/WikitudePlugin.js
+	INPUT_FILES[2]=$PROJECT_DIRECTORY/plugins/com.wikitude.phonegap.WikitudePlugin/www/WikitudePlugin.js
+
+    for INPUT_FILE in "${INPUT_FILES[@]}"
+    do
+        sed -i.bak -e "s/ENTER-YOUR-KEY-HERE/${LICENSE_KEY//\//\/}/g" $INPUT_FILE && rm $INPUT_FILE.bak
+    done
+
+    	# Add location access description key/value to info.plist
+	/usr/libexec/PlistBuddy -c "Add :NSLocationWhenInUseUsageDescription string 'Accessing GPS information is needed to display POIs around your current location'" "${DESTINATION_DIRECTORY}"/../platforms/ios/"${PROJECT_NAME}"/"${PROJECT_NAME}"-Info.plist
+
+    # Add enabled interface orientations to plist
+    /usr/libexec/PlistBuddy -c "Add :UISupportedInterfaceOrientations array" "${DESTINATION_DIRECTORY}"/../platforms/ios/"${PROJECT_NAME}"/"${PROJECT_NAME}"-Info.plist
+    /usr/libexec/PlistBuddy -c "Add :UISupportedInterfaceOrientations: string 'UIInterfaceOrientationPortrait'" "${DESTINATION_DIRECTORY}"/../platforms/ios/"${PROJECT_NAME}"/"${PROJECT_NAME}"-Info.plist
+    /usr/libexec/PlistBuddy -c "Add :UISupportedInterfaceOrientations: string 'UIInterfaceOrientationPortraitUpsideDown'" "${DESTINATION_DIRECTORY}"/../platforms/ios/"${PROJECT_NAME}"/"${PROJECT_NAME}"-Info.plist
+    /usr/libexec/PlistBuddy -c "Add :UISupportedInterfaceOrientations: string 'UIInterfaceOrientationLandscapeLeft'" "${DESTINATION_DIRECTORY}"/../platforms/ios/"${PROJECT_NAME}"/"${PROJECT_NAME}"-Info.plist
+    /usr/libexec/PlistBuddy -c "Add :UISupportedInterfaceOrientations: string 'UIInterfaceOrientationLandscapeRight'" "${DESTINATION_DIRECTORY}"/../platforms/ios/"${PROJECT_NAME}"/"${PROJECT_NAME}"-Info.plist
 fi
 
 if [ "true" == "$BUILD_ANDROID" ]; then
 	# ... and Android
-	INPUT_FILE=$PROJECT_DIRECTORY/platforms/android/assets/www/plugins/com.wikitude.phonegap.WikitudePlugin/www/WikitudePlugin.js
 
-	sed -i.bak -e "s/ENTER-YOUR-KEY-HERE/${LICENSE_KEY//\//\/}/g" $INPUT_FILE && rm $INPUT_FILE.bak
+	INPUT_FILES[0]=$PROJECT_DIRECTORY/platforms/android/platform_www/plugins/com.wikitude.phonegap.WikitudePlugin/www/WikitudePlugin.js
+	INPUT_FILES[1]=$PROJECT_DIRECTORY/platforms/android/assets/www/plugins/com.wikitude.phonegap.WikitudePlugin/www/WikitudePlugin.js
+	INPUT_FILES[2]=$PROJECT_DIRECTORY/plugins/com.wikitude.phonegap.WikitudePlugin/www/WikitudePlugin.js
+
+    for INPUT_FILE in "${INPUT_FILES[@]}"
+    do
+        sed -i.bak -e "s/ENTER-YOUR-KEY-HERE/${LICENSE_KEY//\//\/}/g" $INPUT_FILE && rm $INPUT_FILE.bak
+    done
 fi
 
 
