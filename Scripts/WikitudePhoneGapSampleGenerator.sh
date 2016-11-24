@@ -137,13 +137,6 @@ if [ "true" == "$BUILD_IOS" ]; then
 
 	# Add photo library access description key/value to info.plist
 	/usr/libexec/PlistBuddy -c "Add :NSPhotoLibraryUsageDescription string 'Access to your photo library is required for the example 'Bonus: Capture Screen' because it adds a screenshot of the current Architect view.'" "${DESTINATION_DIRECTORY}"/../platforms/ios/"${PROJECT_NAME}"/"${PROJECT_NAME}"-Info.plist
-
-    # Add enabled interface orientations to plist
-    /usr/libexec/PlistBuddy -c "Add :UISupportedInterfaceOrientations array" "${DESTINATION_DIRECTORY}"/../platforms/ios/"${PROJECT_NAME}"/"${PROJECT_NAME}"-Info.plist
-    /usr/libexec/PlistBuddy -c "Add :UISupportedInterfaceOrientations: string 'UIInterfaceOrientationPortrait'" "${DESTINATION_DIRECTORY}"/../platforms/ios/"${PROJECT_NAME}"/"${PROJECT_NAME}"-Info.plist
-    /usr/libexec/PlistBuddy -c "Add :UISupportedInterfaceOrientations: string 'UIInterfaceOrientationPortraitUpsideDown'" "${DESTINATION_DIRECTORY}"/../platforms/ios/"${PROJECT_NAME}"/"${PROJECT_NAME}"-Info.plist
-    /usr/libexec/PlistBuddy -c "Add :UISupportedInterfaceOrientations: string 'UIInterfaceOrientationLandscapeLeft'" "${DESTINATION_DIRECTORY}"/../platforms/ios/"${PROJECT_NAME}"/"${PROJECT_NAME}"-Info.plist
-    /usr/libexec/PlistBuddy -c "Add :UISupportedInterfaceOrientations: string 'UIInterfaceOrientationLandscapeRight'" "${DESTINATION_DIRECTORY}"/../platforms/ios/"${PROJECT_NAME}"/"${PROJECT_NAME}"-Info.plist
 fi
 
 if [ "true" == "$BUILD_ANDROID" ]; then
