@@ -67,27 +67,25 @@ cp -R "${SOURCE_DIRECTORY}"/index.html "${DESTINATION_DIRECTORY}"/index.html
 echo "*** BUILDING SAMPLE APP ***"
 
 if [ "true" == "$BUILD_IOS" ]; then
-	echo "iOS"
+	echo "iOS (cordova version '"$(cordova --version)"')"
 	cordova platform add ios
-	cordova build ios
 
 	# copy app icons
 	ICON_DESTINATION_PATH="${DESTINATION_DIRECTORY}"/../platforms/ios/"${PROJECT_NAME}"/Resources/icons
 	if ! [ -d "${ICON_DESTINATION_PATH}" ]; then
 		# cordova version 6
-    		ICON_DESTINATION_PATH="${DESTINATION_DIRECTORY}"/../platforms/ios/"${PROJECT_NAME}"/Images.xcassets
-    		rm -r "$ICON_DESTINATION_PATH"/AppIcon.appiconset
-    		cp -R "${SOURCE_DIRECTORY}"/icons/ios/cordova_6/ "$ICON_DESTINATION_PATH"
-    	else
-	    	# older cordova versions
+    	ICON_DESTINATION_PATH="${DESTINATION_DIRECTORY}"/../platforms/ios/"${PROJECT_NAME}"/Images.xcassets
+    	rm -r "$ICON_DESTINATION_PATH"/AppIcon.appiconset
+    	cp -R "${SOURCE_DIRECTORY}"/icons/ios/cordova_6/ "$ICON_DESTINATION_PATH"
+    else
+    	# older cordova versions
 		rm -r "$ICON_DESTINATION_PATH"/*
 		cp -R "${SOURCE_DIRECTORY}"/icons/ios/cordova_5/* "$ICON_DESTINATION_PATH"
 	fi
 fi
 if [ "true" == "$BUILD_ANDROID" ]; then
-	echo "Android"
+	echo "Android (cordova version '"$(cordova --version)"')"
 	cordova platform add android@5.0.0
-	cordova build android
 
 	# copy app icons
 	ICON_DESTINATION_PATH="${DESTINATION_DIRECTORY}"/../platforms/android/res
@@ -151,6 +149,5 @@ if [ "true" == "$BUILD_ANDROID" ]; then
         sed -i.bak -e "s/ENTER-YOUR-KEY-HERE/${LICENSE_KEY//\//\/}/g" $INPUT_FILE && rm $INPUT_FILE.bak
     done
 fi
-
 
 echo "*** DONE - SUCCESS ***"

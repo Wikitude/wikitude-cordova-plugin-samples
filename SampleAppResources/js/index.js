@@ -36,40 +36,13 @@ var app = {
     // deviceready Event Handler
     onDeviceReady: function() {
         app.wikitudePlugin = cordova.require("com.wikitude.phonegap.WikitudePlugin.WikitudePlugin");
+        // set a callback for android that is called once the back button was clicked.
+        if ( cordova.platformId == "android" ) {
+            app.wikitudePlugin.setBackButtonCallback(app.onBackButton);
+        }
+        app.wikitudePlugin.setOnUrlInvokeCallback(app.onUrlInvoke);
     },
     // --- Wikitude Plugin ---
-    // Use this method to load a specific ARchitect World from either the local file system or a remote server
-    loadARchitectWorld: function(architectWorld) {
-
-        // check if the current device is able to launch ARchitect Worlds
-        app.wikitudePlugin.isDeviceSupported(function() {
-            app.wikitudePlugin.setOnUrlInvokeCallback(app.onUrlInvoke);
-
-            // set a callback for android that is called once the back button was clicked.
-            if ( cordova.platformId == "android" ) {
-                app.wikitudePlugin.setBackButtonCallback(app.onBackButton);
-            }
-
-            app.wikitudePlugin.loadARchitectWorld(function successFn(loadedURL) {
-                    /* Respond to successful world loading if you need to */
-                    app.isArchitectWorldLoaded = true;
-
-                    /* in case the loaded Architect World belongs to the 'obtain poi data from application model' example, we can now safely inject poi data. */
-                    if ( architectWorld.requiredExtension === "ObtainPoiDataFromApplicationModel" ) {
-                        injectGeneratedPoiJsonData();
-                    }
-                }, function errorFn(error) {
-                    app.isArchitectWorldLoaded = false;
-                    alert('Loading AR web view failed: ' + error);
-                },
-                architectWorld.path, architectWorld.requiredFeatures, architectWorld.startupConfiguration
-            );
-        }, function(errorMessage) {
-            alert(errorMessage);
-        },
-        architectWorld.requiredFeatures
-        );
-    },
     loadExampleARchitectWorld: function(example) {
 
         app.isArchitectWorldLoaded = false;
@@ -86,13 +59,15 @@ var app = {
             }
         }
 
-        app.loadARchitectWorld(example);
+        app.prepareArchitectWorld(example, function() {
+            app.loadARchitectWorld(example);
+        });
     },
     loadCustomARchitectWorldFromURL: function(url) {
-        var world = {
+        var customArchitectWorld = {
             "path": url,
             "requiredFeatures": [
-                "2d_tracking",
+                "image_tracking",
                 "geo"
             ],
             "startupConfiguration": {
@@ -100,7 +75,49 @@ var app = {
             }
         };
         app.isArchitectWorldLoaded = false;
-        app.loadARchitectWorld(world);
+        app.prepareArchitectWorld(customArchitectWorld, function() {
+            app.loadARchitectWorld(customArchitectWorld);
+        });
+    },
+    prepareArchitectWorld: function(architectWorld, successCallback) {
+        app.wikitudePlugin.isDeviceSupported(function() {
+            app.wikitudePlugin.requestAccess(
+                function() {
+                    successCallback();
+                },
+                function(error) {
+                    /* The error object contains two error messages.
+                        * userDescription is a end user formatted message that can be displayed with e.g. a JS alert
+                        * developerDescription is a developer formatted message with more detailed information about the error
+                     */
+                    /* Here, the userDescription is used to show a confirmation box which, in case of a positive result, shows the applications settings so that user can grant access. */
+                    var openAppSettings = confirm(error.userDescription + '\nOpen App Settings?');
+                    if ( openAppSettings == true ) {
+                        app.wikitudePlugin.openAppSettings();
+                    }
+                },
+                architectWorld.requiredFeatures);
+        }, function(errorMessage) {
+            alert(errorMessage);
+        },
+        architectWorld.requiredFeatures);
+    },
+    // Use this method to load a specific ARchitect World from either the local file system or a remote server
+    loadARchitectWorld: function(architectWorld) {
+        app.wikitudePlugin.loadARchitectWorld(function successFn(loadedURL) {
+                /* Respond to successful world loading if you need to */
+                app.isArchitectWorldLoaded = true;
+
+                /* in case the loaded Architect World belongs to the 'obtain poi data from application model' example, we can now safely inject poi data. */
+                if ( architectWorld.requiredExtension === "ObtainPoiDataFromApplicationModel" ) {
+                    injectGeneratedPoiJsonData();
+                }
+            }, function errorFn(error) {
+                app.isArchitectWorldLoaded = false;
+                alert('Loading AR web view failed: ' + error);
+            },
+            architectWorld.path, architectWorld.requiredFeatures, architectWorld.startupConfiguration
+        );
     },
     // This function gets called if you call "document.location = architectsdk://" in your ARchitect World
     onUrlInvoke: function (url) {
@@ -120,6 +137,21 @@ var app = {
     },
     onBackButton: function() {
         /* Android back button was pressed and the Wikitude PhoneGap Plugin is now closed */
+    },
+    showBuildInformation: function() {
+        var sdkVersion = ""
+
+        app.wikitudePlugin.getSDKVersion(function(version){ sdkVersion = version });
+
+        app.wikitudePlugin.getSDKBuildInformation(function(buildInformationJSON) {
+            var buildInformation = JSON.parse(buildInformationJSON);
+            alert(
+                "Build configuration: " + buildInformation.buildConfiguration + "\n" +
+                "Build date: " + buildInformation.buildDate + "\n" +
+                "Build number: " + buildInformation.buildNumber + "\n" +
+                "Build version: " + sdkVersion
+            );
+        });
     }
     // --- End Wikitude Plugin ---
 };
