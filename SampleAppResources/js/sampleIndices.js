@@ -124,7 +124,7 @@ var samples = [
             }
         },
         {
-            "path": "www/world/04_InstantTracking_2_3DModels/index.html",
+            "path": "www/world/04_InstantTracking_2_3dModelOnPlane/index.html",
             "requiredFeatures": [
                 "instant_tracking"
             ],
@@ -133,7 +133,7 @@ var samples = [
             }
         },
         {
-            "path": "www/world/04_InstantTracking_3_GesturesAnd3DModels/index.html",
+            "path": "www/world/04_InstantTracking_3_Interactivity/index.html",
             "requiredFeatures": [
                 "instant_tracking"
             ],

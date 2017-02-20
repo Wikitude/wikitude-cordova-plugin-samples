@@ -59,6 +59,7 @@ var World = {
                 // react to a the tracking plane being clicked here
             },
             onTrackingPlaneDragBegan: function onTrackingPlaneDragBeganFn(xPos, yPos) {
+                oneFingerGestureAllowed = true;
                 World.updatePlaneDrag(xPos, yPos);
             },
             onTrackingPlaneDragChanged: function onTrackingPlaneDragChangedFn(xPos, yPos) {
@@ -99,7 +100,7 @@ var World = {
             World.initialDrag = true;
         }
 
-        if (World.initialDrag) {
+        if (World.initialDrag && oneFingerGestureAllowed) {
             lastAddedModel.translate = {x:xPos, y:yPos};
         }
     },
