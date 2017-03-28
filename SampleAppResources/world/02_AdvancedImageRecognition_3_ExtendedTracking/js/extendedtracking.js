@@ -133,9 +133,10 @@ var World = {
                             },
 
                             // one of the targets is visible
-                            onImageRecognized: function onEnterFieldOfVisionFn(targetName) {
+                            onImageRecognized: function onImageRecognizedFn(targetName) {
                                 this.isVisible = true;
                                 console.info('onImageRecognized: ' + targetName);
+                                World.hideInfoBox();
                             },
 
                             // when losing the target -> snapToScreen is enabled and the close button appears, so user can dismiss rendering of the video
@@ -148,10 +149,6 @@ var World = {
 
                         // start polling of service url
                         World.updateSensorValuesFromRemote(World.SENSOR_SERVICE_URL, World.REFRESH_RATE_MS, World.SENSOR_AUGMENTATION_META);
-
-                        // hide infoBox after ten seconds
-                        World.hideInfoBox(10 * 1000);
-
                     } catch (err) {
                         World.onError(err);
                     }
@@ -321,11 +318,9 @@ var World = {
     },
 
     // hides infobox
-    hideInfoBox: function(delay) {
-        setTimeout( function() {
-            var e = document.getElementById('infoBox');
-            e.parentElement.removeChild(e);
-        }, delay);
+    hideInfoBox: function() {
+        var e = document.getElementById('infoBox');
+        e.parentElement.removeChild(e);
     }
 };
 

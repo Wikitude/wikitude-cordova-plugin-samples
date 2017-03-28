@@ -87,7 +87,7 @@ var World = {
 		}
 	},
 
-	// updates status message shon in small "i"-button aligned bottom center
+	// updates status message shown in small "i"-button aligned bottom center
 	updateStatusMessage: function updateStatusMessageFn(message, isWarning) {
 
 		var themeToUse = isWarning ? "e" : "c";
@@ -110,15 +110,16 @@ var World = {
 	// user clicked "More" button in POI-detail panel -> fire event to open native screen
 	onPoiDetailMoreButtonClicked: function onPoiDetailMoreButtonClickedFn() {
 		var currentMarker = World.currentMarker;
-		var architectSdkUrl = "architectsdk://markerselected?id=" + encodeURIComponent(currentMarker.poiData.id) + "&title=" + encodeURIComponent(currentMarker.poiData.title) + "&description=" + encodeURIComponent(currentMarker.poiData.description);
+		var markerSelectedJSON = {
+			action: "present_poi_details",
+			id: currentMarker.poiData.id,
+			title: currentMarker.poiData.title,
+			description: currentMarker.poiData.description
+		};
 		/*
-			The urlListener of the native project intercepts this call and parses the arguments. 
-			This is the only way to pass information from JavaSCript to your native code. 
-			Ensure to properly encode and decode arguments.
-			Note: you must use 'document.location = "architectsdk://...' to pass information from JavaScript to native. 
-			! This will cause an HTTP error if you didn't register a urlListener in native architectView !
-		*/
-		document.location = architectSdkUrl;
+		 	The sendJSONObject method can be used to send data from javascript to the native code.
+		 */
+		AR.platform.sendJSONObject(markerSelectedJSON);
 	},
 
 	// location updates, fired every time you call architectView.setLocation() in native environment
@@ -180,7 +181,7 @@ var World = {
 	// returns distance in meters of placemark with maxdistance * 1.1
 	getMaxDistance: function getMaxDistanceFn() {
 
-		// sort palces by distance so the first entry is the one with the maximum distance
+		// sort places by distance so the first entry is the one with the maximum distance
 		World.markerList.sort(World.sortByDistanceSortingDescending);
 
 		// use distanceToUser to get max-distance
@@ -209,7 +210,7 @@ var World = {
 		$("#panel-distance-value").html(maxRangeValue);
 		$("#panel-distance-places").html((placesInRange != 1) ? (placesInRange + " Places") : (placesInRange + " Place"));
 
-		// update culling distance, so only palces within given range are rendered
+		// update culling distance, so only places within given range are rendered
 		AR.context.scene.cullingDistance = Math.max(maxRangeMeters, 1);
 
 		// update radar's maxDistance so radius of radar is updated too
@@ -279,7 +280,9 @@ var World = {
 	// reload places from content source
 	captureScreen: function captureScreenFn() {
 		if (World.initialized) {
-			document.location = "architectsdk://button?action=captureScreen";
+			AR.platform.sendJSONObject({
+				action: "capture_screen"
+			});
 		}
 	},
 

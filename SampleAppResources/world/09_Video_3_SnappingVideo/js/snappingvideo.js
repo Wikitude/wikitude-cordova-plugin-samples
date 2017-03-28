@@ -9,10 +9,16 @@ var World = {
 	createOverlays: function createOverlaysFn() {
 		/* Initialize ClientTracker */
 		this.targetCollectionResource = new AR.TargetCollectionResource("assets/magazine.wtc", {
+            onError: function(errorMessage) {
+            	alert(errorMessage);
+            }
 		});
 
 		this.tracker = new AR.ImageTracker(this.targetCollectionResource, {
-			onTargetsLoaded: this.worldLoaded
+			onTargetsLoaded: this.worldLoaded,
+            onError: function(errorMessage) {
+            	alert(errorMessage);
+            }
 		});
 		
 		// Create play button which is used for starting the video
@@ -77,8 +83,8 @@ var World = {
 
 			Note that this time we use "*" as target name. That means that the AR.ImageTrackable will respond to any target that is defined in the specified tracker. You can use wildcards to specify more complex name matchings. E.g. 'target_?' to reference 'target_1' through 'target_9' or 'target*' for any targets names that start with 'target'.
 
-			This time we don't pause/resume the video when target is lost/recognized but instead snap the video to the screen so that the user can still watch it even when the target image is not visible for the camera. To Do so we set the 'snapToScreen.enabledOnExitFieldOfVision' property to true which indicates that the snapping should occur when the onExitFieldOfVision event occurs. Setting the 'snapToScreen.enabled' property to true in the onExitFieldOfVision trigger will not work because the target is already lost then and snap to screen can only activated for AR.ImageTrackable that are currently in the onEnterFieldOfVision state.
-			When the onEnterFieldOfVision event occurs we set 'snapToScreen.enabled' to false which will unsnap the drawables from the cam and augmentation will stick on the target again.
+			This time we don't pause/resume the video when target is lost/recognized but instead snap the video to the screen so that the user can still watch it even when the target image is not visible for the camera. To Do so we set the 'snapToScreen.enabledOnExitFieldOfVision' property to true which indicates that the snapping should occur when the onImageLost event occurs. Setting the 'snapToScreen.enabled' property to true in the onImageLost trigger will not work because the target is already lost then and snap to screen can only activated for AR.ImageTrackable that are currently in the onImageRecognized state.
+			When the onImageRecognized event occurs we set 'snapToScreen.enabled' to false which will unsnap the drawables from the cam and augmentation will stick on the target again.
 
 			Of course the video will continue playing back in the meantime so that the user can watch the entire video without any interruption.
 		*/
@@ -86,14 +92,26 @@ var World = {
 			drawables: {
 				cam: [this.video, playButton]
 			},
-			onEnterFieldOfVision: function onEnterFieldOfVisionFn() {
+			onImageRecognized: function onImageRecognizedFn() {
 				World.pageOne.snapToScreen.enabled = false;
+				World.removeLoadingBar();
 			},
 			snapToScreen: {
 				enabledOnExitFieldOfVision: true,
 				snapContainer: document.getElementById('snapContainer')
-			}
+			},
+            onError: function(errorMessage) {
+            	alert(errorMessage);
+            }
 		});
+	},
+
+	removeLoadingBar: function() {
+		if (!World.loaded) {
+			var e = document.getElementById('loadingMessage');
+			e.parentElement.removeChild(e);
+			World.loaded = true;
+		}
 	},
 
 	worldLoaded: function worldLoadedFn() {
@@ -104,12 +122,6 @@ var World = {
 			"<div" + cssDivInstructions + ">Scan Target &#35;1 (surfer) or &#35;2 (biker):</div>" +
 			"<div" + cssDivSurfer + "><img src='assets/surfer.png'></img></div>" +
 			"<div" + cssDivBiker + "><img src='assets/bike.png'></img></div>";
-
-		// Remove Scan target message after 10 sec.
-		setTimeout(function() {
-			var e = document.getElementById('loadingMessage');
-			e.parentElement.removeChild(e);
-		}, 10000);
 	}
 };
 

@@ -40,7 +40,7 @@ var app = {
         if ( cordova.platformId == "android" ) {
             app.wikitudePlugin.setBackButtonCallback(app.onBackButton);
         }
-        app.wikitudePlugin.setOnUrlInvokeCallback(app.onUrlInvoke);
+        app.wikitudePlugin.setJSONObjectReceivedCallback(app.onJSONObjectReceived);
     },
     // --- Wikitude Plugin ---
     loadExampleARchitectWorld: function(example) {
@@ -119,20 +119,23 @@ var app = {
             architectWorld.path, architectWorld.requiredFeatures, architectWorld.startupConfiguration
         );
     },
-    // This function gets called if you call "document.location = architectsdk://" in your ARchitect World
-    onUrlInvoke: function (url) {
-        if (url.indexOf('captureScreen') > -1) {
-            app.wikitudePlugin.captureScreen(
-                function(absoluteFilePath) {
-                    alert("snapshot stored at:\n" + absoluteFilePath);
-                },
-                function (errorMessage) {
-                    alert(errorMessage);
-                },
-                true, null
-            );
-        } else {
-            alert(url + "not handled");
+    // This function gets called if you call "AR.platform.sendJSONObject" in your ARchitect World
+    onJSONObjectReceived: function (jsonObject) {
+        if (typeof jsonObject.action !== 'undefined') {
+            if ( jsonObject.action === "capture_screen" ) {
+                app.wikitudePlugin.captureScreen(
+                    function(absoluteFilePath) {
+                        alert("snapshot stored at:\n" + absoluteFilePath);
+                    },
+                    function (errorMessage) {
+                        alert(errorMessage);
+                    },
+                    true, null
+                );
+            } else if (jsonObject.action === "present_poi_details") {
+                var alertMessage = "Poi '" + jsonObject.id + "' selected\nTitle: " + jsonObject.title + "\nDescription: " + jsonObject.description;
+                alert(alertMessage);
+            }
         }
     },
     onBackButton: function() {

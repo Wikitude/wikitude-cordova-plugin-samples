@@ -321,6 +321,16 @@ var samples = [
             }
         },
         {
+            "path": "www/world/08_BrowsingPois_5_NativeDetailScreen/index.html",
+            "requiredFeatures": [
+                "geo"
+            ],
+            "startupConfiguration": {
+                "camera_position": "back",
+                "camera_resolution": "auto"
+            }
+        },
+        {
             "path": "www/world/08_BrowsingPois_6_Bonus-CaptureScreen/index.html",
             "requiredFeatures": [
                 "geo",

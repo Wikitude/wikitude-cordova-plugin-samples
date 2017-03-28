@@ -18,11 +18,13 @@ BUILD_ANDROID=$5
 SOURCE_DIRECTORY=$6
 DESTINATION_DIRECTORY="$PROJECT_DIRECTORY/www"
 
+BUILD_PROGRAM=$7
+
 USE_PLUGIN_SOURCE=false
 
-if [ "$#" -eq 7 ]; then
+if [ "$#" -eq 8 ]; then
 	USE_PLUGIN_SOURCE=true
-	PLUGIN_SOURCE=$7
+	PLUGIN_SOURCE=$8
 fi
 
 
@@ -32,13 +34,14 @@ if [ -d $PROJECT_DIRECTORY ]; then
 	exit 1
 fi
 
+echo "program: ${BUILD_PROGRAM}" 
 
 ## Generate sample project ##
 echo "*** GENERATING PROJECT ***"
 
 # Create the project directory
-cordova create $PROJECT_DIRECTORY $PROJECT_ID "$PROJECT_NAME"
-sed -i '.original' 's/\<platform name="android"\>/\<\platform name="android"\>\<preference name="android-minSdkVersion" value="16"\/\>/g' "${PROJECT_DIRECTORY}"/config.xml
+$BUILD_PROGRAM create $PROJECT_DIRECTORY $PROJECT_ID "$PROJECT_NAME"
+sed -i'.original' 's/\<platform name="android"\>/\<\platform name="android"\>\<preference name="android-minSdkVersion" value="16"\/\>/g' "${PROJECT_DIRECTORY}"/config.xml
 
 # Step into the created project directory
 cd $PROJECT_DIRECTORY
@@ -67,8 +70,8 @@ cp -R "${SOURCE_DIRECTORY}"/index.html "${DESTINATION_DIRECTORY}"/index.html
 echo "*** BUILDING SAMPLE APP ***"
 
 if [ "true" == "$BUILD_IOS" ]; then
-	echo "iOS (cordova version '"$(cordova --version)"')"
-	cordova platform add ios
+	echo "iOS (${BUILD_PROGRAM} version '"$(${BUILD_PROGRAM} --version)"')"
+	$BUILD_PROGRAM platform add ios
 
 	# copy app icons
 	ICON_DESTINATION_PATH="${DESTINATION_DIRECTORY}"/../platforms/ios/"${PROJECT_NAME}"/Resources/icons
@@ -84,8 +87,8 @@ if [ "true" == "$BUILD_IOS" ]; then
 	fi
 fi
 if [ "true" == "$BUILD_ANDROID" ]; then
-	echo "Android (cordova version '"$(cordova --version)"')"
-	cordova platform add android@5.0.0
+	echo "Android (${BUILD_PROGRAM} version '"$(${BUILD_PROGRAM} --version)"')"
+	$BUILD_PROGRAM platform add android@5.0.0
 
 	# copy app icons
 	ICON_DESTINATION_PATH="${DESTINATION_DIRECTORY}"/../platforms/android/res
@@ -97,15 +100,15 @@ fi
 echo "*** ADDING WIKITUDE PLUGIN ***"
 
 if [ "true" == "$USE_PLUGIN_SOURCE" ]; then
-	cordova plugin add $PLUGIN_SOURCE
+	$BUILD_PROGRAM plugin add $PLUGIN_SOURCE
 else
 	echo "Fetching plugin from default GitHub master"
-	cordova plugin add https://github.com/Wikitude/wikitude-cordova-plugin.git
+	$BUILD_PROGRAM plugin add https://github.com/Wikitude/wikitude-cordova-plugin.git
 fi
 
 
 ## Add Cordova File plugin
-cordova plugin add cordova-plugin-file
+$BUILD_PROGRAM plugin add cordova-plugin-file
 
 
 # Install Wikitude SDK license

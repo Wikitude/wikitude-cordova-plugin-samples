@@ -8,10 +8,16 @@ var World = {
 	createOverlays: function createOverlaysFn() {
 		/* Initialize ClientTracker */
 		this.targetCollectionResource = new AR.TargetCollectionResource("assets/magazine.wtc", {
+            onError: function(errorMessage) {
+            	alert(errorMessage);
+            }
 		});
 
 		this.tracker = new AR.ImageTracker(this.targetCollectionResource, {
-			onTargetsLoaded: this.worldLoaded
+			onTargetsLoaded: this.worldLoaded,
+            onError: function(errorMessage) {
+            	alert(errorMessage);
+            }
 		});
 
 		// Create play button which is used for starting the video
@@ -76,25 +82,37 @@ var World = {
 
 			Note that this time we use "*" as target name. That means that the AR.ImageTrackable will respond to any target that is defined in the specified tracker. You can use wildcards to specify more complex name matchings. E.g. 'target_?' to reference 'target_1' through 'target_9' or 'target*' for any targets names that start with 'target'.
 
-			To start the video immediately after the target is recognized we call play inside the onEnterFieldOfVision trigger. Supplying -1 to play tells the Wikitude SDK to loop the video infinitely. Choose any positive number to re-play it multiple times.
+			To start the video immediately after the target is recognized we call play inside the onImageRecognized trigger. Supplying -1 to play tells the Wikitude SDK to loop the video infinitely. Choose any positive number to re-play it multiple times.
 
-			Similar to the user clicking on the video we want to pause/resume the playback if the target image is lost - as this means the user is currently not actively watching the video. To accomplish this the onEnterFieldOfVision and onExitFieldOfVision triggers of the AR.ImageTrackable are used:
+			Similar to the user clicking on the video we want to pause/resume the playback if the target image is lost - as this means the user is currently not actively watching the video. To accomplish this the onImageRecognized and onImageLost triggers of the AR.ImageTrackable are used:
 		*/
 		var pageOne = new AR.ImageTrackable(this.tracker, "*", {
 			drawables: {
 				cam: [video, playButton]
 			},
-			onEnterFieldOfVision: function onEnterFieldOfVisionFn() {
+			onImageRecognized: function onImageRecognizedFn() {
 				if (video.playing) {
 					video.resume();
 				}
+				World.removeLoadingBar();
 			},
-			onExitFieldOfVision: function onExitFieldOfVisionFn() {
+			onImageLost: function onImageLostFn() {
 				if (video.playing) {
 					video.pause();
 				}
-			}
+			},
+            onError: function(errorMessage) {
+            	alert(errorMessage);
+            }
 		});
+	},
+
+	removeLoadingBar: function() {
+		if (!World.loaded) {
+			var e = document.getElementById('loadingMessage');
+			e.parentElement.removeChild(e);
+			World.loaded = true;
+		}
 	},
 
 	worldLoaded: function worldLoadedFn() {
@@ -105,12 +123,6 @@ var World = {
 			"<div" + cssDivInstructions + ">Scan Target &#35;1 (surfer) or &#35;2 (biker):</div>" +
 			"<div" + cssDivSurfer + "><img src='assets/surfer.png'></img></div>" +
 			"<div" + cssDivBiker + "><img src='assets/bike.png'></img></div>";
-
-		// Remove Scan target message after 10 sec.
-		setTimeout(function() {
-			var e = document.getElementById('loadingMessage');
-			e.parentElement.removeChild(e);
-		}, 10000);
 	}
 };
 

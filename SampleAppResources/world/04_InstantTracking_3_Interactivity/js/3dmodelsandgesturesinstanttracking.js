@@ -41,7 +41,10 @@ var World = {
             onChangedState:  function onChangedStateFn(state) {
                 // react to a change in tracking state here
             },
-            deviceHeight: 1.0
+            deviceHeight: 1.0,
+            onError: function(errorMessage) {
+                alert(errorMessage);
+            }
         });
         
         this.instantTrackable = new AR.InstantTrackable(this.tracker, {
@@ -68,6 +71,9 @@ var World = {
             onTrackingPlaneDragEnded: function onTrackingPlaneDragEndedFn(xPos, yPos) {
                 World.updatePlaneDrag(xPos, yPos);
                 World.initialDrag = false;
+            },
+            onError: function(errorMessage) {
+                alert(errorMessage);
             }
         });
 
@@ -93,7 +99,6 @@ var World = {
     },
 
     updatePlaneDrag: function updatePlaneDragFn(xPos, yPos) {
-
         if (World.requestedModel >= 0) {
             World.addModel(World.requestedModel, xPos, yPos);
             World.requestedModel = -1;

@@ -44,11 +44,17 @@ var World = {
 			onLoaded: function () {
 				World.resourcesLoaded = true;
 				this.loadingStep;
-			}
+			},
+            onError: function(errorMessage) {
+            	alert(errorMessage);
+            }
 		});
 
 		this.tracker = new AR.ImageTracker(this.targetCollectionResource, {
-			onTargetsLoaded: this.loadingStep
+			onTargetsLoaded: this.loadingStep,
+            onError: function(errorMessage) {
+            	alert(errorMessage);
+            }
 		});
 		
 		/*
@@ -60,11 +66,6 @@ var World = {
 		*/
 		World.modelCar = new AR.Model("assets/car.wt3", {
 			onLoaded: this.loadingStep,
-			/*
-				The drawables are made clickable by setting their onClick triggers. Click triggers can be set in the options of the drawable when the drawable is created. Thus, when the 3D model onClick: this.toggleAnimateModel is set in the options it is then passed to the AR.Model constructor. Similar the button's onClick: this.toggleAnimateModel trigger is set in the options passed to the AR.ImageDrawable constructor. toggleAnimateModel() is therefore called when the 3D model or the button is clicked.
-
-				Inside the toggleAnimateModel() function, it is checked if the animation is running and decided if it should be started, resumed or paused.
-			*/
 			scale: {
 				x: 0.0,
 				y: 0.0,
@@ -87,7 +88,6 @@ var World = {
 			onDragChanged: function(x, y) {
 				if (World.snapped) {
 					var movement = { x:0, y:0 };
-
 
 					/* Calculate the touch movement between this event and the last one */
 					movement.x = World.previousDragValue.x - x;
@@ -148,7 +148,7 @@ var World = {
 		});
 
 		/*
-			To receive a notification once the image target is inside the field of vision the onEnterFieldOfVision trigger of the AR.ImageTrackable is used. In the example the function appear() is attached. Within the appear function the previously created AR.AnimationGroup is started by calling its start() function which plays the animation once.
+			To receive a notification once the image target is inside the field of vision the onImageRecognized trigger of the AR.ImageTrackable is used. In the example the function appear() is attached. Within the appear function the previously created AR.AnimationGroup is started by calling its start() function which plays the animation once.
 
 			To add the AR.ImageDrawable to the image target together with the 3D model both drawables are supplied to the AR.ImageTrackable.
 		*/
@@ -159,31 +159,34 @@ var World = {
 			snapToScreen: {
 				snapContainer: document.getElementById('snapContainer')
 			},
-			onEnterFieldOfVision: this.appear,
-			onExitFieldOfVision: this.disappear
+			onImageRecognized: this.appear,
+			onImageLost: this.disappear,
+            onError: function(errorMessage) {
+            	alert(errorMessage);
+            }
 		});
 	},
 
-	loadingStep: function loadingStepFn() {
+	removeLoadingBar: function() {
 		if (!World.loaded && World.resourcesLoaded && World.modelCar.isLoaded()) {
+			var e = document.getElementById('loadingMessage');
+			e.parentElement.removeChild(e);
 			World.loaded = true;
+		}
+	},
+
+	loadingStep: function loadingStepFn() {
+		if (World.resourcesLoaded && World.modelCar.isLoaded()) {
 			
 			if ( World.trackableVisible && !World.appearingAnimation.isRunning() ) {
 				World.appearingAnimation.start();
 			}
-			
-			
+						
 			var cssDivLeft = " style='display: table-cell;vertical-align: middle; text-align: right; width: 50%; padding-right: 15px;'";
 			var cssDivRight = " style='display: table-cell;vertical-align: middle; text-align: left;'";
 			document.getElementById('loadingMessage').innerHTML =
 				"<div" + cssDivLeft + ">Scan CarAd ClientTracker Image:</div>" +
 				"<div" + cssDivRight + "><img src='assets/car.png'></img></div>";
-
-			// Remove Scan target message after 10 sec.
-			setTimeout(function() {
-				var e = document.getElementById('loadingMessage');
-				e.parentElement.removeChild(e);
-			}, 10000);
 		}
 	},
 
@@ -207,6 +210,7 @@ var World = {
 	},
 
 	appear: function appearFn() {
+		World.removeLoadingBar();
 		World.trackableVisible = true;
 		if ( World.loaded && !World.snapped ) {
 			// Resets the properties to the initial values.

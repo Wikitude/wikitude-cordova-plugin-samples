@@ -66,7 +66,7 @@ var World = {
 		}
 	},
 
-	// updates status message shon in small "i"-button aligned bottom center
+	// updates status message shown in small "i"-button aligned bottom center
 	updateStatusMessage: function updateStatusMessageFn(message, isWarning) {
 
 		var themeToUse = isWarning ? "e" : "c";
@@ -114,7 +114,8 @@ var World = {
 		$("#poi-detail-title").html(marker.poiData.title);
 		$("#poi-detail-description").html(marker.poiData.description);
 
-		/* It's ok for AR.Location subclass objects to return a distance of `undefined`. In case such a distance was calculated when all distances were queried in `updateDistanceToUserValues`, we recalcualte this specific distance before we update the UI. */
+		
+		// It's ok for AR.Location subclass objects to return a distance of `undefined`. In case such a distance was calculated when all distances were queried in `updateDistanceToUserValues`, we recalculate this specific distance before we update the UI.
 		if( undefined == marker.distanceToUser ) {
 			marker.distanceToUser = marker.markerObject.locations[0].distanceToUser();
 		}
@@ -143,7 +144,7 @@ var World = {
 	// returns distance in meters of placemark with maxdistance * 1.1
 	getMaxDistance: function getMaxDistanceFn() {
 
-		// sort palces by distance so the first entry is the one with the maximum distance
+		// sort places by distance so the first entry is the one with the maximum distance
 		World.markerList.sort(World.sortByDistanceSortingDescending);
 
 		// use distanceToUser to get max-distance

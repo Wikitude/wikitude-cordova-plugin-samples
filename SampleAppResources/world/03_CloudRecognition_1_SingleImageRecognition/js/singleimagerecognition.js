@@ -1,4 +1,5 @@
 var World = {
+	loaded: false,
 	tracker: null,
     cloudRecognitionService: null,
 
@@ -9,7 +10,7 @@ var World = {
 
 	/*
 		First an AR.ImageTracker connected with an AR.CloudRecognitionService needs to be created in order to start the recognition engine.
-		It is initialized with your clinet token and the id of one of your target collections.
+		It is initialized with your client token and the id of one of your target collections.
 		Optional parameters are passed as object in the last argument. In this case callback functions for the onInitialized and onError triggers are set.
 		Once the tracker is fully loaded the function trackerLoaded() is called, should there be an error initializing the CloudRecognitionService the
 		function trackerError() is called instead.
@@ -90,8 +91,13 @@ var World = {
 			World.wineLabelAugmentation = new AR.ImageTrackable(World.tracker, response.targetInfo.name , {
 				drawables: {
 					cam: [World.bannerImgOverlay, World.wineLabelOverlay]
-				}
+				},
+	            onError: function(errorMessage) {
+	            	alert(errorMessage);
+	            }
 			});
+
+			World.removeLoadingBar();
 		} else {
 			/*
 				Image recognition failed. An error message will be displayed to the user.
@@ -110,7 +116,7 @@ var World = {
 	},
 
 	/*
-		In this function the recognition will be started, it is triggered by the onClick event of the scanButton.
+		In this function the recognition will be started. It is triggered by the onClick event of the scanButton.
 	*/
 	scan: function scanFn() {
 		/*
@@ -125,12 +131,20 @@ var World = {
 		World.showUserInstructions();
 	},
 
+	removeLoadingBar: function() {
+		if (!World.loaded) {
+			var e = document.getElementById('loadingMessage');
+			e.parentElement.removeChild(e);
+			World.loaded = true;
+		}
+	},
+
 	showUserInstructions: function showUserInstructionsFn() {
 		var cssDivLeft = " style='display: table-cell;vertical-align: middle; text-align: right; width: 20%; padding-right: 15px;'";
 		var cssDivRight = " style='display: table-cell;vertical-align: middle; text-align: center;'";
 		var img = "style='margin-right:5px'";
 
-		document.getElementById('messageBox').innerHTML =
+		document.getElementById('loadingMessage').innerHTML =
 			"<div" + cssDivLeft + ">Scan: </div>" +
 			"<div" + cssDivRight + ">" +
 				"<img " + img + " src='assets/austria.jpg'></img>" +
@@ -139,11 +153,6 @@ var World = {
 				"<img " + img + " src='assets/germany.jpg'></img>" +
 				"<img " + img + " src='assets/italy.jpg'></img>" +
 			"</div>";
-
-		setTimeout(function() {
-			var e = document.getElementById('messageBox');
-			e.parentElement.removeChild(e);
-		}, 10000);
 	}
 };
 

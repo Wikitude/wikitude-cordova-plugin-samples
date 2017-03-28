@@ -19,11 +19,17 @@ var World = {
             onLoaded: function () {
                 World.resourcesLoaded = true;
                 this.loadingStep;
+            },
+            onError: function(errorMessage) {
+            	alert(errorMessage);
             }
         });
 
         this.tracker = new AR.ImageTracker(this.targetCollectionResource, {
-            onTargetsLoaded: this.loadingStep
+            onTargetsLoaded: this.loadingStep,
+            onError: function(errorMessage) {
+            	alert(errorMessage);
+            }
         });
 
 		/*
@@ -87,31 +93,34 @@ var World = {
 			drawables: {
 				cam: [this.modelCar, buttonRotate]
 			},
-			onEnterFieldOfVision: this.appear,
-			onExitFieldOfVision: this.disappear
+			onImageRecognized: this.appear,
+			onImageLost: this.disappear,
+            onError: function(errorMessage) {
+            	alert(errorMessage);
+            }
 		});
 	},
 
-	loadingStep: function loadingStepFn() {
+	removeLoadingBar: function() {
 		if (!World.loaded && World.resourcesLoaded && World.modelCar.isLoaded()) {
+			var e = document.getElementById('loadingMessage');
+			e.parentElement.removeChild(e);
 			World.loaded = true;
+		}
+	},
+
+	loadingStep: function loadingStepFn() {
+		if (World.resourcesLoaded && World.modelCar.isLoaded()) {
 			
 			if ( World.trackableVisible && !World.appearingAnimation.isRunning() ) {
 				World.appearingAnimation.start();
 			}
-			
-			
+						
 			var cssDivLeft = " style='display: table-cell;vertical-align: middle; text-align: right; width: 50%; padding-right: 15px;'";
 			var cssDivRight = " style='display: table-cell;vertical-align: middle; text-align: left;'";
 			document.getElementById('loadingMessage').innerHTML =
 				"<div" + cssDivLeft + ">Scan CarAd ClientTracker Image:</div>" +
 				"<div" + cssDivRight + "><img src='assets/car.png'></img></div>";
-
-			// Remove Scan target message after 10 sec.
-			setTimeout(function() {
-				var e = document.getElementById('loadingMessage');
-				e.parentElement.removeChild(e);
-			}, 10000);
 		}
 	},
 
@@ -135,6 +144,7 @@ var World = {
 	},
 
 	appear: function appearFn() {
+		World.removeLoadingBar();
 		World.trackableVisible = true;
 		if ( World.loaded ) {
 			// Resets the properties to the initial values.

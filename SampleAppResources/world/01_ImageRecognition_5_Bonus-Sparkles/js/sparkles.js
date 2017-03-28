@@ -18,7 +18,10 @@ var World = {
 		});
 
 		this.tracker = new AR.ImageTracker(this.targetCollectionResource, {
-			onTargetsLoaded: this.worldLoaded
+			onTargetsLoaded: this.worldLoaded,
+            onError: function(errorMessage) {
+            	alert(errorMessage);
+            }
 		});
 
 		/*
@@ -111,7 +114,11 @@ var World = {
 		var pageOne = new AR.ImageTrackable(this.tracker, "pageOne", {
 			drawables: {
 				cam: [overlayOne, pageOneButton, weatherWidget, sparkles]
-			}
+			},
+			onImageRecognized: this.removeLoadingBar,
+            onError: function(errorMessage) {
+            	alert(errorMessage);
+            }
 		});
 	},
 
@@ -125,18 +132,20 @@ var World = {
 		return new AR.ImageDrawable(this.imgButton, size, options);
 	},
 
+	removeLoadingBar: function() {
+		if (!World.loaded) {
+			var e = document.getElementById('loadingMessage');
+			e.parentElement.removeChild(e);
+			World.loaded = true;
+		}
+	},
+
 	worldLoaded: function worldLoadedFn() {
 		var cssDivLeft = " style='display: table-cell;vertical-align: middle; text-align: right; width: 50%; padding-right: 15px;'";
 		var cssDivRight = " style='display: table-cell;vertical-align: middle; text-align: left;'";
 		document.getElementById('loadingMessage').innerHTML =
 			"<div" + cssDivLeft + ">Scan Target &#35;1 (surfer):</div>" +
 			"<div" + cssDivRight + "><img src='assets/surfer.png'></img></div>";
-
-		// Remove Scan target message after 10 sec.
-		setTimeout(function() {
-			var e = document.getElementById('loadingMessage');
-			e.parentElement.removeChild(e);
-		}, 10000);
 	}
 };
 

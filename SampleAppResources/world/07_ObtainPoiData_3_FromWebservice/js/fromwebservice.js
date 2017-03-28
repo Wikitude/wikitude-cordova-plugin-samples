@@ -53,7 +53,7 @@ var World = {
 		World.updateStatusMessage(currentPlaceNr + ' places loaded');
 	},
 
-	// updates status message shon in small "i"-button aligned bottom center
+	// updates status message shown in small "i"-button aligned bottom center
 	updateStatusMessage: function updateStatusMessageFn(message, isWarning) {
 
 		var themeToUse = isWarning ? "e" : "c";

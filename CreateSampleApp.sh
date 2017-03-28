@@ -10,6 +10,7 @@
 SAMPLE_APP_DIRECTORY=
 BUILD_iOS=false
 BUILD_ANDROID=false
+BUILD_PROGRAM=cordova
 
 INSTALLER_DIRECTORY=$(pwd)
 
@@ -24,6 +25,9 @@ Usage: $0 [options] [-]
 
 	-d
 	Specifies the sample application destination directory (will be created)
+
+	-p
+	Specifies which build program will be used. Can be either 'cordova' or 'phonegap'
 
 	-ios
 	Specifies if iOS is installed
@@ -44,6 +48,7 @@ while [ "$#" -gt 0 ]; do
 		-ios) shift; BUILD_iOS=$1;;
 		-android) shift; BUILD_ANDROID=$1;;
 		-h|--help) usage; exit 0;;
+		-p) shift; BUILD_PROGRAM=$1;;
 		--) shift; break;;
 		-*) echo "unknown option: '$1'";;
 		*) break;; # reached the list of file names
@@ -52,4 +57,4 @@ while [ "$#" -gt 0 ]; do
 done
 
 cd Scripts
-sh WikitudePhoneGapSampleGenerator.sh $SAMPLE_APP_DIRECTORY com.wikitude.phonegapsamples "Plugin Samples" "$BUILD_iOS" "$BUILD_ANDROID" "$INSTALLER_DIRECTORY/SampleAppResources"
+sh WikitudePhoneGapSampleGenerator.sh $SAMPLE_APP_DIRECTORY com.wikitude.phonegapsamples "Plugin Samples" "$BUILD_iOS" "$BUILD_ANDROID" "$INSTALLER_DIRECTORY/SampleAppResources" $BUILD_PROGRAM

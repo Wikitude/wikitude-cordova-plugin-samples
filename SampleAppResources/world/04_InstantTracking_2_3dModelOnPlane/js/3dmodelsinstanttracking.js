@@ -19,7 +19,10 @@ var World = {
             },
             // device height needs to be as accurate as possible to have an accurate scale
             // returned by the Wikitude SDK
-            deviceHeight: 1.0
+            deviceHeight: 1.0,
+            onError: function(errorMessage) {
+                alert(errorMessage);
+            }
         });
         
         this.instantTrackable = new AR.InstantTrackable(this.tracker, {
@@ -38,6 +41,9 @@ var World = {
                 // instant tracking plane. they can be applied to the transform component
                 // directly
                 World.addModel(xpos, ypos);
+            },
+            onError: function(errorMessage) {
+                alert(errorMessage);
             }
         });
     },

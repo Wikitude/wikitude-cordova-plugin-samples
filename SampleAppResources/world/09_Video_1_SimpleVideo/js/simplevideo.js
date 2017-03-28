@@ -9,10 +9,16 @@ var World = {
 	createOverlays: function createOverlaysFn() {
 		/* Initialize ClientTracker */
 		this.targetCollectionResource = new AR.TargetCollectionResource("assets/magazine.wtc", {
+            onError: function(errorMessage) {
+            	alert(errorMessage);
+            }
         });
 
         this.tracker = new AR.ImageTracker(this.targetCollectionResource, {
-            onTargetsLoaded: this.worldLoaded
+            onTargetsLoaded: this.worldLoaded,
+            onError: function(errorMessage) {
+            	alert(errorMessage);
+            }
         });
 
 		/*
@@ -33,7 +39,7 @@ var World = {
 
 			Note that this time we use "*" as target name. That means that the AR.ImageTrackable will respond to any target that is defined in the target collection. You can use wildcards to specify more complex name matchings. E.g. 'target_?' to reference 'target_1' through 'target_9' or 'target*' for any targets names that start with 'target'.
 
-			To start the video immediately after the target is recognized we call play inside the onEnterFieldOfVision trigger. Supplying -1 to play tells the Wikitude SDK to loop the video infinitely. Choose any positive number to re-play it multiple times.
+			To start the video immediately after the target is recognized we call play inside the onImageRecognized trigger. Supplying -1 to play tells the Wikitude SDK to loop the video infinitely. Choose any positive number to re-play it multiple times.
 
 			Once the video has been started for the first time (indicated by this.hasVideoStarted), we call pause every time the target is lost and resume every time the tracker is found again to continue the video where it left off.
 		*/
@@ -41,19 +47,31 @@ var World = {
 			drawables: {
 				cam: [video]
 			},
-			onEnterFieldOfVision: function onEnterFieldOfVisionFn() {
+			onImageRecognized: function onImageRecognizedFn() {
 				if (this.hasVideoStarted) {
 					video.resume();
 				}
 				else {
 					this.hasVideoStarted = true;
 					video.play(-1);
-				}				
+				}
+				World.removeLoadingBar();				
 			},
-			onExitFieldOfVision: function onExitFieldOfVisionFn() {
+			onImageLost: function onImageLostFn() {
 				video.pause();
-			}
+			},
+            onError: function(errorMessage) {
+            	alert(errorMessage);
+            }
 		});
+	},
+
+	removeLoadingBar: function() {
+		if (!World.loaded) {
+			var e = document.getElementById('loadingMessage');
+			e.parentElement.removeChild(e);
+			World.loaded = true;
+		}
 	},
 
 	worldLoaded: function worldLoadedFn() {
@@ -64,12 +82,6 @@ var World = {
             "<div" + cssDivInstructions + ">Scan Target &#35;1 (surfer) or &#35;2 (biker):</div>" +
             "<div" + cssDivSurfer + "><img src='assets/surfer.png'></img></div>" +
             "<div" + cssDivBiker + "><img src='assets/bike.png'></img></div>";
-
-		// Remove Scan target message after 10 sec.
-		setTimeout(function() {
-			var e = document.getElementById('loadingMessage');
-			e.parentElement.removeChild(e);
-		}, 10000);
 	}
 };
 

@@ -11,12 +11,18 @@ var World = {
 			Use a specific target name to respond only to a certain target or use a wildcard to respond to any or a certain group of targets.
 		*/
 		this.targetCollectionResource = new AR.TargetCollectionResource("assets/magazine.wtc", {
+            onError: function(errorMessage) {
+            	alert(errorMessage);
+            }
 		});
 
 		this.tracker = new AR.ImageTracker(this.targetCollectionResource, {
             onTargetsLoaded: this.worldLoaded,
             physicalTargetImageHeights: {
                 pageOne: 286
+            },
+            onError: function(errorMessage) {
+            	alert(errorMessage);
             }
         });
 
@@ -47,10 +53,22 @@ var World = {
 					overlayOne.rotate.z = distance;
 				}
 			},
-			onExitFieldOfVision: function() {
+			onImageRecognized: this.removeLoadingBar,
+			onImageLost: function() {
 				document.getElementById('distanceDisplay').innerHTML = "Distance from target: unknown";
-			}
+			},
+            onError: function(errorMessage) {
+            	alert(errorMessage);
+            }
 		});
+	},
+
+	removeLoadingBar: function() {
+		if (!World.loaded) {
+			var e = document.getElementById('loadingMessage');
+			e.parentElement.removeChild(e);
+			World.loaded = true;
+		}
 	},
 
 	worldLoaded: function worldLoadedFn() {
@@ -59,12 +77,6 @@ var World = {
 		document.getElementById('loadingMessage').innerHTML =
 			"<div" + cssDivLeft + ">Scan Target &#35;1 (surfer), then move closer to the target</div>" +
 			"<div" + cssDivRight + "><img src='assets/surfer.png'></img></div>";
-
-		// Remove Scan target message after 10 sec.
-		setTimeout(function() {
-			var e = document.getElementById('loadingMessage');
-			e.parentElement.removeChild(e);
-		}, 10000);
 	}
 };
 

@@ -71,7 +71,7 @@ var World = {
 		}
 	},
 
-	// updates status message shon in small "i"-button aligned bottom center
+	// updates status message shown in small "i"-button aligned bottom center
 	updateStatusMessage: function updateStatusMessageFn(message, isWarning) {
 
 		var themeToUse = isWarning ? "e" : "c";
@@ -136,7 +136,7 @@ var World = {
 	// returns distance in meters of placemark with maxdistance * 1.1
 	getMaxDistance: function getMaxDistanceFn() {
 
-		// sort palces by distance so the first entry is the one with the maximum distance
+		// sort places by distance so the first entry is the one with the maximum distance
 		World.markerList.sort(World.sortByDistanceSortingDescending);
 
 		// use distanceToUser to get max-distance

@@ -31,11 +31,17 @@ var World = {
 		    Use a specific target name to respond only to a certain target or use a wildcard to respond to any or a certain group of targets.
 		*/
 		this.targetCollectionResource = new AR.TargetCollectionResource("assets/face.wtc", {
-			onLoaded: this.worldLoaded
+			onLoaded: this.worldLoaded,
+            onError: function(errorMessage) {
+            	alert(errorMessage);
+            }
 		});
 
 		this.tracker = new AR.ImageTracker(this.targetCollectionResource, {
-		    onTargetsLoaded: this.worldLoaded
+		    onTargetsLoaded: this.worldLoaded,
+            onError: function(errorMessage) {
+            	alert(errorMessage);
+            }
 		});
 
         World.initPositionValues();
@@ -136,15 +142,18 @@ var World = {
 			drawables: {
 				cam: [overlay]
 			},
-			onEnterFieldOfVision: this.enterFieldOfVision,
-			onExitFieldOfVision: this.exitFieldOfVision
+			onImageRecognized: this.imageRecognized,
+			onImageLost: this.imageLost,
+            onError: function(errorMessage) {
+            	alert(errorMessage);
+            }
 		});
 		imageTrackable.enabled = false;
 
 		this.imageTrackables.push(imageTrackable);
     },
 
-    enterFieldOfVision: function() {
+    imageRecognized: function() {
     	if (!World.targetAcquired) {
     		World.targetAcquired = true;
     		document.getElementById("overlayPicker").className = "overlayPicker";
@@ -153,7 +162,7 @@ var World = {
     	}
     },
 
-    exitFieldOfVision: function() {
+    imageLost: function() {
     	if (World.targetAcquired) {
     		World.targetAcquired = false;
     		document.getElementById("overlayPicker").className = "overlayPickerInactive";
@@ -204,7 +213,7 @@ var World = {
 	},
 
 	/*
-		resets all overlays to their initial values and disables their imageTrackables
+		resets all overlays to their initial values and disables their imageTrackables so they become invisible
 	*/
 	clearOverlays: function () {
 
@@ -231,9 +240,14 @@ var World = {
 		overlay.scale.y = defaultScaleValue;
 	},
 
+	/*
+		takes a screenshot
+	*/
 	captureScreen: function captureScreenFn() {
 		if (World.loaded && World.targetAcquired) {
-			document.location = "architectsdk://button?action=captureScreen";
+			AR.platform.sendJSONObject({
+				action: "capture_screen"
+			});
 		}
 	},
 
