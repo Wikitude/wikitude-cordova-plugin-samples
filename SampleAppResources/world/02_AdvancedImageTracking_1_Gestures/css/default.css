@@ -1,3 +1,9 @@
+#page1 {
+	overflow: hidden;
+	background: none;
+	height: 100%;
+}
+
 .info {
 	font-size: large;
 	position: relative;
@@ -10,6 +16,7 @@
 	left: 0;
 	opacity: 0.7;
 	display: table;
+	z-index: 1;
 }
 
 .overlayPickerInactive {
@@ -33,6 +40,8 @@
 @media screen and (orientation: portrait) {
 
 	#overlayPicker {
+		overflow: auto;
+		height: 100%;
 		width: 22%;
 		float: right;
 	}

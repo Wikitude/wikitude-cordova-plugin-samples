@@ -5,6 +5,7 @@ var rotationValues = [];
 var scaleValues = [];
 
 var allCurrentModels = [];
+var allCurrentCircles = [];
 
 var oneFingerGestureAllowed = false;
 
@@ -50,6 +51,7 @@ var World = {
                             fillColor: '#FF8C0A'
                         }
                     });
+                    allCurrentCircles.push(circle);
                     World.instantTrackable.drawables.addCamDrawable(circle);
                 }, function () {
                     alert('nothing hit. try selecting another scene location');
@@ -245,9 +247,9 @@ var World = {
     },
 
     resetModels: function resetModelsFn() {
-        for (var i = 0; i < allCurrentModels.length; i++) {
-            this.instantTrackable.drawables.removeCamDrawable(allCurrentModels[i]);
-        }
+        this.instantTrackable.drawables.removeCamDrawable(allCurrentModels);
+        this.instantTrackable.drawables.removeCamDrawable(allCurrentCircles);
+
         allCurrentModels = [];
         World.resetAllModelValues();
     },

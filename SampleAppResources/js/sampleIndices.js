@@ -483,8 +483,7 @@ var samples = [
                 "geo"
             ],
             "startupConfiguration": {
-                "camera_position": "back",
-                "camera_resolution": "auto"
+                "camera_2_enabled": "true"
             }
         }
     ],
