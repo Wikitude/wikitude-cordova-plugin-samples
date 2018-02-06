@@ -80,7 +80,7 @@ if [ "true" == "$BUILD_IOS" ]; then
     	ICON_DESTINATION_PATH="${DESTINATION_DIRECTORY}"/../platforms/ios/"${PROJECT_NAME}"/Images.xcassets
     	rm -r "$ICON_DESTINATION_PATH"/AppIcon.appiconset
     	cp -R "${SOURCE_DIRECTORY}"/icons/ios/cordova_6/ "$ICON_DESTINATION_PATH"
-    else
+  else
     	# older cordova versions
 		rm -r "$ICON_DESTINATION_PATH"/*
 		cp -R "${SOURCE_DIRECTORY}"/icons/ios/cordova_5/* "$ICON_DESTINATION_PATH"
@@ -88,11 +88,16 @@ if [ "true" == "$BUILD_IOS" ]; then
 fi
 if [ "true" == "$BUILD_ANDROID" ]; then
 	echo "Android (${BUILD_PROGRAM} version '"$(${BUILD_PROGRAM} --version)"')"
-	$BUILD_PROGRAM platform add android@5.0.0
+	$BUILD_PROGRAM platform add android
 
 	# copy app icons
-	ICON_DESTINATION_PATH="${DESTINATION_DIRECTORY}"/../platforms/android/res
-	cp -a "${SOURCE_DIRECTORY}"/icons/android/* "$ICON_DESTINATION_PATH"
+	ICON_DESTINATION_PATH="${DESTINATION_DIRECTORY}"/../platforms/android/app/src/main/res
+	if [ -d "${ICON_DESTINATION_PATH}" ]; then
+    cp -a "${SOURCE_DIRECTORY}"/icons/android/* "$ICON_DESTINATION_PATH"
+  else
+    ICON_DESTINATION_PATH="${DESTINATION_DIRECTORY}"/../platforms/android/res
+    cp -a "${SOURCE_DIRECTORY}"/icons/android/* "$ICON_DESTINATION_PATH"
+  fi
 fi
 
 
@@ -138,6 +143,7 @@ if [ "true" == "$BUILD_IOS" ]; then
 
 	# Add photo library access description key/value to info.plist
 	/usr/libexec/PlistBuddy -c "Add :NSPhotoLibraryUsageDescription string 'Access to your photo library is required for the example 'Bonus: Capture Screen' because it adds a screenshot of the current Architect view.'" "${DESTINATION_DIRECTORY}"/../platforms/ios/"${PROJECT_NAME}"/"${PROJECT_NAME}"-Info.plist
+	/usr/libexec/PlistBuddy -c "Add :NSPhotoLibraryAddUsageDescription string 'Access to your photo library is required for the example 'Bonus: Capture Screen' because it adds a screenshot of the current Architect view.'" "${DESTINATION_DIRECTORY}"/../platforms/ios/"${PROJECT_NAME}"/"${PROJECT_NAME}"-Info.plist
 fi
 
 if [ "true" == "$BUILD_ANDROID" ]; then
