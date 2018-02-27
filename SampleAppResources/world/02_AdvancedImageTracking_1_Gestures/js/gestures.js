@@ -252,7 +252,7 @@ var World = {
 	},
 
 	worldLoaded: function worldLoadedFn() {
-		var cssDivLeft = " style='display: table-cell;vertical-align: middle; text-align: right; width: 30%; padding-right: 15px;'";
+		var cssDivLeft = " style='display: table-cell;vertical-align: middle; text-align: right; width: 50%; padding-right: 15px;'";
 		var cssDivRight = " style='display: table-cell;vertical-align: middle; text-align: left;'";
 		document.getElementById('loadingMessage').innerHTML =
 			"<div" + cssDivLeft + ">Scan Target &#35;1 (Target images):</div>" +

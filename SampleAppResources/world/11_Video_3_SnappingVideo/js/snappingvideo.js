@@ -115,7 +115,7 @@ var World = {
 	},
 
 	worldLoaded: function worldLoadedFn() {
-		var cssDivInstructions = " style='display: table-cell;vertical-align: middle; text-align: right; width: 30%; padding-right: 15px;'";
+		var cssDivInstructions = " style='display: table-cell;vertical-align: middle; text-align: right; width: 50%; padding-right: 15px;'";
 		var cssDivSurfer = " style='display: table-cell;vertical-align: middle; text-align: left; padding-right: 15px; width: 38px'";
 		var cssDivBiker = " style='display: table-cell;vertical-align: middle; text-align: left; padding-right: 15px;'";
 		document.getElementById('loadingMessage').innerHTML =

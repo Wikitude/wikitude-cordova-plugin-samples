@@ -103,7 +103,7 @@ IrAndGeo.showWeb = function() {
 IrAndGeo.loadingStepDone = function() {
     if (!IrAndGeo.error && IrAndGeo.res.buttonStores.isLoaded() && IrAndGeo.res.buttonWeb.isLoaded() && IrAndGeo.res.buttonDeal.isLoaded() && IrAndGeo.res.marker.isLoaded() && IrAndGeo.receivedLocation && IrAndGeo.tracker && IrAndGeo.resourcesLoaded) {
         //everything is loaded
-        var cssDivLeft = " style='display: table-cell;vertical-align: middle; text-align: right; width: 30%; padding-right: 15px;'";
+        var cssDivLeft = " style='display: table-cell;vertical-align: middle; text-align: right; width: 50%; padding-right: 15px;'";
         var cssDivRight = " style='display: table-cell;vertical-align: middle; text-align: left;'";
         document.getElementById('messageElement').innerHTML =
             "<div" + cssDivLeft + ">Scan Shop Image Target:</div>" +

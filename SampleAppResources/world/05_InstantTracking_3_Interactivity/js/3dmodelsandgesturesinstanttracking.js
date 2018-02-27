@@ -253,7 +253,7 @@ var World = {
 
     showUserInstructions: function showUserInstructionsFn(message) {
         document.getElementById('loadingMessage').innerHTML =
-            "<div style='display: table-cell; text-align: left; width: 50%;'>" + message + "</div>";
+            "<div style='display: table-cell; text-align: center; width: 100%;'>" + message + "</div>";
     }
 };
 
