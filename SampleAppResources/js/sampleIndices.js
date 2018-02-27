@@ -484,8 +484,8 @@ var samples = [
             ],
             "startupConfiguration": {
                 "camera_resolution": "auto",
-                "camera_position": "back",
-                "camera_2_enabled": "true"
+                "camera_2_enabled": "true",
+                "camera_position": "back"
             }
         }
     ],

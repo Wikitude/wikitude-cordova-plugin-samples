@@ -22,7 +22,8 @@ body {
     bottom: 0;
     left: 0;
     width: 100%;
-    text-align: center;
+    text-align: left;
+    padding-left: 12px;
 }
 
 #top-wrapper {
