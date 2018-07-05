@@ -1,7 +1,18 @@
 var World = {
     loaded: false,
-    occluderCenterZ: -0.12,
     drawables: [],
+    firetruckRotation: {
+        x: 0,
+        y: 0,
+        z: 0
+    },
+    firetruckCenter: {
+        x: 0,
+        y: -0.14,
+        z: 0
+    },
+    firetruckLength: 0.5,
+    firetruckHeight: 0.28,
 
     init: function initFn() {
         World.createOccluder();
@@ -10,7 +21,7 @@ var World = {
     },
 
     createOccluder: function createOccluderFn() {
-        var occluderScale = 0.0057;
+        var occluderScale = 0.0045 * this.firetruckLength;
 
         this.firetruckOccluder = new AR.Occluder("assets/firetruck_occluder.wt3", {
             onLoaded: this.loadingStep,
@@ -19,10 +30,7 @@ var World = {
                 y: occluderScale,
                 z: occluderScale
             },
-            translate: {
-                x: -0.25,
-                z: -0.3
-            },
+            translate: this.firetruckCenter,
             rotate: {
                 x: 180
             }
@@ -31,23 +39,23 @@ var World = {
     },
 
     createCones: function createConesFn() {
-        var coneDistance = 1.0;
+        var coneDistance = this.firetruckLength * 0.8;
 
-        var frontLeftCone = World.getCone(-coneDistance, 0.0, World.occluderCenterZ + coneDistance);
+        var frontLeftCone = World.getCone(-coneDistance, +coneDistance);
         World.drawables.push(frontLeftCone);
 
-        var backLeftCone = World.getCone( coneDistance, 0.0, World.occluderCenterZ + coneDistance);
+        var backLeftCone = World.getCone(+coneDistance, +coneDistance);
         World.drawables.push(backLeftCone);
 
-        var backRightCone = World.getCone( coneDistance, 0.0, World.occluderCenterZ - coneDistance);
+        var backRightCone = World.getCone(+coneDistance, -coneDistance);
         World.drawables.push(backRightCone);
 
-        var frontRightCone = World.getCone(-coneDistance, 0.0, World.occluderCenterZ - coneDistance);
+        var frontRightCone = World.getCone(-coneDistance, -coneDistance);
         World.drawables.push(frontRightCone);
     },
 
-    getCone: function getConeFn(positionX, positionY, positionZ) {
-        var coneScale = 0.05;
+    getCone: function getConeFn(positionX, positionZ) {
+        var coneScale = 0.05 * this.firetruckLength;
 
         return new AR.Model("assets/traffic_cone.wt3", {
             scale: {
@@ -57,10 +65,10 @@ var World = {
             },
             translate: {
                 x: positionX,
-                y: positionY,
+                y: World.firetruckCenter.y,
                 z: positionZ
             },
-            rotate: {   
+            rotate: {
                 x: -90
             }
         });

@@ -2,16 +2,16 @@ var allCurrentModels = [];
 
 var World = {
 
-    init: function initFn() {
-        var message;
-        if (AR.hardware.smart.platformAssistedTrackingSupported) {
-            message = "Running with platform assisted tracking(ARKit or ARCore). <br> Move your phone around until the crosshair turns green, which is when you can start tracking."
-        } else {
-            message = "Running without platform assisted tracking (ARKit or ARCore)."
-        }
+    platformAssisstedTrackingSupported: false,
+    createOverlaysCalled: false,
 
-        this.showUserInstructions(message);
-        this.createOverlays();
+    init: function initFn() {
+        /*
+         * when you'd like to make use of the SMART feature, make sure to call this function
+         * and await the result in the AR.hardware.smart.onPlatformAssistedTrackingAvailabilityChanged
+         * callback
+         */
+        AR.hardware.smart.isPlatformAssistedTrackingSupported();
     },
 
     createOverlays: function createOverlaysFn() {
@@ -30,7 +30,7 @@ var World = {
                     document.getElementById("tracking-start-stop-button").src = "assets/buttons/start.png";
                     document.getElementById("tracking-height-slider-container").style.visibility = "visible";
                 } else {
-                    if (AR.hardware.smart.platformAssistedTrackingSupported) {
+                    if (World.platformAssisstedTrackingSupported) {
                         World.showUserInstructions("Running with platform assisted tracking(ARKit or ARCore).");
                     }
                     document.getElementById("tracking-start-stop-button").src = "assets/buttons/stop.png";
@@ -132,6 +132,38 @@ var World = {
     showUserInstructions: function showUserInstructionsFn(message) {
         document.getElementById('loadingMessage').innerHTML =
             "<div style='display: table-cell; text-align: center; width: 100%;'>" + message + "</div>";
+    }
+};
+
+AR.hardware.smart.onPlatformAssistedTrackingAvailabilityChanged = function(availability) {
+    switch(availability) {
+        case AR.hardware.smart.SmartAvailability.INDETERMINATE_QUERY_FAILED:
+            /* query failed for some reason; try again or accept the fact. */
+            World.showUserInstructions("Could not determine if platform assisted tracking is supported.<br>Running without platform assisted tracking (ARKit or ARCore).");
+            World.createOverlays();
+            break;
+        case AR.hardware.smart.SmartAvailability.CHECKING_QUERY_ONGOING:
+            /* query currently ongoing; be patient and do nothing or inform the user about the ongoing process */
+            break;
+        case AR.hardware.smart.SmartAvailability.UNSUPPORTED:
+            /* not supported, create the scene now without platform assisted tracking enabled */
+            World.showUserInstructions("Running without platform assisted tracking (ARKit or ARCore).");
+            World.createOverlays();
+            break;
+        case AR.hardware.smart.SmartAvailability.SUPPORTED_UPDATE_REQUIRED:
+        case AR.hardware.smart.SmartAvailability.SUPPORTED:
+            /* supported, create the scene now with platform assisted tracking enabled
+             *
+             * SUPPORTED_UPDATE_REQUIRED may be followed by SUPPORTED, make sure not to
+             * create the scene twice
+             */
+            World.platformAssisstedTrackingSupported = true;
+            if (!World.createOverlaysCalled) {
+                World.showUserInstructions("Running with platform assisted tracking(ARKit or ARCore). <br> Move your phone around until the crosshair turns green, which is when you can start tracking.");
+                World.createOverlays();
+                World.createOverlaysCalled = true;
+            }
+            break;
     }
 };
 

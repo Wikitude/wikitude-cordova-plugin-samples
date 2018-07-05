@@ -124,14 +124,12 @@ var World = {
 
                                 var trackingIndicatorDiv = document.getElementById('trackingIndicator');
 
-                                if (this.backgroundClass) {
-                                    trackingIndicatorDiv.classList.remove(this.backgroundClass);
-                                }
+                                World.removeTrackingIndicator();
 
-                                this.backgroundClass = newBackgroundClass;
+                                World.trackingIndicatorBackgroundClass = newBackgroundClass;
 
                                 // add color indication class to the trackingIndicator div
-                                trackingIndicatorDiv.classList.add(this.backgroundClass);
+                                trackingIndicatorDiv.classList.add(World.trackingIndicatorBackgroundClass);
                             },
 
                             // one of the targets is visible
@@ -139,12 +137,14 @@ var World = {
                                 this.isVisible = true;
                                 console.info('onImageRecognized: ' + targetName);
                                 World.hideInfoBox();
+                                document.getElementById("stopExtendedTrackingButton").style.display = "inline";
                             },
 
                             // when losing the target -> snapToScreen is enabled and the close button appears, so user can dismiss rendering of the video
                             onImageLost: function (targetName) {
                                 this.isVisible = false;
                                 console.info('onImageLost: ' + targetName);
+                                World.removeTrackingIndicator();
                             }
                         }
                         );
@@ -158,6 +158,20 @@ var World = {
             });
         } catch (err) {
             World.onError(err);
+        }
+    },
+
+    stopExtendedTracking: function () {
+        World.imageTrackable.stopExtendedTracking();
+        World.removeTrackingIndicator();
+        document.getElementById("stopExtendedTrackingButton").style.display = "none";
+    },
+
+    removeTrackingIndicator: function () {
+        if (World.trackingIndicatorBackgroundClass) {
+            var trackingIndicatorDiv = document.getElementById('trackingIndicator');
+            trackingIndicatorDiv.classList.remove(World.trackingIndicatorBackgroundClass);
+            World.trackingIndicatorBackgroundClass = null;
         }
     },
 

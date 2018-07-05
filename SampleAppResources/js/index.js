@@ -135,8 +135,36 @@ var app = {
             } else if (jsonObject.action === "present_poi_details") {
                 var alertMessage = "Poi '" + jsonObject.id + "' selected\nTitle: " + jsonObject.title + "\nDescription: " + jsonObject.description;
                 alert(alertMessage);
+            } else if (jsonObject.action === "save_current_instant_target") {
+                window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function(fileSystem){
+                    fileSystem.root.getFile("SavedAugmentations.json", {create: true, exclusive: false}, function(fileEntry){
+                        fileEntry.createWriter(function(writer){
+                            writer.write(JSON.stringify(jsonObject.augmentations));
+                        }, app.saveError);
+                    }, app.saveError);
+                }, app.saveError);
+                app.wikitudePlugin.callJavaScript("World.saveCurrentInstantTargetToUrl(\"" + cordova.file.dataDirectory + "SavedInstantTarget.wto" + "\");")
+            } else if (jsonObject.action === "load_existing_instant_target") {
+                window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function(fileSystem){
+                    fileSystem.root.getFile("SavedAugmentations.json", null, function(fileEntry){
+                        fileEntry.file(function(file){
+                            var reader = new FileReader();
+                            reader.onloadend = function(evt) {
+                                var augmentations = evt.target.result;
+                                app.wikitudePlugin.callJavaScript("World.loadExistingInstantTargetFromUrl(\"" + cordova.file.dataDirectory + "SavedInstantTarget.wto" + "\"," + augmentations + ");");
+                            };
+                            reader.readAsText(file);
+                        }, app.loadError);
+                    }, app.loadError);
+                }, app.loadError);
             }
         }
+    },
+    saveError: function(error) {
+        alert("Could not save the current instant target.");
+    },
+    loadError: function(error) {
+        alert("Could not load instant target, please save it first.");
     },
     onBackButton: function() {
         /* Android back button was pressed and the Wikitude PhoneGap Plugin is now closed */

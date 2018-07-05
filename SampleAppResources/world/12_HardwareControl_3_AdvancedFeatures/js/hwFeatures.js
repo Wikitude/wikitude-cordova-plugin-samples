@@ -86,10 +86,12 @@ var World = {
 	},
 
 	// screen was clicked but no geo-object was hit
-	onScreenClick: function onScreenClickFn() {
+	onScreenClick: function onScreenClickFn(touchLocation) {
 		if (World.currentMarker) {
 			World.currentMarker.setDeselected(World.currentMarker);
 		}
+		AR.hardware.camera.setFocusPointOfInterest(touchLocation);
+		AR.hardware.camera.setExposurePointOfInterest(touchLocation);
 	},
 
 	// display camera control panel

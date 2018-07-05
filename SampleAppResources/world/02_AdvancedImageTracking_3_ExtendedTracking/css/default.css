@@ -52,3 +52,19 @@
     background-image: -webkit-radial-gradient(5px 5px, circle cover, darkred, red);
     background-image: radial-gradient(5px 5px 5deg, circle cover, darkred 0%, red 100%, red 95%);
 }
+
+#buttonContainer {
+    position: absolute;
+    bottom: 20px;
+    left: 0;
+    right: 0;
+    text-align: center;
+}
+
+#stopExtendedTrackingButton {
+    padding: 20px;
+    background-color: #ffb300;
+    font-weight: bold;
+    border: none;
+    display: none;
+}

@@ -1,8 +1,19 @@
 var World = {
 	loaded: false,
-    occluderCenterZ: -0.12,
     drawables: [],
     lights: [],
+    firetruckRotation: {
+        x: 0,
+        y: 0,
+        z: 0
+    },
+    firetruckCenter: {
+        x: 0,
+        y: -0.14,
+        z: 0
+    },
+    firetruckLength: 0.5,
+    firetruckHeight: 0.28,
 
     init: function initFn() {
         World.createOccluder();
@@ -13,7 +24,7 @@ var World = {
     },
 
     createOccluder: function createOccluderFn() {
-        var occluderScale = 0.0057;
+        var occluderScale = 0.0045 * this.firetruckLength;
 
         this.firetruckOccluder = new AR.Occluder("assets/firetruck_occluder.wt3", {
             onLoaded: this.loadingStep,
@@ -22,10 +33,7 @@ var World = {
                 y: occluderScale,
                 z: occluderScale
             },
-            translate: {
-                x: -0.25,
-                z: -0.3
-            },
+            translate: this.firetruckCenter,
             rotate: {
                 x: 180
             }
@@ -34,23 +42,23 @@ var World = {
     },
 
     createCones: function createConesFn() {
-        var coneDistance = 1.0;
+        var coneDistance = this.firetruckLength * 0.8;
 
-        var frontLeftCone = World.getCone(-coneDistance, 0.0, World.occluderCenterZ + coneDistance);
+        var frontLeftCone = World.getCone(-coneDistance, +coneDistance);
         World.drawables.push(frontLeftCone);
 
-        var backLeftCone = World.getCone( coneDistance, 0.0, World.occluderCenterZ + coneDistance);
+        var backLeftCone = World.getCone(+coneDistance, +coneDistance);
         World.drawables.push(backLeftCone);
 
-        var backRightCone = World.getCone( coneDistance, 0.0, World.occluderCenterZ - coneDistance);
+        var backRightCone = World.getCone(+coneDistance, -coneDistance);
         World.drawables.push(backRightCone);
 
-        var frontRightCone = World.getCone(-coneDistance, 0.0, World.occluderCenterZ - coneDistance);
+        var frontRightCone = World.getCone(-coneDistance, -coneDistance);
         World.drawables.push(frontRightCone);
     },
 
-    getCone: function getConeFn(positionX, positionY, positionZ) {
-        var coneScale = 0.05;
+    getCone: function getConeFn(positionX, positionZ) {
+        var coneScale = 0.05 * this.firetruckLength;
 
         return new AR.Model("assets/traffic_cone.wt3", {
             scale: {
@@ -60,28 +68,28 @@ var World = {
             },
             translate: {
                 x: positionX,
-                y: positionY,
+                y: World.firetruckCenter.y,
                 z: positionZ
             },
-            rotate: {   
+            rotate: {
                 x: -90
             }
         });
     },
 
     createLights: function createLightsFn() {
-    	var leftLight = World.getLight(-0.6, 0.9, World.occluderCenterZ + 0.2);
+        var leftLight = World.getLight(-this.firetruckLength * 0.45, this.firetruckHeight * 0.7, this.firetruckLength * 0.15);
         World.addLightAnimation(leftLight);
         World.lights.push(leftLight);
-		World.drawables.push(leftLight);
+        World.drawables.push(leftLight);
 
-		var rightLight = World.getLight(-0.6, 0.9, World.occluderCenterZ - 0.2);
+        var rightLight = World.getLight(-this.firetruckLength * 0.45, this.firetruckHeight * 0.7, this.firetruckLength * -0.15);
         World.addLightAnimation(rightLight);
         World.lights.push(rightLight);
-		World.drawables.push(rightLight);
+        World.drawables.push(rightLight);
 
         this.sirenSound = new AR.Sound("assets/siren.wav", {
-            onError : function(){
+            onError : function(errorMessage){
                 alert(errorMessage);
             },
             onFinishedPlaying : function() {
@@ -92,9 +100,9 @@ var World = {
 
         this.lightsButton = new AR.Model("assets/marker.wt3", {
             translate: {
-                x: -0.6,
-                y: 0.9,
-                z: World.occluderCenterZ
+                x: -this.firetruckLength * 0.45,
+                y: this.firetruckHeight * 0.7,
+                z: 0
             },
             rotate: {
                 x: -90
@@ -108,7 +116,7 @@ var World = {
     },
 
     getLight: function getLightFn(positionX, positionY, positionZ) {
-        var lightScale = 0.3;
+        var lightScale = 0.3 * this.firetruckLength;
         var lightResource = new AR.ImageResource("assets/emergency_light.png");
 
         return new AR.ImageDrawable(lightResource, lightScale, {
@@ -129,22 +137,23 @@ var World = {
         var lowerOpacity = 0.5;
         var upperOpacity = 1.0;
 
-    	var lightAnimationForward = new AR.PropertyAnimation(light, "opacity", lowerOpacity, upperOpacity, animationDuration/2, {
-			type: AR.CONST.EASING_CURVE_TYPE.EASE_IN_OUT_SINE
-		});
+        var lightAnimationForward = new AR.PropertyAnimation(light, "opacity", lowerOpacity, upperOpacity, animationDuration/2, {
+            type: AR.CONST.EASING_CURVE_TYPE.EASE_IN_OUT_SINE
+        });
 
-		var lightAnimationBack = new AR.PropertyAnimation(light, "opacity", upperOpacity, lowerOpacity, animationDuration/2, {
-			type: AR.CONST.EASING_CURVE_TYPE.EASE_IN_OUT_SINE
-		});
+        var lightAnimationBack = new AR.PropertyAnimation(light, "opacity", upperOpacity, lowerOpacity, animationDuration/2, {
+            type: AR.CONST.EASING_CURVE_TYPE.EASE_IN_OUT_SINE
+        });
 
-		var lightAnimation = new AR.AnimationGroup(AR.CONST.ANIMATION_GROUP_TYPE.SEQUENTIAL, [lightAnimationForward, lightAnimationBack]);
+        var lightAnimation = new AR.AnimationGroup(AR.CONST.ANIMATION_GROUP_TYPE.SEQUENTIAL, [lightAnimationForward, lightAnimationBack]);
         lightAnimation.start(-1);
     },
 
     createScrewdriver: function createScrewdriverFn() {
-        var screwdriverScale = 0.04;
-        var screwdriverPositionX = -0.52;
-        var screwdriverPositionY = 0.24;
+        var screwdriverScale = 0.04 * this.firetruckLength;
+        var screwdriverPositionX = - 0.48 * this.firetruckLength;
+        var screwdriverPositionY = -0.1 * this.firetruckLength;
+        var screwdriverPositionZ = 0.40 * this.firetruckLength;
 
         this.screwdriver = new AR.Model("assets/screwdriver.wt3", {
             scale: {
@@ -154,7 +163,8 @@ var World = {
             },
             translate: {
                 x: screwdriverPositionX,
-                y: screwdriverPositionY
+                y: screwdriverPositionY,
+                z: screwdriverPositionZ
             },
             rotate: {
                 y: 180
@@ -172,7 +182,8 @@ var World = {
             },
             translate: {
                 x: screwdriverPositionX,
-                y: screwdriverPositionY
+                y: screwdriverPositionY,
+                z: screwdriverPositionZ
             },
             enabled: false
         });
@@ -188,7 +199,7 @@ var World = {
             translate: {
                 x: screwdriverPositionX,
                 y: screwdriverPositionY,
-                z: World.occluderCenterZ + 0.7
+                z: screwdriverPositionZ
             },
             rotate: {
                 y: -90
@@ -199,9 +210,9 @@ var World = {
 
         this.tireButton = new AR.Model("assets/marker.wt3", {
             translate: {
-                x: -0.55,
-                y: 0.25,
-                z: World.occluderCenterZ + 0.4
+                x: screwdriverPositionX,
+                y: screwdriverPositionY,
+                z: screwdriverPositionZ
             },
             onClick: function() {
                 World.runScrewdriverAnimation();
@@ -212,8 +223,8 @@ var World = {
     },
 
     addButtonAnimation: function addButtonAnimationFn(button) {
-        var smallerScale = 0.03;
-        var biggerScale = 0.04;
+        var smallerScale = 0.03 * this.firetruckLength;
+        var biggerScale = 0.04 * this.firetruckLength;
         var scaleAnimationDuration = 2000;
 
         // x
@@ -254,17 +265,17 @@ var World = {
 
         var animationDuration = 2000;
 
-        var translateDistance = 0.2;
-        var screwdriverZOffset = World.occluderCenterZ + 1.0;
+        var translateDistance = 0.2 * this.firetruckLength;
+        var screwdriverZOffset = this.firetruckLength;
 
-        var screwdriverTranslateAnimation = new AR.PropertyAnimation(World.screwdriver, "translate.z", screwdriverZOffset, screwdriverZOffset + translateDistance, animationDuration, {}, {
+        var screwdriverTranslateAnimation = new AR.PropertyAnimation(World.screwdriver, "translate.z", screwdriverZOffset + translateDistance, screwdriverZOffset, animationDuration, {}, {
             onFinish: function() {
                 World.setScrewdriverEnabled(false);
             }
         });
 
-        var screwZOffset = screwdriverZOffset - 0.65;
-        var screwTranslateAnimation = new AR.PropertyAnimation(World.screw, "translate.z", screwZOffset, screwZOffset + translateDistance, animationDuration);
+        var screwZOffset = screwdriverZOffset - 0.65 * this.firetruckLength;
+        var screwTranslateAnimation = new AR.PropertyAnimation(World.screw, "translate.z", screwZOffset + translateDistance, screwZOffset, animationDuration);
 
         var arrowRotationAnimation = new AR.PropertyAnimation(World.turningArrow, "rotate.z", 0, 360, animationDuration);
 
