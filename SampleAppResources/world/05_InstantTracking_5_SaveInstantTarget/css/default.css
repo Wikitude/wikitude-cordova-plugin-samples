@@ -56,7 +56,6 @@ body {
     display: table;
 }
 
-
 .image-button {
     width: 14%;
 }
@@ -69,6 +68,7 @@ and (orientation: portrait) {
         max-height: 100px;
     }
 }
+
 @media only screen
 and (min-device-width: 720px)
 and (orientation: landscape) {

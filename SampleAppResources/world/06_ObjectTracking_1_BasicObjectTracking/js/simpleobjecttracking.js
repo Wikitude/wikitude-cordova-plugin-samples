@@ -24,7 +24,7 @@ var World = {
         var occluderScale = 0.0045 * this.firetruckLength;
 
         this.firetruckOccluder = new AR.Occluder("assets/firetruck_occluder.wt3", {
-            onLoaded: this.loadingStep,
+            onLoaded: World.showInfoBar,
             scale: {
                 x: occluderScale,
                 y: occluderScale,
@@ -33,7 +33,8 @@ var World = {
             translate: this.firetruckCenter,
             rotate: {
                 x: 180
-            }
+            },
+            onError: World.onError
         });
         World.drawables.push(this.firetruckOccluder);
     },
@@ -70,34 +71,32 @@ var World = {
             },
             rotate: {
                 x: -90
-            }
+            },
+            onError: World.onError
         });
     },
 
     createTracker: function createTrackerFn() {
         this.targetCollectionResource = new AR.TargetCollectionResource("assets/firetruck.wto", {
+            onError: World.onError
         });
 
         this.tracker = new AR.ObjectTracker(this.targetCollectionResource, {
-            onError: function(errorMessage) {
-                alert(errorMessage);
-            }
+            onError: World.onError
         });
-        
+
         this.objectTrackable = new AR.ObjectTrackable(this.tracker, "*", {
             drawables: {
                 cam: World.drawables
             },
-            onObjectRecognized: this.objectRecognized,
-            onObjectLost: this.objectLost,
-            onError: function(errorMessage) {
-                alert(errorMessage);
-            }
+            onObjectRecognized: World.objectRecognized,
+            onObjectLost: World.objectLost,
+            onError: World.onError
         });
     },
 
     objectRecognized: function objectRecognizedFn() {
-        World.removeLoadingBar();
+        World.hideInfoBar();
         World.setAugmentationsEnabled(true);
     },
 
@@ -111,22 +110,17 @@ var World = {
         }
     },
 
-    removeLoadingBar: function removeLoadingBarFn() {
-        if (!World.loaded && World.firetruckOccluder.isLoaded()) {
-            var e = document.getElementById('loadingMessage');
-            e.parentElement.removeChild(e);
-            World.loaded = true;
-        }
+    onError: function onErrorFn(error) {
+        alert(error)
     },
 
-    loadingStep: function loadingStepFn() {
-        if (World.firetruckOccluder.isLoaded()) {
-            var cssDivLeft = " style='display: table-cell;vertical-align: middle; text-align: right; width: 50%; padding-right: 15px;'";
-            var cssDivRight = " style='display: table-cell;vertical-align: middle; text-align: left;'";
-            document.getElementById('loadingMessage').innerHTML =
-                "<div" + cssDivLeft + ">Scan Firetruck:</div>" +
-                "<div" + cssDivRight + "><img src='assets/firetruck_image.png'></img></div>";
-        }
+    hideInfoBar: function hideInfoBarFn() {
+        document.getElementById("infoBox").style.display = "none";
+    },
+
+    showInfoBar: function worldLoadedFn() {
+        document.getElementById("infoBox").style.display = "table";
+        document.getElementById("loadingMessage").style.display = "none";
     }
 };
 

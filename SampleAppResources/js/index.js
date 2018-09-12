@@ -139,7 +139,7 @@ var app = {
                 window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function(fileSystem){
                     fileSystem.root.getFile("SavedAugmentations.json", {create: true, exclusive: false}, function(fileEntry){
                         fileEntry.createWriter(function(writer){
-                            writer.write(JSON.stringify(jsonObject.augmentations));
+                            writer.write(jsonObject.augmentations);
                         }, app.saveError);
                     }, app.saveError);
                 }, app.saveError);

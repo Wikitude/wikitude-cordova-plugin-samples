@@ -57,4 +57,4 @@ while [ "$#" -gt 0 ]; do
 done
 
 cd Scripts
-sh WikitudePhoneGapSampleGenerator.sh $SAMPLE_APP_DIRECTORY com.wikitude.phonegapsamples "Plugin Samples" "$BUILD_iOS" "$BUILD_ANDROID" "$INSTALLER_DIRECTORY/SampleAppResources" $BUILD_PROGRAM
+sh WikitudePhoneGapSampleGenerator.sh $SAMPLE_APP_DIRECTORY com.wikitude.phonegapsamples "Cordova Examples" "$BUILD_iOS" "$BUILD_ANDROID" "$INSTALLER_DIRECTORY/SampleAppResources" $BUILD_PROGRAM

@@ -5,26 +5,36 @@ var World = {
 
     init: function initFn() {
         /*
-         * when you'd like to make use of the SMART feature, make sure to call this function
-         * and await the result in the AR.hardware.smart.onPlatformAssistedTrackingAvailabilityChanged
-         * callback
+            When you'd like to make use of the SMART feature, make sure to call this function and await the result
+            in the AR.hardware.smart.onPlatformAssistedTrackingAvailabilityChanged callback.
          */
         AR.hardware.smart.isPlatformAssistedTrackingSupported();
     },
 
     createOverlays: function createOverlaysFn() {
+        if (World.createOverlaysCalled) {
+            return;
+        }
 
-        var crossHairsRedImage = new AR.ImageResource("assets/crosshairs_red.png");
+        World.createOverlaysCalled = true;
+
+        var crossHairsRedImage = new AR.ImageResource("assets/crosshairs_red.png", {
+            onError: World.onError
+        });
         this.crossHairsRedDrawable = new AR.ImageDrawable(crossHairsRedImage, 1.0);
 
-        var crossHairsBlueImage = new AR.ImageResource("assets/crosshairs_blue.png");
+        var crossHairsBlueImage = new AR.ImageResource("assets/crosshairs_blue.png", {
+            onError: World.onError
+        });
         this.crossHairsBlueDrawable = new AR.ImageDrawable(crossHairsBlueImage, 1.0);
 
-        var crossHairsGreenImage = new AR.ImageResource("assets/crosshairs_green.png");
+        var crossHairsGreenImage = new AR.ImageResource("assets/crosshairs_green.png", {
+            onError: World.onError
+        });
         this.crossHairsGreenDrawable = new AR.ImageDrawable(crossHairsGreenImage, 1.0);
 
         this.tracker = new AR.InstantTracker({
-            onChangedState:  function onChangedStateFn(state) {
+            onChangedState: function onChangedStateFn(state) {
                 if (state === AR.InstantTrackerState.INITIALIZING) {
                     document.getElementById("tracking-start-stop-button").src = "assets/buttons/start.png";
                     document.getElementById("tracking-height-slider-container").style.visibility = "visible";
@@ -37,15 +47,13 @@ var World = {
                     document.getElementById("tracking-height-slider-container").style.visibility = "hidden";
                 }
             },
-            // device height needs to be as accurate as possible to have an accurate scale
-            // returned by the Wikitude SDK
+            /*
+                Device height needs to be as accurate as possible to have an accurate scale returned by the Wikitude
+                SDK.
+             */
             deviceHeight: 1.0,
-            onError: function(errorMessage) {
-                alert(errorMessage);
-            },
-            onChangeStateError: function(e) {
-                alert("" + e.id + " " + e.message);
-            }
+            onError: World.onError,
+            onChangeStateError: World.onError
         });
 
         this.instantTrackable = new AR.InstantTrackable(this.tracker, {
@@ -54,14 +62,12 @@ var World = {
                 initialization: World.crossHairsRedDrawable
             },
             onTrackingStarted: function onTrackingStartedFn() {
-                // do something when tracking is started (recognized)
+                /* Do something when tracking is started (recognized). */
             },
             onTrackingStopped: function onTrackingStoppedFn() {
-                // do something when tracking is stopped (lost)
+                /* Do something when tracking is stopped (lost). */
             },
-            onError: function(errorMessage) {
-                alert(errorMessage);
-            }
+            onError: World.onError
         });
 
         setInterval(
@@ -89,40 +95,41 @@ var World = {
         this.tracker.deviceHeight = parseFloat(height);
     },
 
+    onError: function onErrorFn(error) {
+        alert(error)
+    },
+
     showUserInstructions: function showUserInstructionsFn(message) {
-        document.getElementById('loadingMessage').innerHTML =
-            "<div style='display: table-cell; text-align: center; width: 100%;'>" + message + "</div>";
+        document.getElementById('loadingMessage').innerHTML = message;
     }
 };
 
 AR.hardware.smart.onPlatformAssistedTrackingAvailabilityChanged = function(availability) {
-    switch(availability) {
+    switch (availability) {
         case AR.hardware.smart.SmartAvailability.INDETERMINATE_QUERY_FAILED:
-            /* query failed for some reason; try again or accept the fact. */
-            World.showUserInstructions("Could not determine if platform assisted tracking is supported.<br>Running without platform assisted tracking (ARKit or ARCore).");
+            /* Query failed for some reason; try again or accept the fact. */
+            World.showUserInstructions("Could not determine if platform assisted tracking is supported.<br>" +
+                "Running without platform assisted tracking (ARKit or ARCore).");
             World.createOverlays();
             break;
         case AR.hardware.smart.SmartAvailability.CHECKING_QUERY_ONGOING:
-            /* query currently ongoing; be patient and do nothing or inform the user about the ongoing process */
+            /* Query currently ongoing; be patient and do nothing or inform the user about the ongoing process. */
             break;
         case AR.hardware.smart.SmartAvailability.UNSUPPORTED:
-            /* not supported, create the scene now without platform assisted tracking enabled */
+            /* Not supported, create the scene now without platform assisted tracking enabled. */
             World.showUserInstructions("Running without platform assisted tracking (ARKit or ARCore).");
             World.createOverlays();
             break;
         case AR.hardware.smart.SmartAvailability.SUPPORTED_UPDATE_REQUIRED:
         case AR.hardware.smart.SmartAvailability.SUPPORTED:
-            /* supported, create the scene now with platform assisted tracking enabled
-             *
-             * SUPPORTED_UPDATE_REQUIRED may be followed by SUPPORTED, make sure not to
-             * create the scene twice
+            /*
+                Supported, create the scene now with platform assisted tracking enabled SUPPORTED_UPDATE_REQUIRED
+                may be followed by SUPPORTED, make sure not to create the scene twice (see check in createOverlays).
              */
             World.platformAssisstedTrackingSupported = true;
-            if (!World.createOverlaysCalled) {
-                World.showUserInstructions("Running with platform assisted tracking(ARKit or ARCore). <br> Move your phone around until the crosshair turns green, which is when you can start tracking.");
-                World.createOverlays();
-                World.createOverlaysCalled = true;
-            }
+            World.showUserInstructions("Running with platform assisted tracking(ARKit or ARCore). <br> " +
+                "Move your phone around until the crosshair turns green, which is when you can start tracking.");
+            World.createOverlays();
             break;
     }
 };

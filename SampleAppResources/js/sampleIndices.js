@@ -7,8 +7,8 @@ var samples = [
                 "image_tracking"
             ],
             "startupConfiguration": {
-                "camera_resolution": "auto",
-                "camera_position": "back"
+                "camera_position": "back",
+                "camera_resolution": "auto"
             }
         },
         {
@@ -17,8 +17,8 @@ var samples = [
                 "image_tracking"
             ],
             "startupConfiguration": {
-                "camera_resolution": "auto",
-                "camera_position": "back"
+                "camera_position": "back",
+                "camera_resolution": "auto"
             }
         },
         {
@@ -27,8 +27,8 @@ var samples = [
                 "image_tracking"
             ],
             "startupConfiguration": {
-                "camera_resolution": "auto",
-                "camera_position": "back"
+                "camera_position": "back",
+                "camera_resolution": "auto"
             }
         },
         {
@@ -37,8 +37,8 @@ var samples = [
                 "image_tracking"
             ],
             "startupConfiguration": {
-                "camera_resolution": "auto",
-                "camera_position": "back"
+                "camera_position": "back",
+                "camera_resolution": "auto"
             }
         },
         {
@@ -47,8 +47,8 @@ var samples = [
                 "image_tracking"
             ],
             "startupConfiguration": {
-                "camera_resolution": "auto",
-                "camera_position": "back"
+                "camera_position": "back",
+                "camera_resolution": "auto"
             }
         }
     ],
@@ -59,8 +59,8 @@ var samples = [
                 "image_tracking"
             ],
             "startupConfiguration": {
-                "camera_resolution": "auto",
-                "camera_position": "back"
+                "camera_position": "back",
+                "camera_resolution": "auto"
             }
         },
         {
@@ -69,8 +69,8 @@ var samples = [
                 "image_tracking"
             ],
             "startupConfiguration": {
-                "camera_resolution": "auto",
-                "camera_position": "back"
+                "camera_position": "back",
+                "camera_resolution": "auto"
             }
         },
         {
@@ -79,8 +79,8 @@ var samples = [
                 "image_tracking"
             ],
             "startupConfiguration": {
-                "camera_resolution": "sd_640x480",
-                "camera_position": "back"
+                "camera_position": "back",
+                "camera_resolution": "sd_640x480"
             }
         }
     ],
@@ -91,8 +91,8 @@ var samples = [
                 "image_tracking"
             ],
             "startupConfiguration": {
-                "camera_resolution": "auto",
-                "camera_position": "back"
+                "camera_position": "back",
+                "camera_resolution": "auto"
             }
         },
         {
@@ -101,8 +101,8 @@ var samples = [
                 "image_tracking"
             ],
             "startupConfiguration": {
-                "camera_resolution": "auto",
-                "camera_position": "back"
+                "camera_position": "back",
+                "camera_resolution": "auto"
             }
         },
         {
@@ -111,8 +111,8 @@ var samples = [
                 "image_tracking"
             ],
             "startupConfiguration": {
-                "camera_resolution": "auto",
-                "camera_position": "back"
+                "camera_position": "back",
+                "camera_resolution": "auto"
             }
         }
     ],
@@ -208,8 +208,8 @@ var samples = [
                 "object_tracking"
             ],
             "startupConfiguration": {
-                "camera_resolution": "auto",
-                "camera_position": "back"
+                "camera_position": "back",
+                "camera_resolution": "auto"
             }
         },
         {
@@ -218,8 +218,8 @@ var samples = [
                 "object_tracking"
             ],
             "startupConfiguration": {
-                "camera_resolution": "auto",
-                "camera_position": "back"
+                "camera_position": "back",
+                "camera_resolution": "auto"
             }
         },
         {
@@ -228,8 +228,8 @@ var samples = [
                 "object_tracking"
             ],
             "startupConfiguration": {
-                "camera_resolution": "auto",
-                "camera_position": "back"
+                "camera_position": "back",
+                "camera_resolution": "auto"
             }
         },
         {
@@ -238,8 +238,8 @@ var samples = [
                 "object_tracking"
             ],
             "startupConfiguration": {
-                "camera_resolution": "auto",
-                "camera_position": "back"
+                "camera_position": "back",
+                "camera_resolution": "auto"
             }
         }
     ],
@@ -250,8 +250,8 @@ var samples = [
                 "image_tracking"
             ],
             "startupConfiguration": {
-                "camera_resolution": "auto",
-                "camera_position": "back"
+                "camera_position": "back",
+                "camera_resolution": "auto"
             }
         },
         {
@@ -260,8 +260,8 @@ var samples = [
                 "image_tracking"
             ],
             "startupConfiguration": {
-                "camera_resolution": "auto",
-                "camera_position": "back"
+                "camera_position": "back",
+                "camera_resolution": "auto"
             }
         },
         {
@@ -270,8 +270,8 @@ var samples = [
                 "image_tracking"
             ],
             "startupConfiguration": {
-                "camera_resolution": "auto",
-                "camera_position": "back"
+                "camera_position": "back",
+                "camera_resolution": "auto"
             }
         },
         {
@@ -280,8 +280,8 @@ var samples = [
                 "image_tracking"
             ],
             "startupConfiguration": {
-                "camera_resolution": "auto",
-                "camera_position": "back"
+                "camera_position": "back",
+                "camera_resolution": "auto"
             }
         },
         {
@@ -290,8 +290,8 @@ var samples = [
                 "image_tracking"
             ],
             "startupConfiguration": {
-                "camera_resolution": "auto",
-                "camera_position": "back"
+                "camera_position": "back",
+                "camera_resolution": "auto"
             }
         },
         {
@@ -300,8 +300,8 @@ var samples = [
                 "geo"
             ],
             "startupConfiguration": {
-                "camera_resolution": "auto",
-                "camera_position": "back"
+                "camera_position": "back",
+                "camera_resolution": "auto"
             }
         }
     ],
@@ -312,8 +312,8 @@ var samples = [
                 "geo"
             ],
             "startupConfiguration": {
-                "camera_resolution": "auto",
-                "camera_position": "back"
+                "camera_position": "back",
+                "camera_resolution": "auto"
             }
         },
         {
@@ -322,8 +322,8 @@ var samples = [
                 "geo"
             ],
             "startupConfiguration": {
-                "camera_resolution": "auto",
-                "camera_position": "back"
+                "camera_position": "back",
+                "camera_resolution": "auto"
             }
         },
         {
@@ -332,8 +332,8 @@ var samples = [
                 "geo"
             ],
             "startupConfiguration": {
-                "camera_resolution": "auto",
-                "camera_position": "back"
+                "camera_position": "back",
+                "camera_resolution": "auto"
             }
         },
         {
@@ -342,8 +342,8 @@ var samples = [
                 "geo"
             ],
             "startupConfiguration": {
-                "camera_resolution": "auto",
-                "camera_position": "back"
+                "camera_position": "back",
+                "camera_resolution": "auto"
             }
         }
     ],
@@ -354,8 +354,8 @@ var samples = [
                 "geo"
             ],
             "startupConfiguration": {
-                "camera_resolution": "auto",
-                "camera_position": "back"
+                "camera_position": "back",
+                "camera_resolution": "auto"
             },
             "requiredExtension": "ObtainPoiDataFromApplicationModel"
         },
@@ -365,8 +365,8 @@ var samples = [
                 "geo"
             ],
             "startupConfiguration": {
-                "camera_resolution": "auto",
-                "camera_position": "back"
+                "camera_position": "back",
+                "camera_resolution": "auto"
             }
         },
         {
@@ -375,8 +375,8 @@ var samples = [
                 "geo"
             ],
             "startupConfiguration": {
-                "camera_resolution": "auto",
-                "camera_position": "back"
+                "camera_position": "back",
+                "camera_resolution": "auto"
             }
         }
     ],
@@ -387,8 +387,8 @@ var samples = [
                 "geo"
             ],
             "startupConfiguration": {
-                "camera_resolution": "auto",
-                "camera_position": "back"
+                "camera_position": "back",
+                "camera_resolution": "auto"
             }
         },
         {
@@ -397,8 +397,8 @@ var samples = [
                 "geo"
             ],
             "startupConfiguration": {
-                "camera_resolution": "auto",
-                "camera_position": "back"
+                "camera_position": "back",
+                "camera_resolution": "auto"
             }
         },
         {
@@ -407,8 +407,8 @@ var samples = [
                 "geo"
             ],
             "startupConfiguration": {
-                "camera_resolution": "auto",
-                "camera_position": "back"
+                "camera_position": "back",
+                "camera_resolution": "auto"
             }
         },
         {
@@ -417,8 +417,8 @@ var samples = [
                 "geo"
             ],
             "startupConfiguration": {
-                "camera_resolution": "auto",
-                "camera_position": "back"
+                "camera_position": "back",
+                "camera_resolution": "auto"
             }
         },
         {
@@ -427,8 +427,8 @@ var samples = [
                 "geo"
             ],
             "startupConfiguration": {
-                "camera_resolution": "auto",
-                "camera_position": "back"
+                "camera_position": "back",
+                "camera_resolution": "auto"
             }
         },
         {
@@ -438,8 +438,8 @@ var samples = [
                 "photo_library_screenshot_import"
             ],
             "startupConfiguration": {
-                "camera_resolution": "auto",
-                "camera_position": "back"
+                "camera_position": "back",
+                "camera_resolution": "auto"
             }
         }
     ],
@@ -450,8 +450,8 @@ var samples = [
                 "image_tracking"
             ],
             "startupConfiguration": {
-                "camera_resolution": "auto",
-                "camera_position": "back"
+                "camera_position": "back",
+                "camera_resolution": "auto"
             }
         },
         {
@@ -460,8 +460,8 @@ var samples = [
                 "image_tracking"
             ],
             "startupConfiguration": {
-                "camera_resolution": "auto",
-                "camera_position": "back"
+                "camera_position": "back",
+                "camera_resolution": "auto"
             }
         },
         {
@@ -470,8 +470,8 @@ var samples = [
                 "image_tracking"
             ],
             "startupConfiguration": {
-                "camera_resolution": "auto",
-                "camera_position": "back"
+                "camera_position": "back",
+                "camera_resolution": "auto"
             }
         },
         {
@@ -480,8 +480,8 @@ var samples = [
                 "image_tracking"
             ],
             "startupConfiguration": {
-                "camera_resolution": "auto",
-                "camera_position": "back"
+                "camera_position": "back",
+                "camera_resolution": "auto"
             }
         }
     ],
@@ -501,8 +501,8 @@ var samples = [
                 "geo"
             ],
             "startupConfiguration": {
-                "camera_resolution": "auto",
-                "camera_position": "back"
+                "camera_position": "back",
+                "camera_resolution": "auto"
             }
         },
         {
@@ -511,9 +511,8 @@ var samples = [
                 "geo"
             ],
             "startupConfiguration": {
-                "camera_resolution": "auto",
-                "camera_2_enabled": "true",
-                "camera_position": "back"
+                "camera_position": "back",
+                "camera_resolution": "auto"
             }
         }
     ],
@@ -525,8 +524,8 @@ var samples = [
                 "geo"
             ],
             "startupConfiguration": {
-                "camera_resolution": "auto",
-                "camera_position": "back"
+                "camera_position": "back",
+                "camera_resolution": "auto"
             }
         },
         {
@@ -535,8 +534,8 @@ var samples = [
                 "geo"
             ],
             "startupConfiguration": {
-                "camera_resolution": "auto",
-                "camera_position": "back"
+                "camera_position": "back",
+                "camera_resolution": "auto"
             }
         },
         {
@@ -545,8 +544,8 @@ var samples = [
                 "image_tracking"
             ],
             "startupConfiguration": {
-                "camera_resolution": "auto",
-                "camera_position": "back"
+                "camera_position": "back",
+                "camera_resolution": "auto"
             }
         }
     ]

@@ -1,5 +1,5 @@
 var World = {
-	loaded: false,
+    loaded: false,
     drawables: [],
     lights: [],
     firetruckRotation: {
@@ -27,7 +27,7 @@ var World = {
         var occluderScale = 0.0045 * this.firetruckLength;
 
         this.firetruckOccluder = new AR.Occluder("assets/firetruck_occluder.wt3", {
-            onLoaded: this.loadingStep,
+            onLoaded: World.showInfoBar,
             scale: {
                 x: occluderScale,
                 y: occluderScale,
@@ -36,7 +36,8 @@ var World = {
             translate: this.firetruckCenter,
             rotate: {
                 x: 180
-            }
+            },
+            onError: World.onError
         });
         World.drawables.push(this.firetruckOccluder);
     },
@@ -73,28 +74,31 @@ var World = {
             },
             rotate: {
                 x: -90
-            }
+            },
+            onError: World.onError
         });
     },
 
     createLights: function createLightsFn() {
-        var leftLight = World.getLight(-this.firetruckLength * 0.45, this.firetruckHeight * 0.7, this.firetruckLength * 0.15);
+        var lightPosX = -this.firetruckLength * 0.45;
+        var lightPosY = this.firetruckHeight * 0.7;
+        var lightPosZ = this.firetruckLength * 0.15;
+
+        var leftLight = World.getLight(lightPosX, lightPosY, lightPosZ);
         World.addLightAnimation(leftLight);
         World.lights.push(leftLight);
         World.drawables.push(leftLight);
 
-        var rightLight = World.getLight(-this.firetruckLength * 0.45, this.firetruckHeight * 0.7, this.firetruckLength * -0.15);
+        var rightLight = World.getLight(lightPosX, lightPosY, -lightPosZ);
         World.addLightAnimation(rightLight);
         World.lights.push(rightLight);
         World.drawables.push(rightLight);
 
         this.sirenSound = new AR.Sound("assets/siren.wav", {
-            onError : function(errorMessage){
-                alert(errorMessage);
-            },
-            onFinishedPlaying : function() {
+            onFinishedPlaying: function() {
                 World.setLightsEnabled(false);
-            }
+            },
+            onError: World.onError
         });
         this.sirenSound.load();
 
@@ -109,7 +113,8 @@ var World = {
             },
             onClick: function() {
                 World.setLightsEnabled(true);
-            }
+            },
+            onError: World.onError
         });
         World.addButtonAnimation(this.lightsButton);
         World.drawables.push(this.lightsButton);
@@ -117,7 +122,9 @@ var World = {
 
     getLight: function getLightFn(positionX, positionY, positionZ) {
         var lightScale = 0.3 * this.firetruckLength;
-        var lightResource = new AR.ImageResource("assets/emergency_light.png");
+        var lightResource = new AR.ImageResource("assets/emergency_light.png", {
+            onError: World.onError
+        });
 
         return new AR.ImageDrawable(lightResource, lightScale, {
             translate: {
@@ -132,26 +139,9 @@ var World = {
         });
     },
 
-    addLightAnimation: function addLightAnimationFn(light) {
-        var animationDuration = 500;
-        var lowerOpacity = 0.5;
-        var upperOpacity = 1.0;
-
-        var lightAnimationForward = new AR.PropertyAnimation(light, "opacity", lowerOpacity, upperOpacity, animationDuration/2, {
-            type: AR.CONST.EASING_CURVE_TYPE.EASE_IN_OUT_SINE
-        });
-
-        var lightAnimationBack = new AR.PropertyAnimation(light, "opacity", upperOpacity, lowerOpacity, animationDuration/2, {
-            type: AR.CONST.EASING_CURVE_TYPE.EASE_IN_OUT_SINE
-        });
-
-        var lightAnimation = new AR.AnimationGroup(AR.CONST.ANIMATION_GROUP_TYPE.SEQUENTIAL, [lightAnimationForward, lightAnimationBack]);
-        lightAnimation.start(-1);
-    },
-
     createScrewdriver: function createScrewdriverFn() {
         var screwdriverScale = 0.04 * this.firetruckLength;
-        var screwdriverPositionX = - 0.48 * this.firetruckLength;
+        var screwdriverPositionX = -0.48 * this.firetruckLength;
         var screwdriverPositionY = -0.1 * this.firetruckLength;
         var screwdriverPositionZ = 0.40 * this.firetruckLength;
 
@@ -169,7 +159,8 @@ var World = {
             rotate: {
                 y: 180
             },
-            enabled: false
+            enabled: false,
+            onError: World.onError
         });
         World.drawables.push(this.screwdriver);
 
@@ -185,7 +176,8 @@ var World = {
                 y: screwdriverPositionY,
                 z: screwdriverPositionZ
             },
-            enabled: false
+            enabled: false,
+            onError: World.onError
         });
         World.drawables.push(this.screw);
 
@@ -204,7 +196,8 @@ var World = {
             rotate: {
                 y: -90
             },
-            enabled: false
+            enabled: false,
+            onError: World.onError
         });
         World.drawables.push(this.turningArrow);
 
@@ -216,45 +209,66 @@ var World = {
             },
             onClick: function() {
                 World.runScrewdriverAnimation();
-            }
+            },
+            onError: World.onError
         });
         World.addButtonAnimation(this.tireButton);
         World.drawables.push(this.tireButton);
     },
 
+    addLightAnimation: function addLightAnimationFn(light) {
+        var animationDuration = 500;
+        var lowerOpacity = 0.5;
+        var upperOpacity = 1.0;
+
+        var lightShow = new AR.PropertyAnimation(light, "opacity", lowerOpacity, upperOpacity, animationDuration / 2, {
+            type: AR.CONST.EASING_CURVE_TYPE.EASE_IN_OUT_SINE
+        });
+
+        var lightHide = new AR.PropertyAnimation(light, "opacity", upperOpacity, lowerOpacity, animationDuration / 2, {
+            type: AR.CONST.EASING_CURVE_TYPE.EASE_IN_OUT_SINE
+        });
+
+        var lightAnimation = new AR.AnimationGroup(AR.CONST.ANIMATION_GROUP_TYPE.SEQUENTIAL, [lightShow, lightHide]);
+        lightAnimation.start(-1);
+    },
+
     addButtonAnimation: function addButtonAnimationFn(button) {
-        var smallerScale = 0.03 * this.firetruckLength;
-        var biggerScale = 0.04 * this.firetruckLength;
-        var scaleAnimationDuration = 2000;
+        var scaleS = 0.03 * this.firetruckLength;
+        var scaleL = 0.04 * this.firetruckLength;
+        var scaleDuration = 2000;
 
-        // x
-        var buttonScaleAnimationXOut = new AR.PropertyAnimation(button, "scale.x", smallerScale, biggerScale, scaleAnimationDuration/2, {
+        /* X animations */
+        var buttonScaleAnimationXOut = new AR.PropertyAnimation(button, "scale.x", scaleS, scaleL, scaleDuration / 2, {
             type: AR.CONST.EASING_CURVE_TYPE.EASE_IN_OUT_SINE
         });
-        var buttonScaleAnimationXIn = new AR.PropertyAnimation(button, "scale.x", biggerScale, smallerScale, scaleAnimationDuration/2, {
+        var buttonScaleAnimationXIn = new AR.PropertyAnimation(button, "scale.x", scaleL, scaleS, scaleDuration / 2, {
             type: AR.CONST.EASING_CURVE_TYPE.EASE_IN_OUT_SINE
         });
-        var buttonScaleAnimationX = new AR.AnimationGroup(AR.CONST.ANIMATION_GROUP_TYPE.SEQUENTIAL, [buttonScaleAnimationXOut, buttonScaleAnimationXIn]);
+        var buttonScaleAnimationX = new AR.AnimationGroup(
+            AR.CONST.ANIMATION_GROUP_TYPE.SEQUENTIAL, [buttonScaleAnimationXOut, buttonScaleAnimationXIn]);
 
-        // y
-        var buttonScaleAnimationYOut = new AR.PropertyAnimation(button, "scale.y", smallerScale, biggerScale, scaleAnimationDuration/2, {
+        /* Y animations */
+        var buttonScaleAnimationYOut = new AR.PropertyAnimation(button, "scale.y", scaleS, scaleL, scaleDuration / 2, {
             type: AR.CONST.EASING_CURVE_TYPE.EASE_IN_OUT_SINE
         });
-        var buttonScaleAnimationYIn = new AR.PropertyAnimation(button, "scale.y", biggerScale, smallerScale, scaleAnimationDuration/2, {
+        var buttonScaleAnimationYIn = new AR.PropertyAnimation(button, "scale.y", scaleL, scaleS, scaleDuration / 2, {
             type: AR.CONST.EASING_CURVE_TYPE.EASE_IN_OUT_SINE
         });
-        var buttonScaleAnimationY = new AR.AnimationGroup(AR.CONST.ANIMATION_GROUP_TYPE.SEQUENTIAL, [buttonScaleAnimationYOut, buttonScaleAnimationYIn]);
+        var buttonScaleAnimationY = new AR.AnimationGroup(
+            AR.CONST.ANIMATION_GROUP_TYPE.SEQUENTIAL, [buttonScaleAnimationYOut, buttonScaleAnimationYIn]);
 
-        // z
-        var buttonScaleAnimationZOut = new AR.PropertyAnimation(button, "scale.z", smallerScale, biggerScale, scaleAnimationDuration/2, {
+        /* Z animations */
+        var buttonScaleAnimationZOut = new AR.PropertyAnimation(button, "scale.z", scaleS, scaleL, scaleDuration / 2, {
             type: AR.CONST.EASING_CURVE_TYPE.EASE_IN_OUT_SINE
         });
-        var buttonScaleAnimationZIn = new AR.PropertyAnimation(button, "scale.z", biggerScale, smallerScale, scaleAnimationDuration/2, {
+        var buttonScaleAnimationZIn = new AR.PropertyAnimation(button, "scale.z", scaleL, scaleS, scaleDuration / 2, {
             type: AR.CONST.EASING_CURVE_TYPE.EASE_IN_OUT_SINE
         });
-        var buttonScaleAnimationZ = new AR.AnimationGroup(AR.CONST.ANIMATION_GROUP_TYPE.SEQUENTIAL, [buttonScaleAnimationZOut, buttonScaleAnimationZIn]);
+        var buttonScaleAnimationZ = new AR.AnimationGroup(
+            AR.CONST.ANIMATION_GROUP_TYPE.SEQUENTIAL, [buttonScaleAnimationZOut, buttonScaleAnimationZIn]);
 
-        // start all animation groups
+        /* Start all animation groups. */
         buttonScaleAnimationX.start(-1);
         buttonScaleAnimationY.start(-1);
         buttonScaleAnimationZ.start(-1);
@@ -268,18 +282,31 @@ var World = {
         var translateDistance = 0.2 * this.firetruckLength;
         var screwdriverZOffset = this.firetruckLength;
 
-        var screwdriverTranslateAnimation = new AR.PropertyAnimation(World.screwdriver, "translate.z", screwdriverZOffset + translateDistance, screwdriverZOffset, animationDuration, {}, {
-            onFinish: function() {
-                World.setScrewdriverEnabled(false);
+        var screwdriverTranslateAnimation = new AR.PropertyAnimation(
+            World.screwdriver,
+            "translate.z",
+            screwdriverZOffset + translateDistance,
+            screwdriverZOffset, animationDuration, {}, {
+                onFinish: function() {
+                    World.setScrewdriverEnabled(false);
+                }
             }
-        });
+        );
 
         var screwZOffset = screwdriverZOffset - 0.65 * this.firetruckLength;
-        var screwTranslateAnimation = new AR.PropertyAnimation(World.screw, "translate.z", screwZOffset + translateDistance, screwZOffset, animationDuration);
+        var screwTranslateAnimation = new AR.PropertyAnimation(
+            World.screw,
+            "translate.z",
+            screwZOffset + translateDistance,
+            screwZOffset,
+            animationDuration
+        );
 
         var arrowRotationAnimation = new AR.PropertyAnimation(World.turningArrow, "rotate.z", 0, 360, animationDuration);
 
-        var animationGroup = new AR.AnimationGroup(AR.CONST.ANIMATION_GROUP_TYPE.PARALLEL, [screwdriverTranslateAnimation, screwTranslateAnimation, arrowRotationAnimation]);
+        var animationGroup = new AR.AnimationGroup(
+            AR.CONST.ANIMATION_GROUP_TYPE.PARALLEL, [screwdriverTranslateAnimation, screwTranslateAnimation, arrowRotationAnimation]
+        );
         animationGroup.start();
     },
 
@@ -300,68 +327,59 @@ var World = {
 
         if (enabled) {
             World.sirenSound.play();
-        }
-        else {
+        } else {
             World.sirenSound.stop();
         }
     },
 
     createTracker: function createTrackerFn() {
         this.targetCollectionResource = new AR.TargetCollectionResource("assets/firetruck.wto", {
+            onError: World.onError
         });
 
         this.tracker = new AR.ObjectTracker(this.targetCollectionResource, {
-            onError: function(errorMessage) {
-                alert(errorMessage);
-            }
+            onError: World.onError
         });
-        
+
         this.objectTrackable = new AR.ObjectTrackable(this.tracker, "*", {
             drawables: {
                 cam: World.drawables
             },
-            onObjectRecognized: this.objectRecognized,
-            onObjectLost: this.objectLost,
-            onError: function(errorMessage) {
-                alert(errorMessage);
-            }
+            onObjectRecognized: World.objectRecognized,
+            onObjectLost: World.objectLost,
+            onError: World.onError
         });
     },
 
     objectRecognized: function objectRecognizedFn() {
-    	World.removeLoadingBar();
-    	World.setAugmentationsEnabled(true);
+        World.hideInfoBar();
+        World.setAugmentationsEnabled(true);
     },
 
     objectLost: function objectLostFn() {
-    	World.setAugmentationsEnabled(false);
+        World.setAugmentationsEnabled(false);
     },
 
     setAugmentationsEnabled: function setAugmentationsEnabledFn(enabled) {
-    	for (var i = 0; i < World.drawables.length; i++) {
-    		World.drawables[i].enabled = enabled;
-    	}
+        for (var i = 0; i < World.drawables.length; i++) {
+            World.drawables[i].enabled = enabled;
+        }
         World.setLightsEnabled(false);
         World.setScrewdriverEnabled(false);
     },
 
-    removeLoadingBar: function removeLoadingBarFn() {
-		if (!World.loaded && World.firetruckOccluder.isLoaded()) {
-			var e = document.getElementById('loadingMessage');
-			e.parentElement.removeChild(e);
-			World.loaded = true;
-		}
-	},
+    onError: function onErrorFn(error) {
+        alert(error)
+    },
 
-    loadingStep: function loadingStepFn() {
-		if (World.firetruckOccluder.isLoaded()) {
-			var cssDivLeft = " style='display: table-cell;vertical-align: middle; text-align: right; width: 50%; padding-right: 15px;'";
-			var cssDivRight = " style='display: table-cell;vertical-align: middle; text-align: left;'";
-			document.getElementById('loadingMessage').innerHTML =
-				"<div" + cssDivLeft + ">Scan Firetruck:</div>" +
-				"<div" + cssDivRight + "><img src='assets/firetruck_image.png'></img></div>";
-		}
-	}
+    hideInfoBar: function hideInfoBarFn() {
+        document.getElementById("infoBox").style.display = "none";
+    },
+
+    showInfoBar: function worldLoadedFn() {
+        document.getElementById("infoBox").style.display = "table";
+        document.getElementById("loadingMessage").style.display = "none";
+    }
 };
 
 World.init();

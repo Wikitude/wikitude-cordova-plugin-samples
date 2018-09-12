@@ -12,11 +12,25 @@
     display: table;
 }
 
-.info .text {
-    color: black;
+#infoBox {
+    display: none;
 }
 
-.info .image {
+#infoBox .text {
+    display: table-cell;
+    vertical-align: middle;
+    text-align: right;
+    width: 50%;
+}
+
+#infoBox .icons {
+    display: table-cell;
+    vertical-align: middle;
+    text-align: left;
+}
+
+#infoBox .icons img {
+    margin-left: 15px;
     width: 80px;
 }
 
