@@ -39,6 +39,8 @@ var app = {
         // set a callback for android that is called once the back button was clicked.
         if ( cordova.platformId == "android" ) {
             app.wikitudePlugin.setBackButtonCallback(app.onBackButton);
+        } else { // assumes iOS is the only alternative
+            app.wikitudePlugin.setErrorHandler(app.onRuntimeError);
         }
         app.wikitudePlugin.setJSONObjectReceivedCallback(app.onJSONObjectReceived);
     },
@@ -166,7 +168,15 @@ var app = {
     loadError: function(error) {
         alert("Could not load instant target, please save it first.");
     },
-    onBackButton: function() {
+    onRuntimeError: function (error) {
+        if (error.code == 960) {
+            var openAppSettings = confirm(error.message + '\nOpen App Settings?');
+            if (openAppSettings == true) {
+                app.wikitudePlugin.openAppSettings();
+            }
+        }
+    },
+    onBackButton: function () {
         /* Android back button was pressed and the Wikitude PhoneGap Plugin is now closed */
     },
     showBuildInformation: function() {
