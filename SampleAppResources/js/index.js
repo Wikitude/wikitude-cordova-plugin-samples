@@ -44,15 +44,7 @@ var app = {
         }
         app.wikitudePlugin.setJSONObjectReceivedCallback(app.onJSONObjectReceived);
     },
-    // --- Wikitude Plugin ---
-    loadExampleARchitectWorld: function(example) {
-
-        app.isArchitectWorldLoaded = false;
-        // inject poi data using phonegap's GeoLocation API and inject data using World.loadPoisFromJsonData
-        if ( example.requiredExtension === "ObtainPoiDataFromApplicationModel" ) {
-            prepareApplicationDataModel();
-        }
-
+    continueLoadingExampleARchitectWorld: function(example) {
         /* cordova.file.applicationDirectory is used to demonstrate the use of the cordova file plugin in combination with the Wikitude plugin */
         /* The length check here is only necessary because for each example the same 'example' object is given here and we only want to change the path once. */
         if ( example.path.length > cordova.file.applicationDirectory ) {
@@ -64,6 +56,23 @@ var app = {
         app.prepareArchitectWorld(example, function() {
             app.loadARchitectWorld(example);
         });
+    },
+    // --- Wikitude Plugin ---
+    loadExampleARchitectWorld: function(example) {
+
+        app.isArchitectWorldLoaded = false;
+
+        if ( example.requiredExtension === "ObtainPoiDataFromApplicationModel" ) {
+            navigator.geolocation.getCurrentPosition(
+                function() {
+                    app.continueLoadingExampleARchitectWorld(example);
+                },
+                function() {
+                    alert("Failed to get the current device position.");
+                });
+        } else {
+            app.continueLoadingExampleARchitectWorld(example);
+        }
     },
     loadCustomARchitectWorldFromURL: function(url) {
         var customArchitectWorld = {
@@ -112,6 +121,7 @@ var app = {
 
                 /* in case the loaded Architect World belongs to the 'obtain poi data from application model' example, we can now safely inject poi data. */
                 if ( architectWorld.requiredExtension === "ObtainPoiDataFromApplicationModel" ) {
+                    prepareApplicationDataModel();
                     injectGeneratedPoiJsonData();
                 }
             }, function errorFn(error) {

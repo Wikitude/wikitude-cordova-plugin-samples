@@ -3,7 +3,7 @@ var poiData = [];
 
 function prepareApplicationDataModel() {
     if ( !poiData.length ) {
-        navigator.geolocation.getCurrentPosition(onLocationUpdated, onLocationError);
+        navigator.geolocation.getCurrentPosition(onLocationUpdated, onLocationError, {maximumAge:Infinity, timeout:10000});
     } else {
         if ( app.isArchitectWorldLoaded == true ) {
             injectGeneratedPoiJsonData();
