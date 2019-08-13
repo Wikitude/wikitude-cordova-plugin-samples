@@ -14,7 +14,6 @@ var World = {
 
         /* Next the model object is loaded. */
         var modelEarth = new AR.Model("assets/earth.wt3", {
-            onLoaded: this.worldLoaded,
             onError: World.onError,
             scale: {
                 x: 1,
@@ -42,10 +41,6 @@ var World = {
 
     onError: function onErrorFn(error) {
         alert(error);
-    },
-
-    worldLoaded: function worldLoadedFn() {
-        document.getElementById("loadingMessage").style.display = "none";
     }
 };
 
