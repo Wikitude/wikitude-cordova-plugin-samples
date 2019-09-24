@@ -4,7 +4,8 @@
     <!--  basic meta information -->
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta http-equiv="Content-Type" content="application/json; charset=utf-8">
-    <meta content="width=device-width,initial-scale=1,maximum-scale=5,user-scalable=yes" name="viewport">
+    <!-- disables pinch-scaling of the webview, so that gestures only do what they're supposed to -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"/>
 
     <title>My ARchitect World</title>
 
@@ -28,13 +29,15 @@
 
     <!-- World logic-->
     <script type="text/javascript" src="js/camSwitch.js"></script>
+
+    <link rel="stylesheet" href="css/default.css">
 </head>
 
 <body>
 <div data-role="page" id="page1" style="background: none;">
     <!-- header of UI holding feature buttons -->
     <div id="header-status" data-role="header" data-position="fixed" data-theme="c">
-        <a href="javascript: World.switchCam();" data-icon="refresh" data-inline="true" data-mini="true">Switch
+        <a href="javascript: World.switchCam();" id="button-switchcamera" data-icon="refresh" data-inline="true" data-mini="true">Switch
             Camera</a>
         <h1></h1>
     </div>

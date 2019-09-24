@@ -1,0 +1,27 @@
+#header-status {
+    padding-top: env(safe-area-inset-top);
+}
+
+#header-caminfo {
+    position: relative;
+}
+
+#header-camcontrol {
+    position: relative;
+}
+
+#button-caminfo {
+    margin-top: env(safe-area-inset-top);
+}
+
+#button-camcontrol {
+    margin-top: env(safe-area-inset-top);
+}
+
+#panel-caminfo {
+    padding-top: env(safe-area-inset-top);
+}
+
+#panel-control {
+    padding-top: env(safe-area-inset-top);
+}

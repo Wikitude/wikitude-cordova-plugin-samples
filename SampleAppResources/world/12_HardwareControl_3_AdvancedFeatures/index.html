@@ -4,7 +4,8 @@
     <!--  basic meta information -->
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta http-equiv="Content-Type" content="application/json; charset=utf-8">
-    <meta content="width=device-width,initial-scale=1,maximum-scale=5,user-scalable=yes" name="viewport">
+    <!-- disables pinch-scaling of the webview, so that gestures only do what they're supposed to -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"/>
 
     <title>My ARchitect World</title>
 
@@ -29,25 +30,27 @@
 
     <!-- World logic-->
     <script type="text/javascript" src="js/hwFeatures.js"></script>
+
+    <link rel="stylesheet" href="css/default.css">
 </head>
 
 <body>
 <div data-role="page" id="page1" style="background: none;">
     <!-- header of UI holding feature buttons -->
     <div id="header-status" data-role="header" data-position="fixed" data-theme="c">
-        <a href="javascript: World.showCamInfo();" data-icon="info" data-inline="true" data-mini="true">Camera Info</a>
-        <a href="javascript: World.showCamControl()" data-icon="gear">Camera Control</a>
+        <a href="javascript: World.showCamInfo();" id="button-caminfo" data-icon="info" data-inline="true" data-mini="true">Camera Info</a>
+        <a href="javascript: World.showCamControl()" id="button-control" data-icon="gear">Camera Control</a>
         <h1></h1>
     </div>
 
     <!-- PANELS, ONLY VISIBLE ON DEMAND -->
 
     <!-- panel containing camera information -->
-    <div data-role="panel" id="panel-caminfo" data-position="left" data-display="overlay"
+    <div id="panel-caminfo" data-role="panel" data-position="left" data-display="overlay"
          style="background-color:#F0F0F0;" data-theme="c">
 
         <!-- header with "close" button -->
-        <div data-role="header" data-theme="c">
+        <div id="header-caminfo" data-role="header" data-theme="c">
             <h1>Camera Info</h1>
             <a href="#header" data-rel="close">Close</a>
         </div>
@@ -55,23 +58,30 @@
         <!-- content of camera info page -->
         <div data-role="content">
 
-            <!-- focus modes -->
-            <h4> Focus: <a id="camera-focus-modes"> </a></h4>
-
             <!-- positions -->
             <h4> Positions: <a id="camera-positions"> </a></h4>
 
             <!-- zoom range -->
             <h4> Zoom: 1 to <a id="camera-zoom-max"> </a></h4>
+
+            <!-- focus modes -->
+            <h4> Focus: <a id="camera-focus-modes"> </a></h4>
+
+            <!-- manual focus -->
+            <h4> Manual focus available: <a id="manual-focus-available"> </a></h4>
+
+            <!-- flashlight -->
+            <h4> Flashlight available: <a id="flashlight-available"> </a></h4>
+
         </div>
     </div>
 
     <!-- camera control panel -->
-    <div data-role="panel" id="panel-control" data-position="right" data-display="overlay"
+    <div id="panel-control" data-role="panel" data-position="right" data-display="overlay"
          style="background-color:#F0F0F0;" data-theme="c">
 
         <!-- header with close button -->
-        <div data-role="header" data-theme="c">
+        <div id="header-camcontrol" data-role="header" data-theme="c">
             <h1>Controls</h1>
             <a href="#header" data-rel="close">Close</a>
         </div>

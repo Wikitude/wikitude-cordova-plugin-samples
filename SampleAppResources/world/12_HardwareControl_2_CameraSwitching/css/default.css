@@ -1,0 +1,7 @@
+#header-status {
+    padding-top: env(safe-area-inset-top);
+}
+
+#button-switchcamera {
+    margin-top: env(safe-area-inset-top);
+}

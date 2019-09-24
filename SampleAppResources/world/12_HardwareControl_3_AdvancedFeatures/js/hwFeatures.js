@@ -144,10 +144,17 @@ var World = {
     showCamInfo: function showCamInfoFn() {
         /* Update panel values. */
         var features = AR.hardware.camera.features;
+        var camera = AR.hardware.camera;
 
-        $("#camera-focus-modes").html(features.focusModes.join());
         $("#camera-positions").html(features.positions.join());
         $("#camera-zoom-max").html(Math.round(features.zoomRange.max));
+        $("#camera-focus-modes").html(features.focusModes.join());
+        $("#manual-focus-available").html(
+            (camera.manualFocusAvailable) ? "Yes" : "No"
+        );
+        $("#flashlight-available").html(
+            (camera.flashlightAvailable) ? "Yes" : "No"
+        );
 
         /* Show panel. */
         $("#panel-caminfo").panel("open", 123);
