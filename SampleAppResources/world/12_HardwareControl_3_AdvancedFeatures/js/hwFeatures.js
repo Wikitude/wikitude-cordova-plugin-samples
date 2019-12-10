@@ -146,7 +146,13 @@ var World = {
         var features = AR.hardware.camera.features;
         var camera = AR.hardware.camera;
 
-        $("#camera-positions").html(features.positions.join());
+        /* Remove repeated camera position elements */
+        var positions = [];
+        $.each(features.positions, function(i, el) {
+            if ($.inArray(el, positions) === -1) positions.push(el);
+        });
+
+        $("#camera-positions").html(positions.join());
         $("#camera-zoom-max").html(Math.round(features.zoomRange.max));
         $("#camera-focus-modes").html(features.focusModes.join());
         $("#manual-focus-available").html(

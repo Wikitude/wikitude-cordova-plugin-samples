@@ -41,7 +41,8 @@ echo "*** GENERATING PROJECT ***"
 
 # Create the project directory
 $BUILD_PROGRAM create $PROJECT_DIRECTORY $PROJECT_ID "$PROJECT_NAME"
-sed -i'.original' 's/\<platform name="android"\>/\<\platform name="android"\>\<preference name="android-minSdkVersion" value="19"\/\>/g' "${PROJECT_DIRECTORY}"/config.xml
+sed -i'.original' 's/\<platform name="android"\>/\<\platform name="android"\>\<preference name="android-minSdkVersion" value="21"\/\>/g' "${PROJECT_DIRECTORY}"/config.xml
+sed -i'.original' 's/\<platform name="ios"\>/\<\platform name="ios"\>\<preference name="deployment-target" value="11.0"\/\>/g' "${PROJECT_DIRECTORY}"/config.xml
 
 # Step into the created project directory
 cd $PROJECT_DIRECTORY
