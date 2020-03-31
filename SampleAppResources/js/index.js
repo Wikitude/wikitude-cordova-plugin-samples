@@ -35,11 +35,10 @@ var app = {
     },
     // deviceready Event Handler
     onDeviceReady: function() {
-        app.wikitudePlugin = cordova.require("com.wikitude.phonegap.WikitudePlugin.WikitudePlugin");
-        // set a callback for android that is called once the back button was clicked.
-        if ( cordova.platformId == "android" ) {
-            app.wikitudePlugin.setBackButtonCallback(app.onBackButton);
-        } else { // assumes iOS is the only alternative
+        app.wikitudePlugin = cordova.require("com.wikitude.phonegap.wikitudeplugin.WikitudePlugin");
+        // set a callback that is called once the back button was clicked.
+        app.wikitudePlugin.setBackButtonCallback(app.onBackButton);
+        if (cordova.platform == "ios") {
             app.wikitudePlugin.setErrorHandler(app.onRuntimeError);
         }
         app.wikitudePlugin.setJSONObjectReceivedCallback(app.onJSONObjectReceived);
@@ -118,6 +117,7 @@ var app = {
         app.wikitudePlugin.loadARchitectWorld(function successFn(loadedURL) {
                 /* Respond to successful world loading if you need to */
                 app.isArchitectWorldLoaded = true;
+                window.plugins.insomnia.keepAwake();
 
                 /* in case the loaded Architect World belongs to the 'obtain poi data from application model' example, we can now safely inject poi data. */
                 if ( architectWorld.requiredExtension === "ObtainPoiDataFromApplicationModel" ) {
@@ -187,7 +187,7 @@ var app = {
         }
     },
     onBackButton: function () {
-        /* Android back button was pressed and the Wikitude PhoneGap Plugin is now closed */
+        window.plugins.insomnia.allowSleepAgain();
     },
     showBuildInformation: function() {
         var sdkVersion = ""

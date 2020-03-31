@@ -112,6 +112,9 @@ else
 	$BUILD_PROGRAM plugin add https://github.com/Wikitude/wikitude-cordova-plugin.git
 fi
 
+## Add Insomnia PhoneGap Plugin
+echo "*** ADDING INSOMNIA PHONEGAP PLUGIN ***"
+$BUILD_PROGRAM plugin add https://github.com/EddyVerbruggen/Insomnia-PhoneGap-Plugin.git
 
 ## Add Cordova File plugin
 $BUILD_PROGRAM plugin add cordova-plugin-file
@@ -127,9 +130,9 @@ LICENSE_KEY=`cat "${LICENSE_FILE}"`
 if [ "true" == "$BUILD_IOS" ]; then
 	# Replace license key for iOS
 
-	INPUT_FILES[0]=$PROJECT_DIRECTORY/platforms/ios/platform_www/plugins/com.wikitude.phonegap.WikitudePlugin/www/WikitudePlugin.js
-	INPUT_FILES[1]=$PROJECT_DIRECTORY/platforms/ios/www/plugins/com.wikitude.phonegap.WikitudePlugin/www/WikitudePlugin.js
-	INPUT_FILES[2]=$PROJECT_DIRECTORY/plugins/com.wikitude.phonegap.WikitudePlugin/www/WikitudePlugin.js
+	INPUT_FILES[0]=$PROJECT_DIRECTORY/platforms/ios/platform_www/plugins/com.wikitude.phonegap.wikitudeplugin/www/WikitudePlugin.js
+	INPUT_FILES[1]=$PROJECT_DIRECTORY/platforms/ios/www/plugins/com.wikitude.phonegap.wikitudeplugin/www/WikitudePlugin.js
+	INPUT_FILES[2]=$PROJECT_DIRECTORY/plugins/com.wikitude.phonegap.wikitudeplugin/www/WikitudePlugin.js
 
     for INPUT_FILE in "${INPUT_FILES[@]}"
     do
@@ -150,9 +153,9 @@ fi
 if [ "true" == "$BUILD_ANDROID" ]; then
 	# ... and Android
 
-	INPUT_FILES[0]=$PROJECT_DIRECTORY/platforms/android/platform_www/plugins/com.wikitude.phonegap.WikitudePlugin/www/WikitudePlugin.js
-	INPUT_FILES[1]=$PROJECT_DIRECTORY/platforms/android/assets/www/plugins/com.wikitude.phonegap.WikitudePlugin/www/WikitudePlugin.js
-	INPUT_FILES[2]=$PROJECT_DIRECTORY/plugins/com.wikitude.phonegap.WikitudePlugin/www/WikitudePlugin.js
+	INPUT_FILES[0]=$PROJECT_DIRECTORY/platforms/android/platform_www/plugins/com.wikitude.phonegap.wikitudeplugin/www/WikitudePlugin.js
+	INPUT_FILES[1]=$PROJECT_DIRECTORY/platforms/android/assets/www/plugins/com.wikitude.phonegap.wikitudeplugin/www/WikitudePlugin.js
+	INPUT_FILES[2]=$PROJECT_DIRECTORY/plugins/com.wikitude.phonegap.wikitudeplugin/www/WikitudePlugin.js
 
     for INPUT_FILE in "${INPUT_FILES[@]}"
     do
