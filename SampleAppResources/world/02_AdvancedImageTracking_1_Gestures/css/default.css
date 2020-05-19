@@ -61,6 +61,7 @@
 @media screen and (orientation: portrait) {
 
     #overlayPicker {
+        display: none;
         overflow: auto;
         height: 100%;
         width: 22%;
@@ -80,11 +81,12 @@
 @media screen and (orientation: landscape) {
 
     #overlayPicker {
+        display: none;
         width: 60%;
         text-align: right;
         position: absolute;
-        right: 0.5%;
-        bottom: 0.5%;
+        right: calc(0.5% + env(safe-area-inset-right));
+        bottom: calc(0.5% + env(safe-area-inset-bottom));
     }
 
     #overlayPicker a {

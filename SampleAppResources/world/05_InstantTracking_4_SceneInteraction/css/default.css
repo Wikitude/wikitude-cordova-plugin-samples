@@ -32,7 +32,7 @@ body {
 }
 
 .slider-delete-container {
-    padding: 5px;
+    padding: 5px calc(5px + env(safe-area-inset-right)) 5px calc(5px + env(safe-area-inset-left));
     display: flex;
     justify-content: space-between;
 }

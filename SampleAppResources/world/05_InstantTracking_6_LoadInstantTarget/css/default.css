@@ -31,6 +31,7 @@ body {
 }
 
 .image-button {
+    padding-left: env(safe-area-inset-left);
     width: 14%;
 }
 
