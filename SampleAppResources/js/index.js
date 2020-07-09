@@ -67,7 +67,7 @@ var app = {
                     app.continueLoadingExampleARchitectWorld(example);
                 },
                 function() {
-                    alert("Failed to get the current device position.");
+                    app.wikitudePlugin.showAlert("Failed to get the current device position.");
                 });
         } else {
             app.continueLoadingExampleARchitectWorld(example);
@@ -108,7 +108,7 @@ var app = {
                 },
                 architectWorld.requiredFeatures);
         }, function(errorMessage) {
-            alert(errorMessage);
+            app.wikitudePlugin.showAlert(errorMessage);
         },
         architectWorld.requiredFeatures);
     },
@@ -126,7 +126,7 @@ var app = {
                 }
             }, function errorFn(error) {
                 app.isArchitectWorldLoaded = false;
-                alert('Loading AR web view failed: ' + error);
+                app.wikitudePlugin.showAlert('Loading AR web view failed: ' + error);
             },
             architectWorld.path, architectWorld.requiredFeatures, architectWorld.startupConfiguration
         );
@@ -137,16 +137,16 @@ var app = {
             if ( jsonObject.action === "capture_screen" ) {
                 app.wikitudePlugin.captureScreen(
                     function(absoluteFilePath) {
-                        alert("snapshot stored at:\n" + absoluteFilePath);
+                        app.wikitudePlugin.showAlert("snapshot stored at:\n" + absoluteFilePath);
                     },
                     function (errorMessage) {
-                        alert(errorMessage);
+                        app.wikitudePlugin.showAlert(errorMessage);
                     },
                     true, null
                 );
             } else if (jsonObject.action === "present_poi_details") {
                 var alertMessage = "Poi '" + jsonObject.id + "' selected\nTitle: " + jsonObject.title + "\nDescription: " + jsonObject.description;
-                alert(alertMessage);
+                app.wikitudePlugin.showAlert(alertMessage);
             } else if (jsonObject.action === "save_current_instant_target") {
                 window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function(fileSystem){
                     fileSystem.root.getFile("SavedAugmentations.json", {create: true, exclusive: false}, function(fileEntry){
@@ -173,10 +173,10 @@ var app = {
         }
     },
     saveError: function(error) {
-        alert("Could not save the current instant target.");
+        app.wikitudePlugin.showAlert("Could not save the current instant target.");
     },
     loadError: function(error) {
-        alert("Could not load instant target, please save it first.");
+        app.wikitudePlugin.showAlert("Could not load instant target, please save it first.");
     },
     onRuntimeError: function (error) {
         if (error.code == 960) {
@@ -196,7 +196,7 @@ var app = {
 
         app.wikitudePlugin.getSDKBuildInformation(function(buildInformationJSON) {
             var buildInformation = JSON.parse(buildInformationJSON);
-            alert(
+            app.wikitudePlugin.showAlert(
                 "Build configuration: " + buildInformation.buildConfiguration + "\n" +
                 "Build date: " + buildInformation.buildDate + "\n" +
                 "Build number: " + buildInformation.buildNumber + "\n" +
