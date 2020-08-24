@@ -196,7 +196,11 @@ var app = {
 
         app.wikitudePlugin.getSDKBuildInformation(function(buildInformationJSON) {
             var buildInformation = JSON.parse(buildInformationJSON);
-            app.wikitudePlugin.showAlert(
+            /*
+             * Using app.wikitudePlugin.showAlert() is required for alerts to work while an Architect view is active.
+             * Since there is no Architect view in use while we are in the main menu, we should just use a regular JS alert here.
+             */
+            alert(
                 "Build configuration: " + buildInformation.buildConfiguration + "\n" +
                 "Build date: " + buildInformation.buildDate + "\n" +
                 "Build number: " + buildInformation.buildNumber + "\n" +
