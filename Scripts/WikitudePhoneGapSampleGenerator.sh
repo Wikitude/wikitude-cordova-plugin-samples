@@ -119,6 +119,9 @@ $BUILD_PROGRAM plugin add https://github.com/EddyVerbruggen/Insomnia-PhoneGap-Pl
 ## Add Cordova File plugin
 $BUILD_PROGRAM plugin add cordova-plugin-file
 
+# Add Cordova dialogs plugin
+$BUILD_PROGRAM plugin add cordova-plugin-dialogs
+
 
 # Install Wikitude SDK license
 echo "** ADDING WIKITUDE SDK LICENSE ***"

@@ -200,12 +200,11 @@ var app = {
              * Using app.wikitudePlugin.showAlert() is required for alerts to work while an Architect view is active.
              * Since there is no Architect view in use while we are in the main menu, we should just use a regular JS alert here.
              */
-            alert(
-                "Build configuration: " + buildInformation.buildConfiguration + "\n" +
-                "Build date: " + buildInformation.buildDate + "\n" +
-                "Build number: " + buildInformation.buildNumber + "\n" +
-                "Build version: " + sdkVersion
-            );
+            var buildInformationText = "Build configuration: " + buildInformation.buildConfiguration + "\n" +
+                                        "Build date: " + buildInformation.buildDate + "\n" +
+                                        "Build number: " + buildInformation.buildNumber + "\n" +
+                                        "Build version: " + sdkVersion;
+            navigator.notification.alert(buildInformationText, null, "Build information", "OK");
         });
     }
     // --- End Wikitude Plugin ---
