@@ -15,15 +15,6 @@
     <!-- important for static POI loading - include the static data  -->
     <script type="text/javascript" src="js/myJsonData.js"></script>
 
-    <!-- jquery mobile CSS -->
-    <link rel="stylesheet" href="jquery/jquery.mobile-1.3.2.min.css"/>
-    <!-- required to set background transparent & enable "click through" -->
-    <link rel="stylesheet" href="jquery/jquery-mobile-transparent-ui-overlay.css"/>
-
-    <!-- jquery JS files -->
-    <script type="text/javascript" src="jquery/jquery-1.9.1.min.js"></script>
-    <script type="text/javascript" src="jquery/jquery.mobile-1.3.2.min.js"></script>
-
     <!-- marker representation-->
     <script type="text/javascript" src="js/marker.js"></script>
 
@@ -34,27 +25,15 @@
 </head>
 
 <body>
-<div data-role="page" id="page1" style="background: none;">
-    <!-- header of UI holding feature buttons -->
-    <div id="header-status" data-role="header" data-position="fixed" data-theme="c">
-        <a href="javascript: World.switchCam();" id="button-switchcamera" data-icon="refresh" data-inline="true" data-mini="true">Switch
-            Camera</a>
-        <h1></h1>
+    <div id="mainHeader">
+        <button class="customButton" id="switchCameraButton" onclick="World.switchCam();">Switch Camera</button>
     </div>
 
-    <!-- transparent footer-->
-    <div data-role="footer" class="ui-bar" data-theme="f" data-position="fixed" style="text-align:center;">
-
-        <!-- small status-button -->
-        <a style="text-align:right;" id="popupInfoButton" href="#popupInfo" data-rel="popup" data-role="button"
-           class="ui-icon-alt" data-inline="true" data-transition="pop" data-icon="alert" data-theme="e"
-           data-iconpos="notext">Log</a> </p>
-
-        <!-- popup displayed when button clicked -->
-        <div data-role="popup" id="popupInfo" class="ui-content" data-theme="e" style="max-width:350px;">
-            <p style="text-align:right;" id="status-message">Trying to find out where you are</p>
+    <div id="footer">
+        <div id="popupButton">
+            <img id="popupButtonImage" src="assets/warning_icon.png"/>
+            <span id="popupButtonTooltip">Trying to find out where you are</span>
         </div>
     </div>
-</div>
 </body>
 </html>
