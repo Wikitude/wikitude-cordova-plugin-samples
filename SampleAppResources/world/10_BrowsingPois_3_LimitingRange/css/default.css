@@ -10,6 +10,7 @@ html, body {
     width: 100%;
     display: flex;
     align-items: center;
+    padding-top: env(safe-area-inset-top);
 }
 
 #footer {
@@ -58,6 +59,7 @@ html, body {
     position: absolute;
     font-family: sans-serif;
     visibility: hidden;
+    margin-top: env(safe-area-inset-top);
 }
 
 #poiDetailDistance {
@@ -71,6 +73,7 @@ html, body {
     position: absolute;
     font-family: sans-serif;
     visibility: hidden;
+    margin-top: env(safe-area-inset-top);
 }
 
 #panelRangeValue {
@@ -108,6 +111,7 @@ html, body {
     font-weight: bold;
     font-size: small;
     background-color: #fff;
+    white-space: nowrap;
 }
 
 .headerTitle {
@@ -158,7 +162,6 @@ html, body {
 
     .customButton {
         height: 4vh;
-        width: 10vh;
         margin-left: 1vh;
         margin-right: 1vh;
     }
@@ -218,7 +221,6 @@ html, body {
 
     .customButton {
         height: 4vw;
-        width: 10vw;
         margin-left: 1vw;
         margin-right: 1vw;
     }

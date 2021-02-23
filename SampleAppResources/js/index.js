@@ -68,7 +68,7 @@ var app = {
                 },
                 function() {
                     app.wikitudePlugin.showAlert("Failed to get the current device position.");
-                });
+                }, { enableHighAccuracy: true, maximumAge: Infinity, timeout: 5000 });
         } else {
             app.continueLoadingExampleARchitectWorld(example);
         }

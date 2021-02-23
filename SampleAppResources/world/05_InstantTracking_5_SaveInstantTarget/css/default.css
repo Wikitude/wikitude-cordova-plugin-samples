@@ -71,7 +71,8 @@ body {
     bottom: 0;
     left: 0;
     width: 100%;
-    text-align: center;
+    display: flex;
+    justify-content: center;
 }
 
 #top-wrapper {
@@ -99,18 +100,18 @@ body {
 
 @media screen and (orientation: portrait) {
     #slider-container {
-        height: 7vh;
+        height: 8vh;
         margin-top: 1vh;
     }
 
     #save-button-container {
-        height: 7vh;
+        height: 8vh;
         margin-top: 1vh;
     }
 
     #height-value-text {
-        width: 7vh;
-        height: 7vh;
+        width: 8vh;
+        height: 8vh;
     }
 
     #tracking-height-slider-container {
@@ -132,25 +133,25 @@ body {
     }
 
     .image-button {
-        width: 14vw;
-        height: 14vw;
+        width: 16vw;
+        height: 16vw;
     }
 }
 
 @media screen and (orientation: landscape) {
     #slider-container {
-        height: 7vw;
+        height: 8vw;
         margin-top: 1vw;
     }
 
     #save-button-container {
-        height: 7vw;
+        height: 8vw;
         margin-top: 1vw;
     }
 
     #height-value-text {
-        width: 7vw;
-        height: 7vw;
+        width: 8vw;
+        height: 8vw;
     }
 
     #tracking-height-slider-container {
@@ -172,7 +173,7 @@ body {
     }
 
     .image-button {
-        width: 14vh;
-        height: 14vh;
+        width: 16vh;
+        height: 16vh;
     }
 }

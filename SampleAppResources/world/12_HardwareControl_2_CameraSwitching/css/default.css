@@ -11,6 +11,7 @@ html, body {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    padding-top: env(safe-area-inset-top);
 }
 
 #footer {
@@ -60,6 +61,7 @@ html, body {
     font-weight: bold;
     font-size: small;
     background-color: #fff;
+    white-space: nowrap;
 }
 
 .content {
@@ -83,7 +85,6 @@ html, body {
 
     .customButton {
         height: 4vh;
-        width: 10vh;
         margin-left: 1vh;
         margin-right: 1vh;
     }
@@ -116,7 +117,6 @@ html, body {
 
     .customButton {
         height: 4vw;
-        width: 10vw;
         margin-left: 1vw;
         margin-right: 1vw;
     }

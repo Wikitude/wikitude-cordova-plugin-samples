@@ -44,12 +44,14 @@ html, body {
 }
 
 #panelPoiDetail {
+    display:block;
     background-color: #eee;
     height: 100%;
     right: 0;
     position: absolute;
     font-family: sans-serif;
     visibility: hidden;
+    margin-top: env(safe-area-inset-top);
 }
 
 #poiDetailDistance {
@@ -70,7 +72,9 @@ html, body {
     border-style: solid;
     border-color: #ccc;
     font-weight: bold;
+    font-size: small;
     background-color: #fff;
+    white-space: nowrap;
 }
 
 .headerTitle {
@@ -105,7 +109,6 @@ html, body {
 
     .closeButton {
         height: 4vh;
-        width: 10vh;
         margin-left: 1vw;
     }
 
@@ -143,7 +146,6 @@ html, body {
 
     .closeButton {
         height: 4vw;
-        width: 10vw;
         margin-left: 1vh;
     }
 
